@@ -107,8 +107,11 @@ class AdminController extends Controller
 
     public function getsearch()
     {
+          //groupBy('card_holder')
 
-        $customers = Customer::groupBy('card_holder')->get();
+        $customers = Customer::selectRaw("DATE_FORMAT('created_at', 'm')as month")
+                   ->distinct()
+                   ->get();
         return view('file.searchs', compact('customers'));
     }
 
@@ -140,7 +143,8 @@ class AdminController extends Controller
         $o = Input::get('o' );
         $w=  Input::get('w');
         $custs = Customer::where('card_holder', 'LIKE', '%'.$o.'%')
-            ->where('card_number', 'LIKE', '%'.$p.'%')
+             ->where('card_number', 'LIKE', '%'.$p.'%')
+//            ->groupBy('card_number')
             ->get();
 //        var_dump($p);
 //        var_dump($o);

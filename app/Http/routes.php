@@ -46,7 +46,9 @@ Route::get('/', function () {
 
 
 
-    return View::make('welcome',compact('customers','customers2','customers3','customers4'));
+    return View::make('file.searchs',compact('customers','customers2','customers3','customers4'));
+//    return View::make('welcome',compact('customers','customers2','customers3','customers4'));
+
 });
 Route::get('/post/{id}',['as'=>'post','uses'=>'AdminController@post']);
 Route::get('/home','AdminController@index');
