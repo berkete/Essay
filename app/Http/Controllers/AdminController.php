@@ -107,62 +107,39 @@ class AdminController extends Controller
 
     public function getsearch()
     {
-          //groupBy('card_holder')
 
-        $customers = Customer::selectRaw("DATE_FORMAT('created_at', 'm')as month")
-                   ->distinct()
-                   ->get();
-        return view('file.searchs', compact('customers'));
+               //used to select months
+        $customers=DB::table('customers')
+                        ->select(DB::raw('MONTH(created_at) as month' ))
+                        ->groupBy("month")
+                        ->get();
+                 // used to select years
+        $customer1=DB::table('customers')
+                        ->select(DB::raw('YEAR(created_at) as year' ))
+                        ->groupBy("year")
+                        ->get();
+                // used to group users
+        $customer2 = Customer::groupBy('card_holder')->get();
+
+        return view('file.searchs', compact('customers','customer1','customer2'));
     }
 
     public function test()
     {
-//        $p = Input::get('p' );
-//        $w = Input::get( 'w');
-//        $o = Input::get('o' );
-//        $custs = Customer::where('created_at', 'LIKE', '%' . $p . '%')
-//            ->orWhere('card_holder', 'LIKE', '%' . $o . '%')
-//            ->orWhere('card_number', 'LIKE', '%' . $w . '%')
-//            ->get();
-
-//        $custs = Customer::all();
-
-//     var_dump($p);
-//    var_dump($w);
-//    var_dump($o);
-
-//        $q = Input::get('p' && 'o' && 'w');
-//
-//        $custs = Customer::where('created_at', 'LIKE', '%2016-08-01%')
-//            ->where('card_holder', 'LIKE', '%Ｇｕｅｓｔ３%')
-//            ->where('card_number', 'LIKE', '%3%')
-//            ->get();
-//    )->withDetails($custs)->withQuery($p,$w,$o);
-
-        $p = Input::get('p' );
-        $o = Input::get('o' );
-        $w=  Input::get('w');
-        $custs = Customer::where('card_holder', 'LIKE', '%'.$o.'%')
-             ->where('card_number', 'LIKE', '%'.$p.'%')
-//            ->groupBy('card_number')
-            ->get();
-//        var_dump($p);
-//        var_dump($o);
-//        var_dump($w);
-
-        //loop
-
-
-
+          // Used to search from the select box
+        $month = Input::get('month' );
+        $name = Input::get('name' );
+        $year=  Input::get('year');
+        $custs = Customer::where('card_holder', 'LIKE', '%'.$name.'%')
+                         ->where('created_at', 'LIKE', '%'.$month.'%')
+                         ->where('created_at', 'LIKE', '%'.$year.'%')
+                         ->get();
         if (count($custs)>0)
-
-//            return view('file.test')->withDetails($custs);
             return view('file.test')->withDetails($custs);
         else
             return view('file.test')->withMessage('No such user');
 
     }
-
     public function test2()
     {
         $q = Input::get('customers' || 'customers2' || 'customers4');
@@ -246,6 +223,48 @@ class AdminController extends Controller
 
 
 
+
+    }
+
+    public function select(){
+        $customers=[];
+        foreach (Customer::all() as $customer) {
+//       $customer->groupBy('card_holder');
+            $customers[$customer->id] = $customer->card_holder;
+
+        }
+        $year=[];
+        foreach (Customer::all() as $customer) {
+            $year[$customer->id] = \Carbon\Carbon::parse($customer->created_at)->format('Y');
+
+
+        }
+
+        $card_number=[];
+        foreach (Customer::all() as $customer) {
+            $card_number[$customer->id] = $customer->card_number;
+
+        }
+        $month=[];
+        foreach (Customer::all() as $customer) {
+            $month[$customer->id] = \Carbon\Carbon::parse($customer->created_at)->format('m');
+//                                    ->groupBy('m')
+//                                    ->get();
+
+
+        }
+
+
+
+        return View::make('file.select',compact('customers','year','card_number','month'));
+
+
+    }
+
+    public function display(){
+
+
+        return view('file.search');
 
     }
 }

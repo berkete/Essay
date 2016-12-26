@@ -14,6 +14,7 @@
 use App\Customer;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
+use Symfony\Component\HttpFoundation\Request;
 
 
 Route::any('/campaigns/get', ['as' => '/campaigns/get', 'uses' => 'AdminController@getCampaigns']);
@@ -46,10 +47,60 @@ Route::get('/', function () {
 
 
 
-    return View::make('file.searchs',compact('customers','customers2','customers3','customers4'));
+    return View::make('welcome',compact('customers','customers2','customers3','customers4'));
 //    return View::make('welcome',compact('customers','customers2','customers3','customers4'));
 
 });
+
+
+//to choose the specific
+
+Route::get("/select",'AdminController@select');
+Route::get('/ajax-month',function (){
+    $yearInput=Input::get('year');
+//    $year=2017;
+//    $year=  Request::getContent('year');
+//$someVariable = Input::get("some_variable");
+
+//    $results = DB::select( DB::raw("SELECT * FROM some_table WHERE some_col = :somevariable"), array(
+//        'somevariable' => $someVariable,
+//    ));
+    //select month(created_at) as month from `customers` where year(created_at) = 2016 group by month
+    $year=DB::table('customers')
+        ->select(DB::raw('month(created_at) as month '))
+//        ->whereRaw('year(created_at) = 2016')
+//        ->whereRaw('year(created_at) LIKE %', [$year],'%')
+//        ->whereRaw('year(created_at) = ?',[$year])
+        ->whereRaw('year(created_at) =?',[$yearInput])
+        ->groupBy("month")
+        ->get();
+//    $str=["a","aaaaa","c"];
+
+//    return Response()::json($test);
+//    return Response::json($test);
+    //var_dump($test);
+    return $year;
+});
+Route::get('/ajax-name',function (){
+
+    $yearInput=Input::get('year');
+    $monthInput=Input::get('month');
+
+
+
+    $month=DB::table('customers')
+        ->select(DB::raw('card_holder'))
+        ->whereRaw('month(created_at) = :month and year(created_at) = :year', ['month' => $monthInput,'year' => $yearInput])
+//        ->whereRaw('year(created_at) = :year',['year' => $yearInput])->whereRaw('month(created_at) = :month',['month' => $monthInput])
+//        ->whereRaw(('month(created_at) =?'),[$monthInput] && 'year(created_at) =?',[$yearInput])
+//        ->whereRaw('year(created_at) =?',[$yearInput])
+        ->groupBy('card_holder')->get();
+//    return response()->json($month);
+
+    return $month;
+});
+//used to display the result
+Route::get('/display','AdminController@display');
 Route::get('/post/{id}',['as'=>'post','uses'=>'AdminController@post']);
 Route::get('/home','AdminController@index');
 Route::any('/update','AdminController@update');

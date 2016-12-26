@@ -21,6 +21,7 @@
         $sumin=0;      // Intializing the time total that the employee stayed in office
         $sumout=0;     // Intializing the time total that the employee stayed outside the office
         $count=count($details);
+        $checkout_time=Carbon\Carbon::now();
         if ($details!==null){
             foreach($details as $key => $value){
                 if ($value["status"]=='入室' && $value["company"]=='入側' && $value!==null){
@@ -44,17 +45,19 @@
                         $z=($b-$a)/3600;
                         $sumout=$sumout+$z;
                     }
-                }
-                $month_day=\Carbon\Carbon::parse($value->created_at)->format('M/d');
-                // Used to select the first and the last time
-                if ($key==0){
-                    $enterance_time= \Carbon\Carbon::parse($value->created_at)->format('H:i:s');
-                }
-                 if($key==$count-1){
-                    $checkout_time=\Carbon\Carbon::parse($value->created_at)->format('H:i:s');
                  }
 
+            $month_day=\Carbon\Carbon::parse($value->created_at)->format('M/d');
+            // Used to select the first and the last time
+            if ($key==0){
+                $enterance_time= \Carbon\Carbon::parse($value->created_at)->format('H:i:s');
             }
+            if($key==($count-1)){
+                $checkout_time=\Carbon\Carbon::parse($value->created_at)->format('H:i:s');
+             }
+        } // foreach end
+
+
             $timein=$sumin;
             $timeout=$sumout;
             $hoursout=floor($timeout);
@@ -65,8 +68,9 @@
             echo "<tr><td>$month_day</td><td style='caption-side: bottom;color: blue'> $hours 時　と  $minutein 分</td>
                       <td style='caption-side: bottom;color: blue'>$hoursout 時　と  and $minuteout 分 </td>
                       <td style='caption-side: bottom;color: blue'>  $enterance_time</td>
-                      <td style='caption-side: bottom;color: blue'>  $checkout_time</td><td></td></tr>";
-        }
+                      <td style='caption-side: bottom;color: blue'> $checkout_time </td><td></td></tr><tr></tr>";
+
+    } // if (details) end
 
         ?>
 

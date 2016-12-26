@@ -1,9 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <link rel="icon" href="{!! asset('images/iride-ui-icon-pack-300x300.ico') !!}"/>
 
 <head>
-
+    {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.js"></script>--}}
+    <script src="{{asset('js/jquery.js')}}"></script>
+    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/jquery.scrollUp.min.js')}}"></script>
+    <script src="{{asset('js/price-range.js')}}"></script>
+    <script src="{{asset('js/jquery.prettyPhoto.js')}}"></script>
+    <script src="{{asset('js/main.js')}}"></script>
+    <link href="select2-4.0.3/dist/css/select2.css" rel="stylesheet" />
+    <script src="select2-4.0.3/dist/js/select2.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{--<meta name="description" content="{{$description}}">--}}
@@ -25,6 +33,17 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{asset('images/ico/apple-touch-icon-114-precomposed.png')}}">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{asset('images/ico/apple-touch-icon-72-precomposed.png')}}">
     <link rel="apple-touch-icon-precomposed" href="{{asset('images/ico/apple-touch-icon-57-precomposed.png')}}">
+
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    {{--<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />--}}
+    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>--}}
+
+    {{--<script type="text/javascript" src="/js/jquery.js"></script>--}}
+    {{--<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>--}}
+    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>--}}
+
+    {{--{!! Html::style('select2-4.0.3/dist/css/select2.min.css', ['rel'=>"stylesheet"] ) !!}--}}
+    {{--{!! Html::script('select2-4.0.3/dist/js/select2.min.js') !!}--}}
 </head><!--/head-->
 
 <header id="header"><!--header-->
@@ -35,7 +54,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="logo pull-left">
-                        <a href="{{url('')}}"><img src="{{asset('images/main/logo.png')}}" alt="" /></a>
+                        {{--<a href="{{url('')}}"><img src="{{asset('images/main/logo.png')}}" alt="" /></a>--}}
                     </div>
                 </div>
 
@@ -231,11 +250,6 @@
 </footer>
 
 
-<script src="{{asset('js/jquery.js')}}"></script>
-<script src="{{asset('js/bootstrap.min.js')}}"></script>
-<script src="{{asset('js/jquery.scrollUp.min.js')}}"></script>
-<script src="{{asset('js/price-range.js')}}"></script>
-<script src="{{asset('js/jquery.prettyPhoto.js')}}"></script>
-<script src="{{asset('js/main.js')}}"></script>
+
 </html>
 
