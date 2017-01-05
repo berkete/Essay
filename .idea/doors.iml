@@ -7,5 +7,6 @@
     <orderEntry type="library" name="select2" level="application" />
     <orderEntry type="library" name="jquery-1.10.1" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
+    <orderEntry type="library" name="jquery.dataTables" level="application" />
   </component>
 </module>

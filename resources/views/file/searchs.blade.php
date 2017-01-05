@@ -1,5 +1,8 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
+{{--<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">--}}
+
+{{--<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>--}}
 
 @extends('layouts.app')
 
@@ -81,12 +84,12 @@
                <tbody>
                {{--@if($displays)--}}
                {{--@foreach($displays as $data)--}}
-                 <tr class="success">
-                   <td id="dateDisplay"></td>
-                   <td></td>
-                   <td id="dateDisplay3"></td><td></td>
-                     <td></td>
-                 </tr>
+                 {{--<tr class="success">--}}
+                   {{--<td id="dateDisplay"></td>--}}
+                   {{--<td></td>--}}
+                   {{--<td id="dateDisplay3"></td><td></td>--}}
+                     {{--<td></td>--}}
+                 {{--</tr>--}}
                    {{--@endforeach--}}
                    {{--@endif--}}
                </tbody>
@@ -277,17 +280,20 @@
                console.log("myName:"+myName);
 
                var myJSON = { year: myYear, month: myMonth,name:myName};
+
                console.log("myjson2:"+myJSON);
                $.ajax({
                    type: "get",
                    cache: false,
-
+                   dataType: 'html',
+                   accept:true,
                    data:myJSON,
                    meta:'csrf-token',
-                   contentType:'charset=UTF-8',
+                   contentType:'application/json,charset=UTF-8',
                    url: "display"
                })
                        .success(function(data) {
+//                           var mydata=JSON.parse(data);
 //                 $.get('ajax-name',function (res) {
                            console.log("shume22:" + data);
 //                           $("#dateDisplay").empty();
@@ -295,9 +301,20 @@
 //                           var columns;
 
 //                               columns = $(rows[i]).find('td');
-                               $.each(data, function (index, value) {
-                                   console.log(value);
-                                   $("#dateDisplay").append(value+"/");
+                               var trHTML='';
+//                           var datas=parseFloat(data);
+                               $.each(JSON.parse(data), function (index, value) {
+
+                                   console.log("hey"+data);
+                                   trHTML += '<tr><td>' + value.month+'/'+value.day + '</td><td>' + value.a+ '</td><td>' + value.card_holder+ '</td><td>' + value.time+ '</td><td>' + value.time+ '</td></tr>';
+//                                   trHTML += '<tr><td>' + value + '</td></tr>';
+//
+                                   $("#tablee").append(trHTML);
+//                                   $("#dateDisplay").prepend(value.day);
+
+//                                   $("#dateDisplay3").append(data[index]);
+//                                   $('#tablee').DataTable();
+
 //                                   $("#dateDisplay3").append(value.time);
 //                                   $("#uname").append(value.card_holder)
                                });
@@ -311,7 +328,7 @@
 //                               console.log("shume_day.."+x);
 //                               console.log("shume_day.."+y);
 
-//                               $("#dateDisplay").prepend(value.day);
+//
 
                        });
 

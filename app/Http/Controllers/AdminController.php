@@ -290,14 +290,14 @@ class AdminController extends Controller
         $nameInput = Input::get('name');
 
 
-//        $displays = DB::table('customers')
-//            ->select(DB::raw('day(created_at) as day,Month(created_at) as Month,time(created_at)as time,card_holder,status,company'))
-//            ->whereRaw('year(created_at) =?', [$yearInput])
-//            ->whereRaw(('month(created_at) =?'), [$monthInput])
-//            ->whereRaw(('card_holder like ?'), [$nameInput])
-//            //            ->whereRaw('month(created_at) = :month and year(created_at) = :year and card_holder=:name', ['month' => $monthInput,'year' => $yearInput,'name'=>$nameInput])
-//
-//            ->groupBy('day')->get();
+        $displays = DB::table('customers')
+            ->select(DB::raw('day(created_at) as day,Month(created_at) as month,time(created_at)as time,card_holder,status,company'))
+            ->whereRaw('year(created_at) =?', [$yearInput])
+            ->whereRaw(('month(created_at) =?'), [$monthInput])
+            ->whereRaw(('card_holder like ?'), [$nameInput])
+            //            ->whereRaw('month(created_at) = :month and year(created_at) = :year and card_holder=:name', ['month' => $monthInput,'year' => $yearInput,'name'=>$nameInput])
+
+            ->groupBy('day')->get();
 
 
 //        $displays=array($displays);
@@ -336,8 +336,15 @@ class AdminController extends Controller
                     $z = ($y - $x)/3600;
 
                     $sumin = $sumin + $z;
-                        var_dump("sum in");
-                        var_dump($sumin);
+
+                        //Changing to hours and minutes
+                    $hoursin=floor($sumin);
+                    $minutein=round(60*($sumin-$hoursin));
+
+//                        var_dump("sum in");
+//                        var_dump($hoursin);
+//                        var_dump($minutein);
+
                     }
                 }
                 if ($value->status == '退室' && $value->company == '出側') {
@@ -347,9 +354,11 @@ class AdminController extends Controller
                         $b = strtotime(next($calculations)->time);
                         $f = ($b - $a)/3600;
                         $sumout = $sumout + $f;
-                        var_dump("sum out");
-
-                        var_dump($sumout);
+                        $hoursout=floor($sumout);
+                        $minuteout=round(60*($sumout-$hoursout));
+//                        var_dump("sum out");
+//
+//                        var_dump($sumout);
 
                     }
 
@@ -363,13 +372,14 @@ class AdminController extends Controller
 
 
         }
-        $displays=['a'=>'shume','b'=>'uchida'];
+//        var_dump($sumin);
+       // $displays1=['a'=>'shume','b'=>'uchida'];
         //dynamic array
 
 //return compact('displays','sumin','sumout');
-
-
-        return response()->json($displays);
+//    echo $sumin;
+   return with($displays,$sumin,$sumout);
+//        return response()->json($displays);
             //only display data
 //            return with($displays,$sumin,$sumout);
 

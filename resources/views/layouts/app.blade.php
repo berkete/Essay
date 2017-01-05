@@ -5,6 +5,8 @@
 <head>
     {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.js"></script>--}}
     <script src="{{asset('js/jquery.js')}}"></script>
+
+    {{--//cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css--}}
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/jquery.scrollUp.min.js')}}"></script>
     <script src="{{asset('js/price-range.js')}}"></script>
