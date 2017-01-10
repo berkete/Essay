@@ -285,9 +285,9 @@
                $.ajax({
                    type: "get",
                    cache: false,
-                   dataType: 'html',
-                   accept:true,
                    data:myJSON,
+                   dataType: 'json',
+                   accept:true,
                    meta:'csrf-token',
                    contentType:'application/json,charset=UTF-8',
                    url: "display"
@@ -303,12 +303,25 @@
 //                               columns = $(rows[i]).find('td');
                                var trHTML='';
 //                           var datas=parseFloat(data);
-                               $.each(JSON.parse(data), function (index, value) {
+//                               $.each(JSON.parse(data), function (index, value) {
 
-                                   console.log("hey"+data);
-                                   trHTML += '<tr><td>' + value.month+'/'+value.day + '</td><td>' + value.a+ '</td><td>' + value.card_holder+ '</td><td>' + value.time+ '</td><td>' + value.time+ '</td></tr>';
-//                                   trHTML += '<tr><td>' + value + '</td></tr>';
+                                 $.each(data, function (index, value) {
+//                                       document.write(data[key][index].month);
+//                                       console.log("multiple: "+value[index][0].month);
+
+//                                     console.log("multiple: "+data[index].month);
+//                                     console.log("multiple: "+data[index].day);
+//                                     console.log("multiple displa: "+data[index].displays);
+                                     console.log("multiple: "+data[index][month]);
+
 //
+
+//                                   $.each(data, function (index, value) {
+//                                 console.log("multiple"+data);
+//                                   console.log("hey"+data.sumin+data.sumout+data.enter+data.exit);
+                                   trHTML += '<tr><td>' + data[index]['month']+'/'+data[index]['day'] + '</td><td>' + data.sumin+ '</td><td>' + data.sumout+ '</td><td>' + data.enter+ '</td><td>' + data.exit+ '</td></tr>';
+////                                   trHTML += '<tr><td>' + value + '</td></tr>';
+////
                                    $("#tablee").append(trHTML);
 //                                   $("#dateDisplay").prepend(value.day);
 
@@ -317,7 +330,7 @@
 
 //                                   $("#dateDisplay3").append(value.time);
 //                                   $("#uname").append(value.card_holder)
-                               });
+                                 });
 
 
 

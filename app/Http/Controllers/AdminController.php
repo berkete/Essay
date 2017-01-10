@@ -314,7 +314,7 @@ class AdminController extends Controller
         $count = count($calculations);
 ////        $checkout_time=Carbon\Carbon::now();
         if ($calculations) {
-            error_log("shume-count:-" . $count . "get\n", 3, "/Applications/XAMPP/logs/error_log");
+//            error_log("shume-count:-" . $count . "get\n", 3, "/Applications/XAMPP/logs/error_log");
 
 //            var_dump($calculations);
 //            var_dump("-------------------------------<br /><br />");
@@ -340,6 +340,7 @@ class AdminController extends Controller
                         //Changing to hours and minutes
                     $hoursin=floor($sumin);
                     $minutein=round(60*($sumin-$hoursin));
+                    $sumin=$hoursin;
 
 //                        var_dump("sum in");
 //                        var_dump($hoursin);
@@ -356,6 +357,7 @@ class AdminController extends Controller
                         $sumout = $sumout + $f;
                         $hoursout=floor($sumout);
                         $minuteout=round(60*($sumout-$hoursout));
+                        $sumout=$hoursout;
 //                        var_dump("sum out");
 //
 //                        var_dump($sumout);
@@ -372,14 +374,43 @@ class AdminController extends Controller
 
 
         }
-//        var_dump($sumin);
-       // $displays1=['a'=>'shume','b'=>'uchida'];
-        //dynamic array
+        //$list=array('displays'=>$displays,'sumin'=>$sumin,'sumout'=>$sumout,'enter'=>'enter2','exit'=>'exit2');
+       $sin=12;
+        $sout=3;
 
+        $list=array(array('month'=>'month1','days'=>'days1','sumin'=>'sumin1','sumout'=>'sumout1','enter'=>'enter1','exit'=>'exit1'),
+                    array('month'=>'month2','days'=>'days2','sumin'=>'sumin2','sumout'=>'sumout2','enter'=>'enter2','exit'=>'exit2'),
+                    array('month'=>'month3','days'=>'days3','sumin'=>'sumin3','sumout'=>'sumout3','enter'=>'enter3','exit'=>'exit3'),
+                    array('month'=>'month4','days'=>'days4','sumin'=>'sumin4','sumout'=>'sumout4','enter'=>'enter4','exit'=>'exit4'));
+
+        $list2[]=array('month'=>'septmeber','day'=>'monday','sumin'=>$sin,'sumout'=>$sout);
+
+        //var_dump($list);
+
+        return response($list2);
+//        return  response(['displays'=>$displays,'sumin'=>$sumin,'sumout'=>$sumout]);
+
+//        $displays = DB::table('customers')
+//            ->select(DB::raw('day(created_at) as day,Month(created_at) as month,time(created_at)as time,card_holder,status,company',$sumin,$sumout ))
+//            ->whereRaw('year(created_at) =?', [$yearInput])
+//            ->whereRaw(('month(created_at) =?'), [$monthInput])
+//            ->whereRaw(('card_holder like ?'), [$nameInput])
+//            //            ->whereRaw('month(created_at) = :month and year(created_at) = :year and card_holder=:name', ['month' => $monthInput,'year' => $yearInput,'name'=>$nameInput])
+//
+//            ->groupBy('day')
+//            ->get();
+
+//        $x=['a'=>$displays,'b'=>$sumin,'c'=>$sumout];
+//        var_dump("sumin");
+//        return $x;
+       // $displays1=['a'=>'shume','b'=>'uchida'];
+         //dynamic array
+//   return response()->json($displays);
 //return compact('displays','sumin','sumout');
 //    echo $sumin;
-   return with($displays,$sumin,$sumout);
-//        return response()->json($displays);
+//   return with($displays,$sumin,$sumout);
+//        return response()->json($x);
+
             //only display data
 //            return with($displays,$sumin,$sumout);
 
