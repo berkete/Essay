@@ -74,11 +74,11 @@
            <table class="table" id="tablee" style="margin-top:110px ">
                <thead>
                  <tr>
-                   <th>Month/Date</th>
+                   <th>月/日</th>
                    <th>IN</th>
                    <th>OUT</th>
-                     <th>Enterance</th>
-                     <th>Exit</th>
+                     <th>出社</th>
+                     <th>退社</th>
                  </tr>
                </thead>
                <tbody>
@@ -304,32 +304,32 @@
                                var trHTML='';
 //                           var datas=parseFloat(data);
 //                               $.each(JSON.parse(data), function (index, value) {
-
-                                 $.each(data, function (index, value) {
-//                                       document.write(data[key][index].month);
-//                                       console.log("multiple: "+value[index][0].month);
-
-//                                     console.log("multiple: "+data[index].month);
-//                                     console.log("multiple: "+data[index].day);
-//                                     console.log("multiple displa: "+data[index].displays);
-                                     console.log("multiple: "+data[index][month]);
-
 //
-
-//                                   $.each(data, function (index, value) {
-//                                 console.log("multiple"+data);
-//                                   console.log("hey"+data.sumin+data.sumout+data.enter+data.exit);
-                                   trHTML += '<tr><td>' + data[index]['month']+'/'+data[index]['day'] + '</td><td>' + data.sumin+ '</td><td>' + data.sumout+ '</td><td>' + data.enter+ '</td><td>' + data.exit+ '</td></tr>';
-////                                   trHTML += '<tr><td>' + value + '</td></tr>';
-////
+                                 $.each(data, function (index, value) {
+////                                       document.write(data[key][index].month);
+////                                       console.log("multiple: "+value[index][0].month);
+////                                     console.log("multiple: "+value[index].month);
+                                     console.log("multiple: "+data[index].month);
+                                     console.log("multiple: "+data[index].day);
+//////                                     console.log("multiple displa: "+data[index].displays);
+                                     console.log("multiple: "+data[index].sumin);
+//
+//
+//
+////                                   $.each(data, function (index, value) {
+////                                 console.log("multiple"+data);
+////                                   console.log("hey"+data.sumin+data.sumout+data.enter+data.exit);
+                                   trHTML = '<tr><td>' + data[index].month+'/'+data[index].day + '</td><td>' + data[index].sumin+'時間'+　data[index].minutein+　'分'+  '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+  '</td><td>' + data[index].enter+ '</td><td>' + data[index].exit+ '</td></tr>';
+////////                                   trHTML += '<tr><td>' + value + '</td></tr>';
+////////
                                    $("#tablee").append(trHTML);
-//                                   $("#dateDisplay").prepend(value.day);
-
-//                                   $("#dateDisplay3").append(data[index]);
-//                                   $('#tablee').DataTable();
-
-//                                   $("#dateDisplay3").append(value.time);
-//                                   $("#uname").append(value.card_holder)
+////                                   $("#dateDisplay").prepend(value.day);
+//
+////                                   $("#dateDisplay3").append(data[index]);
+////                                   $('#tablee').DataTable();
+//
+////                                   $("#dateDisplay3").append(value.time);
+////                                   $("#uname").append(value.card_holder)
                                  });
 
 

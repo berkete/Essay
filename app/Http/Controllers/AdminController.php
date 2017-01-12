@@ -280,139 +280,354 @@ class AdminController extends Controller
 
     public function display()
     {
-
-        // fetch
-//        $yearInput=2016;
-//        $monthInput=8;
-//        $nameInput='大西　正晃';
         $yearInput = Input::get('year');
         $monthInput = Input::get('month');
         $nameInput = Input::get('name');
-
-
+        // Database data with specific days(group by day)
         $displays = DB::table('customers')
-            ->select(DB::raw('day(created_at) as day,Month(created_at) as month,time(created_at)as time,card_holder,status,company'))
+            ->select(DB::raw('day(created_at) as day,Month(created_at) as month,time(created_at)as time,MAX(time(created_at))as timee,card_holder,status,company'))
             ->whereRaw('year(created_at) =?', [$yearInput])
             ->whereRaw(('month(created_at) =?'), [$monthInput])
             ->whereRaw(('card_holder like ?'), [$nameInput])
-            //            ->whereRaw('month(created_at) = :month and year(created_at) = :year and card_holder=:name', ['month' => $monthInput,'year' => $yearInput,'name'=>$nameInput])
-
             ->groupBy('day')->get();
-
-
-//        $displays=array($displays);
-        //calculation
+        // database data for calculation  for each date
         $calculations = DB::table('customers')
-            ->select(DB::raw('time(created_at) as time,status,company'))
+            ->select(DB::raw('created_at,time(created_at) as time,day(created_at) as day,month(created_at) as month,status,company'))
             ->whereRaw('year(created_at) =?', [$yearInput])
             ->whereRaw(('month(created_at) =?'), [$monthInput])
             ->whereRaw(('card_holder like ?'), [$nameInput])
+            ->orderBy('created_at','asc')
             ->get();
+
 ////        error_log("shume2:-".$calculations."get\n",3,"/Applications/XAMPP/logs/error_log");
-        $sumin = 0;      // Intializing the time total that the employee stayed in office
-        $sumout = 0;     // Intializing the time total that the employee stayed outside the office
+        $sumin = 0.0;      // Intializing the time total that the employee stayed in office
+        $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
         $count = count($calculations);
-////        $checkout_time=Carbon\Carbon::now();
-        if ($calculations) {
-//            error_log("shume-count:-" . $count . "get\n", 3, "/Applications/XAMPP/logs/error_log");
+        $displaylist = [];
+        $valuelist = [];
+//=======================another trial
+        foreach ($displays as $display) {
+//            var_dump($display->day);
 
-//            var_dump($calculations);
-//            var_dump("-------------------------------<br /><br />");
+            $displaylist[] = $display->day;
+            //    var_dump($displaylist);
 
-            foreach ($calculations as $key => $value) {
-//                var_dump($value->company);
-////                error_log("shume-status:-".$value["status"]."get\n",3,"/Applications/XAMPP/logs/error_log");
-////                error_log("shume-company:-".$value["company"]."get\n",3,"/Applications/XAMPP/logs/error_log");
-////
-                if ($value->status == '入室' && $value->company == '入側') {
-////                        var_dump("--------<br />");
-////                        var_dump("key=".$key.", count=".$count);
+        }
 
-                    if ($key < $count) {
-                    $x = strtotime(($value->time));
-//                            var_dump($x);
-                    $y = strtotime(next($calculations)->time);
+        foreach ($calculations as $key => $value) {
+//            var_dump($value->month);
+//            $valuelist[]=$value->day;
 
-                    $z = ($y - $x)/3600;
+var_dump($value->created_at);
+            echo("<br />");
+//            var_dump($value->day ."==". $calculations[$key + 1]->day);
+            echo("<br />");
+            if ($key < ($count-1)) {
+                if ($value->day !== $calculations[$key + 1]->day) {
 
-                    $sumin = $sumin + $z;
-
-                        //Changing to hours and minutes
-                    $hoursin=floor($sumin);
-                    $minutein=round(60*($sumin-$hoursin));
-                    $sumin=$hoursin;
-
-//                        var_dump("sum in");
-//                        var_dump($hoursin);
-//                        var_dump($minutein);
-
-                    }
-                }
-                if ($value->status == '退室' && $value->company == '出側') {
-                    if ($key < ($count - 1)) {
-//                            var_dump("[IN]");
-                        $a = strtotime(($value->time));
-                        $b = strtotime(next($calculations)->time);
-                        $f = ($b - $a)/3600;
-                        $sumout = $sumout + $f;
-                        $hoursout=floor($sumout);
-                        $minuteout=round(60*($sumout-$hoursout));
-                        $sumout=$hoursout;
-//                        var_dump("sum out");
-//
-//                        var_dump($sumout);
-
-                    }
+                    //        var_dump($valuelist);
+                    $sumin = 0.0;      // Intializing the time total that the employee stayed in office
+                    $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
+//            $count = count($calculations);
+//            $hoursin=0;
+//            $hoursout=0;
+//            $minuteout=0;
+//            $minutein=0;
 
                 }
-
-
             }
-//
+//            var_dump($key);
 
+                if ($value->status == '入室' && $value->company == '入側' ) {
+                    if ($key < ($count-1)) {
+                       if ($value->day==$calculations[$key+1]->day){
+                            $x = strtotime(($value->time));
+                            $y = strtotime($calculations[$key + 1]->time);
+//                            var_dump("x=:".$x);
+//                           echo("<br />");
+//                            var_dump("y=:".$y);
+//                           echo("<br />");
+                            $z = abs(($y - $x) / 3600);
+//                            var_dump("z=:".$z);
+//                           echo("<br />");
+                            $sumin += $z;
+//                            var_dump("sumin=:".$sumin);
+//                           echo("<br />");
+                            //Changing to hours and minutes
+                            $hoursin = floor($sumin);
+                            $minutein = round(60 * ($sumin - $hoursin));
+//                        var_dump("hours in:".$hoursin);
+//                        var_dump("minute in:".$minutein);
+//                        $sumin = $hoursin;
+
+
+
+
+
+                        }
+//                            var_dump();
+
+
+                    }
+
+                }
+
+//                if ($key < ($count-1)&& $calculations[$key]->day!= $display->day ) {
+
+                elseif ($key < ($count - 1) && $value->status == '退室' && $value->company == '出側') {
+//                            var_dump("[IN]");
+                    if ($key < ($count-1)) {
+                      if ($value->day==$calculations[$key+1]->day) {
+                          $a = strtotime(($value->time));
+                          $b = strtotime($calculations[$key + 1]->time);
+                          var_dump("a=:" . $a);
+                          echo("<br />");
+
+                          var_dump("b=:" . $b);
+
+                          $f = abs(($b - $a) / 3600);
+                          var_dump("f=:" . $f);
+                          echo("<br />");
+
+                          $sumout += $f;
+                          var_dump("sumout=:" . $sumout);
+                          echo("<br />");
+
+                          $hoursout = floor($sumout);
+                          $minuteout = round(60 * ($sumout - $hoursout));
+                        var_dump("hours out".$hoursout);
+//                    var_dump("minutes out".$minuteout);
+//                        $sumout=$hoursout*(-1);
+                      }
+                    }
+
+//                    var_dump($valuelist);
+                }
+
+
+//            $list2[]=array('month'=>$value->month,"day"=>$value->day,"sumin"=>$hoursin,"minutein"=>$minutein,"sumout"=>$hoursout,"minuteout"=>$minuteout,"enter"=>$display->time,"exit"=>$display->timee);
 
 
 
         }
-        //$list=array('displays'=>$displays,'sumin'=>$sumin,'sumout'=>$sumout,'enter'=>'enter2','exit'=>'exit2');
-       $sin=12;
-        $sout=3;
+//        return response((array)$list2);
+    }
+}
 
-        $list=array(array('month'=>'month1','days'=>'days1','sumin'=>'sumin1','sumout'=>'sumout1','enter'=>'enter1','exit'=>'exit1'),
-                    array('month'=>'month2','days'=>'days2','sumin'=>'sumin2','sumout'=>'sumout2','enter'=>'enter2','exit'=>'exit2'),
-                    array('month'=>'month3','days'=>'days3','sumin'=>'sumin3','sumout'=>'sumout3','enter'=>'enter3','exit'=>'exit3'),
-                    array('month'=>'month4','days'=>'days4','sumin'=>'sumin4','sumout'=>'sumout4','enter'=>'enter4','exit'=>'exit4'));
-
-        $list2[]=array('month'=>'septmeber','day'=>'monday','sumin'=>$sin,'sumout'=>$sout);
-
-        //var_dump($list);
-
-        return response($list2);
-//        return  response(['displays'=>$displays,'sumin'=>$sumin,'sumout'=>$sumout]);
-
-//        $displays = DB::table('customers')
-//            ->select(DB::raw('day(created_at) as day,Month(created_at) as month,time(created_at)as time,card_holder,status,company',$sumin,$sumout ))
-//            ->whereRaw('year(created_at) =?', [$yearInput])
-//            ->whereRaw(('month(created_at) =?'), [$monthInput])
-//            ->whereRaw(('card_holder like ?'), [$nameInput])
-//            //            ->whereRaw('month(created_at) = :month and year(created_at) = :year and card_holder=:name', ['month' => $monthInput,'year' => $yearInput,'name'=>$nameInput])
+//=======================another trial
+//=================================better work
 //
-//            ->groupBy('day')
-//            ->get();
+//        foreach ($displays as $display) {
+//            $sumin = 0.0;      // Intializing the time total that the employee stayed in office
+//            $sumout = 0.0;
+//            foreach ($calculations as $key => $value) {
+////                var_dump($display->day);
+//
+//                if ($display->day == $calculations[$key]->day) {
+//                    if ($value->status == '入室' && $value->company == '入側') {
+//                        if ($key < ($count-1) ){
+////                            var_dump($count);
+//                            $x = strtotime(($value->time));
+//                            $y = strtotime($calculations[$key+1]->time);
+////                        var_dump("x=:".$x);
+////                        var_dump("y=:".$y);
+//                            $z = ($y - $x)/3600;
+////                        var_dump("z=:".$z);
+//                            $sumin +=$z;
+////                        var_dump("sumin=:".$sumin);
+//                            //Changing to hours and minutes
+//                            $hoursin = floor($sumin);
+//                            $minutein = round(60 * ($sumin - $hoursin));
+////                        var_dump("hours in:".$hoursin);
+////                        var_dump("minute in:".$minutein);
+////                        $sumin = $hoursin;
+//
+//                        }
+//
+//                    }
+//
+////                if ($key < ($count-1)&& $calculations[$key]->day!= $display->day ) {
+//
+//                    if ($key < ($count-1) && $value->status == '退室' && $value->company == '出側') {
+////                            var_dump("[IN]");
+//                        $a = strtotime(($value->time));
+//                        $b = strtotime($calculations[$key+1]->time);
+////                        var_dump("a=:".$a);
+////                        var_dump("b=:".$b);
+//
+//                        $f = ($b - $a)/3600;
+////                        var_dump("f=:".$f);
+//                        $sumout +=  $f;
+////                        var_dump("sumout=:".$sumout);
+//                        $hoursout=floor($sumout);
+//                        $minuteout=round(60*($sumout-$hoursout));
+////                        var_dump("hours out".$hoursout);
+////                        $sumout=$hoursout*(-1);
+//
+//                    }
+////
+//                }
+//
+//
+//            }
+//            $list2[]=array('month'=>$display->month,"day"=>$display->day,"sumin"=>$hoursin,"minutein"=>$minutein,"sumout"=>$hoursout,"minuteout"=>$minuteout,"enter"=>$display->time,"exit"=>$display->timee);
+//
+//
+//        }
+//        return response((array)$list2);
 
-//        $x=['a'=>$displays,'b'=>$sumin,'c'=>$sumout];
-//        var_dump("sumin");
-//        return $x;
-       // $displays1=['a'=>'shume','b'=>'uchida'];
-         //dynamic array
-//   return response()->json($displays);
-//return compact('displays','sumin','sumout');
-//    echo $sumin;
-//   return with($displays,$sumin,$sumout);
-//        return response()->json($x);
 
-            //only display data
-//            return with($displays,$sumin,$sumout);
+//===============================================better works
+
+
+//            }
+
+
+//==========================================first trial
+
+////        $checkout_time=Carbon\Carbon::now();
+//        if ($calculations) {
+//            foreach ($calculations as $key => $value) {
+//                var_dump($value->company);
+////                error_log("shume-status:-".$value["status"]."get\n",3,"/Applications/XAMPP/logs/error_log");
+////                error_log("shume-company:-".$value["company"]."get\n",3,"/Applications/XAMPP/logs/error_log");
+////
+//                if ($value->status == '入室' && $value->company == '入側') {
+//                    if ($key < $count) {
+//                    $x = strtotime(($value->time));
+//                    $y = strtotime(next($calculations)->time);
+//                    $z = ($y - $x)/3600;
+//                    $sumin = $sumin + $z;
+//                    //Changing to hours and minutes
+//                    $hoursin=floor($sumin);
+//                    $minutein=round(60*($sumin-$hoursin));
+//                    $sumin=$hoursin;
+//                    }
+//                }
+//                if ($value->status == '退室' && $value->company == '出側') {
+//                    if ($key < ($count - 1)) {
+////                            var_dump("[IN]");
+//                        $a = strtotime(($value->time));
+//                        $b = strtotime(next($calculations)->time);
+//                        $f = ($b - $a)/3600;
+//                        $sumout = ($sumout + $f);
+//                        $hoursout=floor($sumout);
+//                        $minuteout=round(60*($sumout-$hoursout));
+//                        $sumout=$hoursout*(-1);
+//
+//                    }
+//
+//                }
+//
+//
+//            }
+//
+
+
+//        }
+
+//        foreach ($displays as $display){
+//           $count=count($calculations);
+//            foreach ($calculations as $key => $value) {
+//                if ($value->status == '入室' && $value->company == '入側' ) {
+//                    if ($key < $count) {
+////                        var_dump($display->day);
+//
+//                        //var_dump($value->day);
+//                        if ($display->day!==$value->day){
+//                            $x = strtotime($value->time);
+//                            $y = strtotime($calculations[$key+1]->time);
+//                            $z = ($y - $x)/3600;
+//                            $sumin = $sumin + $z;
+//                            //Changing to hours and minutes
+//                            $hoursin=floor($sumin);
+//                            $minutein=round(60*($sumin-$hoursin));
+//                            $sumin=$hoursin;
+//                        }
+//
+//                    }
+//                }
+//                if ($value->status == '退室' && $value->company == '出側') {
+//                    if ($key < ($count - 1)) {
+//                        if ($display->day!==$value->day) {
+//                            $a = strtotime(($value->time));
+//                            $b = strtotime($calculations[$key + 1]->time);
+//                            $f = ($b - $a) / 3600;
+//                            $sumout = ($sumout + $f);
+//                            $hoursout = floor($sumout);
+//                            $minuteout = round(60 * ($sumout - $hoursout));
+//
+//
+//                            $sumout = ($hoursout) * (-1);
+//                            //                        var_dump($sumout);
+//                        }
+//
+//                    }
+//
+//                }
+//
+//
+//            }
+
+//            for ($i=0;$i<$count;$i++){
+//                if ($display->status == '入室' && $display->company == '入側') {
+//                    if ($i <$count) {
+//                        var_dump($calculations[$i+1]->time);
+//                        $x = strtotime(($display->time));
+//                        $y = strtotime($displays[$i+1]->time);
+//
+//                        $z = ($y - $x)/3600;
+//
+//                        $sumin = $sumin + $z;
+//
+//                        //Changing to hours and minutes
+//                        $hoursin=floor($sumin);
+//                        $minutein=round(60*($sumin-$hoursin));
+//                        $sumin=$hoursin;
+//                    }
+//                }
+//                if ($display->status == '退室' && $display->company == '出側') {
+//                    if ($i <=($count - 1)) {
+////                            var_dump("[IN]");
+//                        $a = strtotime(($display->time));
+//                        $b = strtotime(next($display)->time);
+//                        $f = ($b - $a)/3600;
+//                        $sumout = ($sumout + $f);
+//                        $hoursout=floor($sumout);
+//                        $minuteout=round(60*($sumout-$hoursout));
+//                        $sumout=$hoursout*(-1);
+////
+//                    }
+//
+//                }
+//
+//
+//            }
+
+
+//            $list2[]=array('month'=>$display->month,"day"=>$display->day,"sumin"=>$sumin,"minutein"=>$minutein,"sumout"=>$sumout,"minuteout"=>$minuteout,"enter"=>$display->time,"exit"=>$display->timee);
+//        }
+
+//        return response((array)$list2);
+//=================================================================first trials
+//        $list=array(array('month'=>'month1','days'=>'days1','sumin'=>'sumin1','sumout'=>'sumout1','enter'=>'enter1','exit'=>'exit1'),
+//                    array('month'=>'month2','days'=>'days2','sumin'=>'sumin2','sumout'=>'sumout2','enter'=>'enter2','exit'=>'exit2'),
+//                    array('month'=>'month3','days'=>'days3','sumin'=>'sumin3','sumout'=>'sumout3','enter'=>'enter3','exit'=>'exit3'),
+//                    array('month'=>'month4','days'=>'days4','sumin'=>'sumin4','sumout'=>'sumout4','enter'=>'enter4','exit'=>'exit4'));
+
+//        $list2[]=array('month'=>'septmeber','day'=>'monday','sumin'=>$sin,'sumout'=>$sout,'enter'=>'enter1','exit'=>'exit1');
+//        $list2[]=array('month'=>'October','day'=>'tusday','sumin'=>2,'sumout'=>10,'enter'=>'enter2','exit'=>'exit2');
+//        $list2[]=array('month'=>'Novemeber','day'=>'wensday','sumin'=>4,'sumout'=>11,'enter'=>'enter3','exit'=>'exit3');
+//        $list2[]=array('month'=>'December','day'=>'thursday','sumin'=>5,'sumout'=>12,'enter'=>'enter4','exit'=>'exit4');
+
+
+//        $arr=[$displays,'sumin'=>$sumin,'sumout'=>$sumout];
+//        var_dump($displays);
+//        var_dump($a);
+//        var_dump($list);
+
+//        echo('<br /><br /><br /><br />------------------<br /><br /><br /><br /><br />');
+//        var_dump($list2);
 
 
 // for try
@@ -420,5 +635,3 @@ class AdminController extends Controller
 //        return $list;
 
 
-    }
-}
