@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b7e0d93c-67bd-4160-9bb1-69523ae915a4" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/file/commented.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/file/searchs.blade.php" afterPath="$PROJECT_DIR$/resources/views/file/searchs.blade.php" />
     </list>
     <ignored path="doors.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,7 +28,7 @@
       <file leaf-file-name="searchs.blade.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/file/searchs.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="107">
+            <state relative-caret-position="3440">
               <caret line="313" column="53" selection-start-line="313" selection-start-column="53" selection-end-line="313" selection-end-column="53" />
               <folding>
                 <marker date="1484120678000" expanded="true" signature="4127:5339" ph="..." />
@@ -46,16 +46,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="195">
               <caret line="13" column="23" selection-start-line="13" selection-start-column="23" selection-end-line="13" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="select.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/file/select.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="92" />
               <folding />
             </state>
           </provider>
@@ -106,16 +96,26 @@
       <file leaf-file-name="AdminController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdminController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="632">
-              <caret line="398" column="23" selection-start-line="398" selection-start-column="23" selection-end-line="398" selection-end-column="23" />
+            <state relative-caret-position="305">
+              <caret line="322" column="0" selection-start-line="322" selection-start-column="0" selection-end-line="322" selection-end-column="0" />
               <folding>
                 <element signature="e#40#57#0#PHP" expanded="true" />
-                <marker date="1484210731000" expanded="true" signature="5137:5244" ph="update users... " />
-                <marker date="1484210731000" expanded="true" signature="5271:5329" ph="update users... " />
-                <marker date="1484210731000" expanded="true" signature="5271:5353" ph="update users... " />
-                <marker date="1484210731000" expanded="true" signature="5271:5366" ph="update users... " />
-                <marker date="1484210731000" expanded="true" signature="5271:5403" ph="update users... " />
+                <marker date="1484293723000" expanded="true" signature="5137:5244" ph="update users... " />
+                <marker date="1484293723000" expanded="true" signature="5271:5329" ph="update users... " />
+                <marker date="1484293723000" expanded="true" signature="5271:5353" ph="update users... " />
+                <marker date="1484293723000" expanded="true" signature="5271:5366" ph="update users... " />
+                <marker date="1484293723000" expanded="true" signature="5271:5403" ph="update users... " />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="commented.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/file/commented.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-7330">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="392" selection-end-column="42" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -190,6 +190,7 @@
         <option value="$PROJECT_DIR$/app/Http/routes.php" />
         <option value="$PROJECT_DIR$/resources/views/layouts/app.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/file/searchs.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/file/commented.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" />
       </list>
     </option>
@@ -213,9 +214,8 @@
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
     <option name="x" value="1440" />
-    <option name="y" value="12" />
     <option name="width" value="1920" />
-    <option name="height" value="1057" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -242,7 +242,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -399,6 +398,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -488,26 +488,27 @@
       <workItem from="1483578282283" duration="17245000" />
       <workItem from="1484009723592" duration="19641000" />
       <workItem from="1484096461155" duration="18164000" />
-      <workItem from="1484183095782" duration="20394000" />
+      <workItem from="1484183095782" duration="20462000" />
+      <workItem from="1484269469899" duration="19245000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="342031000" />
+    <option name="totallyTimeSpent" value="361344000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1440" y="12" width="1920" height="1057" extended-state="0" />
+    <frame x="1440" y="0" width="1920" height="1080" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13631523" sideWeight="0.493007" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1373802" sideWeight="0.493007" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.119667016" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11890244" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22818312" sideWeight="0.506993" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -544,14 +545,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Customer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
@@ -589,11 +582,11 @@
           <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
           <folding>
             <element signature="e#40#57#0#PHP" expanded="true" />
-            <marker date="1484210731000" expanded="true" signature="5137:5244" ph="update users... " />
-            <marker date="1484210731000" expanded="true" signature="5271:5329" ph="update users... " />
-            <marker date="1484210731000" expanded="true" signature="5271:5353" ph="update users... " />
-            <marker date="1484210731000" expanded="true" signature="5271:5366" ph="update users... " />
-            <marker date="1484210731000" expanded="true" signature="5271:5403" ph="update users... " />
+            <marker date="1484293723000" expanded="true" signature="5137:5244" ph="update users... " />
+            <marker date="1484293723000" expanded="true" signature="5271:5329" ph="update users... " />
+            <marker date="1484293723000" expanded="true" signature="5271:5353" ph="update users... " />
+            <marker date="1484293723000" expanded="true" signature="5271:5366" ph="update users... " />
+            <marker date="1484293723000" expanded="true" signature="5271:5403" ph="update users... " />
           </folding>
         </state>
       </provider>
@@ -644,11 +637,11 @@
           <caret line="40" column="30" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
           <folding>
             <element signature="e#40#57#0#PHP" expanded="true" />
-            <marker date="1484210731000" expanded="true" signature="5137:5244" ph="update users... " />
-            <marker date="1484210731000" expanded="true" signature="5271:5329" ph="update users... " />
-            <marker date="1484210731000" expanded="true" signature="5271:5353" ph="update users... " />
-            <marker date="1484210731000" expanded="true" signature="5271:5366" ph="update users... " />
-            <marker date="1484210731000" expanded="true" signature="5271:5403" ph="update users... " />
+            <marker date="1484293723000" expanded="true" signature="5137:5244" ph="update users... " />
+            <marker date="1484293723000" expanded="true" signature="5271:5329" ph="update users... " />
+            <marker date="1484293723000" expanded="true" signature="5271:5353" ph="update users... " />
+            <marker date="1484293723000" expanded="true" signature="5271:5366" ph="update users... " />
+            <marker date="1484293723000" expanded="true" signature="5271:5403" ph="update users... " />
           </folding>
         </state>
       </provider>
@@ -918,7 +911,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/file/searchs.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="107">
+        <state relative-caret-position="3440">
           <caret line="313" column="53" selection-start-line="313" selection-start-column="53" selection-end-line="313" selection-end-column="53" />
           <folding>
             <marker date="1484120678000" expanded="true" signature="4127:5339" ph="..." />
@@ -930,17 +923,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/file/commented.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7330">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="392" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdminController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="632">
-          <caret line="398" column="23" selection-start-line="398" selection-start-column="23" selection-end-line="398" selection-end-column="23" />
+        <state relative-caret-position="305">
+          <caret line="322" column="0" selection-start-line="322" selection-start-column="0" selection-end-line="322" selection-end-column="0" />
           <folding>
             <element signature="e#40#57#0#PHP" expanded="true" />
-            <marker date="1484210731000" expanded="true" signature="5137:5244" ph="update users... " />
-            <marker date="1484210731000" expanded="true" signature="5271:5329" ph="update users... " />
-            <marker date="1484210731000" expanded="true" signature="5271:5353" ph="update users... " />
-            <marker date="1484210731000" expanded="true" signature="5271:5366" ph="update users... " />
-            <marker date="1484210731000" expanded="true" signature="5271:5403" ph="update users... " />
+            <marker date="1484293723000" expanded="true" signature="5137:5244" ph="update users... " />
+            <marker date="1484293723000" expanded="true" signature="5271:5329" ph="update users... " />
+            <marker date="1484293723000" expanded="true" signature="5271:5353" ph="update users... " />
+            <marker date="1484293723000" expanded="true" signature="5271:5366" ph="update users... " />
+            <marker date="1484293723000" expanded="true" signature="5271:5403" ph="update users... " />
           </folding>
         </state>
       </provider>
