@@ -94,7 +94,7 @@ Route::get('/ajax-name',function (){
 //        ->whereRaw('year(created_at) = :year',['year' => $yearInput])->whereRaw('month(created_at) = :month',['month' => $monthInput])
 //        ->whereRaw(('month(created_at) =?'),[$monthInput] && 'year(created_at) =?',[$yearInput])
 //        ->whereRaw('year(created_at) =?',[$yearInput])
-        ->groupBy('card_holder')->get();
+        ->groupBy('card_holder')->orderBy("card_number","ASC")->get();
 //    return response()->json($month);
 
     return $month;

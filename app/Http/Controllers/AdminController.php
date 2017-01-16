@@ -292,7 +292,7 @@ class AdminController extends Controller
             ->groupBy('day')->get();
         // database data for calculation  for each date
         $calculations = DB::table('customers')
-            ->select(DB::raw('created_at,time(created_at) as time,day(created_at) as day,month(created_at) as month,status,company'))
+            ->select(DB::raw('created_at,time(created_at) as time,day(created_at) as day,month(created_at) as month,card_holder,status,company'))
             ->whereRaw('year(created_at) =?', [$yearInput])
             ->whereRaw(('month(created_at) =?'), [$monthInput])
             ->whereRaw(('card_holder like ?'), [$nameInput])
@@ -305,6 +305,8 @@ class AdminController extends Controller
         $count = count($calculations);
         $displaylist = [];
         $valuelist = [];
+
+        $everyday_first_data_flg=1;
 
 //=================================better work  "minutein"=>$minutein,"minuteout"=>$minuteout,
 //
@@ -319,25 +321,26 @@ class AdminController extends Controller
 //                echo("<br />");
 //                var_dump("sumin=:".$sumin." , sumout=:".$sumout);
 //                echo("<br />------------------------------<br />");
-                var_dump($value->time."day:-".$value->day);
-
+//                var_dump($value->time."day:-".$value->day);
+                if($everyday_first_data_flg===1) {
+                    $enter_time=$value->time;
+                    $everyday_first_data_flg = 0;
+//                    var_dump($enter_time);
+                }
                 // reset ( every day )
                 if ($key < ($count-1)) {
+
                     if ($value->day !== $calculations[$key + 1]->day) {
-
-
-//                        $list2[] = array('month' => $value->month, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout, "enter" => $display->time, "exit" => $display->timee);
-                        $list2[] = array('month' => $value->month, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter" => $value->time, "exit" => "dsad");
-
+                        $list2[] = array('month' => $value->month, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter" =>$enter_time, "exit" =>$calculations[$key]->time);
+                        $everyday_first_data_flg=1;
 
                         //        var_dump($valuelist);
                         $sumin  = 0.0;     // Intializing the time total that the employee stayed in office
                         $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
 
-
                         $minutein=0.0;
                         $minuteout=0.0;
-                    }
+                   }
                 }
 //                var_dump($display->day);
 
@@ -393,25 +396,18 @@ class AdminController extends Controller
                             $sumout += $f;
 //                            var_dump("sumout=:" . $sumout);
                             $hoursout = floor($sumout);
-//                            var_dump($hoursout);
                             $minuteout = round(60 * ($sumout - $hoursout));
-//                        var_dump("hours out".$hoursout);
-//                        $sumout=$hoursout*(-1);
                           }
                         }
                     }
-//
+                //used to fetch the last time for the last data
                 $last_month=$value->month;
                 $last_day=$value->day;
                 $last_time=$value->time;
-
-//                $last_max_time=$value->timee;
-
-            }
-//        }
+        }
 
         // only last data
-        $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$last_time,"exit"=>'22:02');
+        $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder);
 
 //        echo("<br />------------------------------<br />");
 //        var_dump($list2);
