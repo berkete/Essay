@@ -33,12 +33,39 @@ class AdminController extends Controller
 
     public function postImport()
     {
-        Excel::load(Input::file('upload'), function ($reader) {
-            $reader->each(function ($sheet) {
-//               $sheet->selectSheets('sheet1','sheet2');
-                Customer::firstOrCreate($sheet->toArray());
+//            $path = Input::file('upload')->getRealPath();
+//            $data = Excel::load($path, function($reader) {
+//
+//            })->get();
+//            if (!empty($data) && $data->count()) {
+//                $count = 0;
+//                foreach ($data as $key => $value) {
+//                    $insert = array();
+////                    $insert['name'] = $value->name;
+//                    $this->Customer->create($insert);
+//                }
+//            }
 
-            });
+        $import=Input::file('upload');
+       Excel::load($import, function ($reader) {
+//        Excel::load($import)->byConfig('excel::import.sheets', function($reader) {
+
+//           mb_convert_encoding((string)$reader, "SHIFT-JIS","UTF-8");
+
+//            $reader->setSeparator('-');
+//            $reader->ignoreEmpty();
+//            var_dump($reader);
+//           $first=$reader->first();
+//            $reader->noHeading();
+//            $reader->limit(false,0);
+            $reader->each(function ($sheet) {
+//                var_dump($sheet);
+               // $sheet->noHeading();
+//                var_dump($sheet);
+               Customer::firstOrCreate($sheet->toArray())->all();
+//                $sheet->noHeading();
+
+            },'shift_jis');
 
 
         });
@@ -316,16 +343,9 @@ class AdminController extends Controller
 
             foreach ($calculations as $key => $value) {
 
-//                echo("<br />------------------------------<br />");
-//                var_dump("value-created=:" . $value->created_at);
-//                echo("<br />");
-//                var_dump("sumin=:".$sumin." , sumout=:".$sumout);
-//                echo("<br />------------------------------<br />");
-//                var_dump($value->time."day:-".$value->day);
                 if($everyday_first_data_flg===1) {
                     $enter_time=$value->time;
                     $everyday_first_data_flg = 0;
-//                    var_dump($enter_time);
                 }
                 // reset ( every day )
                 if ($key < ($count-1)) {
@@ -347,54 +367,25 @@ class AdminController extends Controller
                 if ($value->day == $calculations[$key]->day) {
                     if ($value->status == '入室' && $value->company == '入側') {
                         if ($key < ($count - 1)) {
-//                            var_dump($count);
                             $x = strtotime(($value->time));
                             $y = strtotime($calculations[$key + 1]->time);
-//                        var_dump("x=:".$x);
-//                        var_dump("y=:".$y);
                             $z = ($y - $x) / 3600;
-//                        var_dump("z=:".$z);
                             $sumin += $z;
-//                        var_dump("sumin=:".$sumin);
-                            //Changing to hours and minutes
                             $hoursin = floor($sumin);
                             $minutein = round(60 * ($sumin - $hoursin));
-//                        var_dump("hours in:".$hoursin);
-//                        var_dump("minute in:".$minutein);
-//                        $sumin = $hoursin;
-
                         }
 
                     }
                 }
-
-
-//                if ($key < ($count-1)&& $calculations[$key]->day!= $display->day ) {
-                    if ($value->day == $calculations[$key]->day) {
+                 if ($value->day == $calculations[$key]->day) {
                         if ($value->status == '退室' && $value->company == '出側') {
-//                            var_dump("[IN]");
                           if($key < ($count - 1) ){
                             $a = strtotime(($value->time));
                             $b = strtotime($calculations[$key + 1]->time);
-//                            var_dump("a=:" . $a);
-//                            echo("<br />");
-//                            var_dump("b=:" . $b);
-//                            echo("<br />");
-//                            var_dump("value-created=:" . $value->created_at);
-//                            echo("<br />");
-//                            var_dump("calculations-created=:" . $calculations[$key + 1]->created_at);
-//                            echo("<br />");
-//                            $f=0.0;
                             if ($value->day == $calculations[$key + 1]->day) {
-
-
                                    $f = ($b - $a) / 3600;
                                }
-//                            var_dump("f=:" . $f);
-//                            echo("<br />");
-//                            echo("<br />");
                             $sumout += $f;
-//                            var_dump("sumout=:" . $sumout);
                             $hoursout = floor($sumout);
                             $minuteout = round(60 * ($sumout - $hoursout));
                           }
@@ -408,11 +399,6 @@ class AdminController extends Controller
 
         // only last data
         $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder);
-
-//        echo("<br />------------------------------<br />");
-//        var_dump($list2);
-//        echo("<br />------------------------------<br />");
-
         return response((array)$list2);
 
     }

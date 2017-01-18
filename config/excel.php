@@ -425,8 +425,8 @@ return array(
 
         'encoding'                => array(
 
-            'input'  => 'UTF-8',
-            'output' => 'UTF-8'
+            'input'  => 'shift_jis',
+            'output' => 'shift_jis'
 
         ),
 

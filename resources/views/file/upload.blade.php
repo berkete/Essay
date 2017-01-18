@@ -1,3 +1,5 @@
+{{--<meta name="csrf-token" content="{{ csrf_token() }}" charset="Shift_JIS" />--}}
+
 @extends('layouts.app')
 @section('content')
 <h1>upload</h1>

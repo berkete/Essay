@@ -1,4 +1,4 @@
-<meta name="csrf-token" content="{{ csrf_token() }}">
+{{--<meta name="csrf-token" content="{{ csrf_token() }}" charset="Shift_JIS">--}}
 
 {{--<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">--}}
 
@@ -151,6 +151,7 @@
 
                            $.each(response,function (index,value) {
 //                               console.log("shume2"+value.card_holder);
+
                                $("#name").append('<option value="'+ value.card_holder+'">'+value.card_holder+'</option>');
                            });
            });
