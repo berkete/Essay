@@ -371,7 +371,7 @@ return array(
         |
         */
 
-        'heading'                 => 'slugged',
+        'heading'                 => 'original',
 
         /*
         |--------------------------------------------------------------------------
@@ -415,7 +415,7 @@ return array(
         |
         */
 
-        'to_ascii'                => true,
+        'to_ascii'                => false,
 
         /*
         |--------------------------------------------------------------------------
@@ -450,7 +450,7 @@ return array(
         |
         */
 
-        'ignoreEmpty'             => false,
+        'ignoreEmpty'             => true,
 
         /*
         |--------------------------------------------------------------------------
@@ -519,7 +519,18 @@ return array(
 
             'test' => array(
 
-                'firstname' => 'A2'
+//                'created_at' => 'A1',
+//                'in' => 'B1',
+//                'out' => 'C1',
+//                'status' => 'D1',
+//                'company' => 'E1',
+//                'status2' => 'F1',
+//                'company2' => 'G1',
+//                'card_number' => 'H1',
+//                'card_holder' => 'I1'
+
+
+
 
             )
 

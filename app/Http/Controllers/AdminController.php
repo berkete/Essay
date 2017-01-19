@@ -12,68 +12,45 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
 use Maatwebsite\Excel\Facades\Excel;
 
-
-
 class AdminController extends Controller
 {
-    //
     public function index()
     {
-
-
         $users = Customer::all();
         return view('file.index', compact('users'));
     }
-
     public function getImport()
     {
-
         return view('file.upload');
     }
-
     public function postImport()
     {
-//            $path = Input::file('upload')->getRealPath();
-//            $data = Excel::load($path, function($reader) {
-//
-//            })->get();
-//            if (!empty($data) && $data->count()) {
-//                $count = 0;
-//                foreach ($data as $key => $value) {
-//                    $insert = array();
-////                    $insert['name'] = $value->name;
-//                    $this->Customer->create($insert);
-//                }
-//            }
+        if(Input::hasFile('upload')){
+            $path = Input::file('upload')->getRealPath();
+            $data = Excel::load($path, function($reader) {
+                $reader->noHeading();
+            },'shift_jis')->all()->toArray();
+            $count=count($data);
+            if(!empty($data) && $count){
+                foreach ($data as $key => $value) {
+                    $count_value=count($value);
+                    if($count_value==10){ // Normal data list
+                        $insert[] = ['created_at' => $value[0], 'in' => $value[1], 'out' => $value[2], 'status' => $value[3], 'company' => $value[4], 'door' => $value[5], 'status2' => $value[6], 'company2' => $value[7], 'card_number' => $value[8], 'card_holder' => $value[9]];
+                    }
+                    elseif($count_value<10)//  skips the empty data company2 is empty and skipped
+                    {
+                        $insert[] = ['created_at' => $value[0], 'in' => $value[1], 'out' => $value[2], 'status' => $value[3], 'company' => $value[4], 'door' => $value[5], 'status2' => $value[6] , 'company2' => null,'card_number' => $value[7], 'card_holder' => $value[8]];
+                    }
+                }// end of foreach
+                //Used to insert the insert array values to the database
+                if(!empty($insert)){
+                    DB::table('customers')->insert($insert);
+                    return redirect('/home')->with("Insert Record successfully.");
+                }
 
-        $import=Input::file('upload');
-       Excel::load($import, function ($reader) {
-//        Excel::load($import)->byConfig('excel::import.sheets', function($reader) {
-
-//           mb_convert_encoding((string)$reader, "SHIFT-JIS","UTF-8");
-
-//            $reader->setSeparator('-');
-//            $reader->ignoreEmpty();
-//            var_dump($reader);
-//           $first=$reader->first();
-//            $reader->noHeading();
-//            $reader->limit(false,0);
-            $reader->each(function ($sheet) {
-//                var_dump($sheet);
-               // $sheet->noHeading();
-//                var_dump($sheet);
-               Customer::firstOrCreate($sheet->toArray())->all();
-//                $sheet->noHeading();
-
-            },'shift_jis');
-
-
-        });
-
-        return redirect('/home');
-
+            } // if end
+        }
     }
-
     public function getExport()
     {
         $export = Customer::all();
@@ -101,17 +78,8 @@ class AdminController extends Controller
     public function getCalculation()
     {
 
-//        $customers=Customer::where('active',true)->orderBy('card_holder')->pluck('card_holder','id');
 
         $customers = Customer::groupBy('card_holder')->paginate(20);
-//        $customers=Customer::all()->pluck('label','id');
-//        $customers= Customer::groupBy('card_holder')->pluck('card_holder','id')->toArray();
-//        $creates=Customer::lists('created_at','id');
-
-//       $customers=Customer::whereYear('created_at','=',$year)->whereMonth('created_at','=',$month)->get();
-//        $year=$customers->created_at->year;
-//        $month=$customers->created_at->month;
-
         return view('file.main', compact('customers'));
     }
 
@@ -147,10 +115,6 @@ class AdminController extends Controller
             ->get();
         // used to group users
         $customer2 = Customer::groupBy('card_holder')->get();
-
-//        $yearInput=2016;
-//        $monthInput=8;
-//        $nameInput='大西　正晃';
         $yearInput = Input::get('year');
         $monthInput = Input::get('month');
         $nameInput = Input::get('name');
@@ -160,8 +124,6 @@ class AdminController extends Controller
             ->whereRaw('year(created_at) =?', [$yearInput])
             ->whereRaw(('month(created_at) =?'), [$monthInput])
             ->whereRaw(('card_holder like ?'), [$nameInput])
-            //            ->whereRaw('month(created_at) = :month and year(created_at) = :year and card_holder=:name', ['month' => $monthInput,'year' => $yearInput,'name'=>$nameInput])
-
             ->groupBy('day')->get();
 
 
@@ -192,17 +154,14 @@ class AdminController extends Controller
             ->orWhere('card_holder', 'LIKE', '%' . $q . '%')
             ->orWhere('card_number', 'LIKE', '%' . $q . '%')
             ->groupBy('card_number')->get();
-
-
         if (count($custs))
             return view('file.test')->withDetails($custs)->withQuery($q);
         else
             return view('file.test')->withMessage('No such user');
     }
-
     public function getCampaigns()
     {
-//        $list1 = Input::get('id');
+
         $customers = Customer::groupBy('card_holder')->get();
 //            ->where('id','=', $list1)
 //            ->get();

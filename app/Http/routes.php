@@ -29,29 +29,20 @@ Route::get('/', function () {
  $customers2=[];
       foreach (Customer::all() as $customer) {
           $customers2[$customer->id] = \Carbon\Carbon::parse($customer->created_at)->format('Y');
-
-
       }
 
     $customers3=[];
     foreach (Customer::all() as $customer) {
         $customers3[$customer->id] = $customer->card_number;
-
     }
     $customers4=[];
     foreach (Customer::all() as $customer) {
         $customers4[$customer->id] = \Carbon\Carbon::parse($customer->created_at)->format('m/d');
-
-
     }
-
-
-
     return View::make('welcome',compact('customers','customers2','customers3','customers4'));
 //    return View::make('welcome',compact('customers','customers2','customers3','customers4'));
 
 });
-
 
 //to choose the specific
 
@@ -123,16 +114,10 @@ $customers= Customer::where('created_at','LIKE','%'.$search.'%')
                     ->where('card_holder','LIKE','%'.$search.'%')
                     ->paginate(10);
     if (count($customers))
-
         return view('file.search')->withDetails($customers)->withQuery($search);
-
     else
         return view('file.search')->withMessage('no detail found.Try again');
-
-
-
 });
-
 Route::get('/main','AdminController@getCalculation');
 Route::get('/myurl',['as'=>'myurl','uses'=>'AdminController@duplicate']);
 Route::any('/searchs','AdminController@test');
