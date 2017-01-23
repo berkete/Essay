@@ -1,14 +1,5 @@
-{{--<meta name="csrf-token" content="{{ csrf_token() }}" charset="Shift_JIS">--}}
-
-{{--<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.css">--}}
-
-{{--<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>--}}
-
 @extends('layouts.app')
-
-
 @section('content')
-
    @if($customer1)
        <form action="/searchs" method="post">
            {{ csrf_field() }}
@@ -17,8 +8,8 @@
                <div class="col-sm-3">月</div>
                <div class="col-sm-3">名前</div>
            </div>
-       <div class="row" style="color: dodgerblue" id="mainselect">
-           <div class="col-sm-3">
+        <div class="row" style="color:cornflowerblue" id="mainselect">
+           <div class="col-sm-2">
                <label for="year"></label>
                <select name="year" id="year" class="form-control" placeholder="Select">
                    <option value="" selected disabled> 年を選択</option>
@@ -27,11 +18,9 @@
                    @endforeach
                </select>
            </div>
-        @endif
-       @if($customers)
-
-           <div class="col-sm-3">
-
+   @endif
+   @if($customers)
+           <div class="col-sm-2">
                <label for="month"></label>
                <select name="month" id="month" class="form-control">
                    <option name="name" value="" selected disabled><i style="color: #00b3ee">月を選択</i></option>
@@ -39,8 +28,8 @@
                    @endforeach
                </select>
            </div>
-        @endif
-       @if($customer2)
+   @endif
+   @if($customer2)
            <div class="col-sm-3">
                <label for="name"></label>
                <select name="name" id="name" class="form-control">
@@ -49,41 +38,42 @@
                    @endforeach
                </select>
            </div>
-            <div class="col-sm-3" style="    margin-top: -19px;">　
-                <span class="input-group-btn">
-                <button type="submit" class="btn btn-success" value="Search">Search
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>
-                </span>
-
-            </div>
-         </div>
-
-        </form>
-     @endif
-       <div class="row">
-
-           <div class="col-sm-9" id="uname">User name:-
+           <div class="col-sm 3"><input type="button"  align="right" value="+Show" id="showyear" class="btn btn-success" style="margin-top: 18px">
            </div>
-           <div class="col-sm 3"><input type="button"  align="right" value="+Show" id="showyear" class="btn btn-success">
-               {{--<div class="col-sm 3"><input type="button"  align="right" value="-detach" id="detach" class="btn btn-success">--}}
+        </div>
+        </form>
+       <hr style="background-color: #0000cc">
+       <p id="total_time" style="background-color: rgba(255, 255, 255, 0.68);text-align: right;font-style: italic;"></p>
+       <hr style="background-color: #0000cc; color: #0000cc">
+   @endif
+   <table style="margin-top:50px">
+       <thead>
+       <tr>
+       <thead>
+       {{--Table used to display the static headers because we going to use show().empty method --}}
+       <tr>
+           <th style="padding-right: 152px">月/日</th>
+           <th style="padding-right: 214px">IN</th>
+           <th style="padding-right: 234px">OUT</th>
+           <th style="padding-right: 200px">出社</th>
+           <th style="padding-right: 152px">退社</th>
+       </tr>
+       </thead>
+       <tfoot id="total_time">
+       <tr>
+       </tr>
+       </tfoot>
+       <tbody>
+       </tbody>
 
-               </div>
-
-           <table class="table" id="tablee" style="margin-top:110px ">
-               <thead>
-                 <tr>
-                   <th>月/日</th>
-                   <th>IN</th>
-                   <th>OUT</th>
-                     <th>出社</th>
-                     <th>退社</th>
-                 </tr>
-               </thead>
+       {{--Table used to display the ajax data--}}
+   </table>
+           <table class="table" id="table_calculation">
                <tbody>
                </tbody>
-             </table>
-       </div>
+
+           </table>
+
    <script type="text/javascript">
 
 
@@ -106,19 +96,11 @@
                    cache: false,
                    dataType: "json",
                    data: myData,
-
                    contentType:'charset=UTF-8',
                    url: "ajax-month"
                })
                        .success(function( data ) {
                            console.log("shume:"+data);
-
-//                           $( "#myModal" ).html(data['body']);
-//                           $( "#myModalLabel" ).html(data['title']);
-
-//           });
-//               $.get('/ajax-month',function (data) {
-//                   console.log("shume:"+data);
                    $("#month").empty();
                    $.each(data,function (index,value) {
                        console.log(value.month,index);
@@ -151,8 +133,10 @@
 
                            $.each(response,function (index,value) {
 //                               console.log("shume2"+value.card_holder);
+                                if(value.card_holder!=='未登録カード'){
+                                    $("#name").append('<option value="'+ value.card_holder+'">'+value.card_holder+'</option>');
+                                }
 
-                               $("#name").append('<option value="'+ value.card_holder+'">'+value.card_holder+'</option>');
                            });
            });
                        });
@@ -162,7 +146,8 @@
        $('#name').select2();
        $('#year').select2();
        $('#month').select2();
-        });
+//       $('#table_calculation').DataTable();
+       });
        //display function
        $(function () {
            $('#showyear').click(function () {
@@ -188,12 +173,49 @@
                            console.log("shume22:" + data);
                                 // intializing the table rows
                                var trHTML='';
+                               var total_hour_in=0.0;
+                               var total_minute_in=0.0;
+                               var total_hour_out=0.0;
+                               var total_minute_out=0.0;
+                               var total_hour=0.0;
+                               var total_minute=0.0;
                                  $.each(data, function (index, value) {
                                    trHTML = '<tr><td>' + data[index].month+'/'+data[index].day + '</td><td>' + data[index].sumin+'時間'+　data[index].minutein+　'分'+  '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+  '</td><td>' + data[index].enter+ '</td><td>' + data[index].exit+ '</td></tr>';
-                                   $("#tablee").append(trHTML);
-//                                    $("#uname").append(value.card_holder).show().remove();
-//                                     console.log(data[index].card_holder);
+                                   $("#table_calculation").append(trHTML);
+                                     //Total time inside the office
+                                     total_hour_in=total_hour_in+data[index].sumin;
+                                     total_minute_in=total_minute_in+data[index].minutein;
+                                     if(total_minute_in>59){
+                                         total_hour_in=total_hour_in+1;
+                                         total_minute_in=total_minute_in-60;
+                                     }
+                                     //total Time outside the office
+                                     total_hour_out=total_hour_out+data[index].sumout;
+                                     total_minute_out=total_minute_out+data[index].minuteout;
+                                     if(total_minute_out>59){
+                                         total_hour_out=total_hour_out+1;
+                                         total_minute_out=total_minute_out-60;
+                                     }
+                                     total_hour=total_hour_in+total_hour_out;
+                                     total_minute=total_minute_in+total_minute_out;
+                                     if(total_minute>59){
+                                         total_hour=total_hour+1;
+                                         total_minute=total_minute-60;
+                                     }
                                  });
+
+                           $("#total_time").append("Total Time Inside :"+total_hour_in+":"+total_minute_in+"<br/>"+"Total Time Outside :"+total_hour_out+":"+total_minute_out+"<br/>"+"Total Time :"+total_hour+":"+total_minute);
+                           $("#showyear").click(function (e) {
+                               e.preventDefault();
+                               $("#total_time").show().empty();
+                           });
+
+
+                           console.log("In"+total_hour_in+":"+total_minute_in);
+                           console.log("Out"+total_hour_out+":"+total_minute_out);
+
+
+
                        });
 
            });
