@@ -8,5 +8,6 @@
     <orderEntry type="library" name="jquery-1.10.1" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="jquery.dataTables" level="application" />
+    <orderEntry type="library" name="dropzone" level="application" />
   </component>
 </module>

@@ -62,20 +62,20 @@
     </div>
 </header><!--/header-->
 
-    <div class="container">
-        <div class="col-lg-12">
+<div class="container">
+    <div class="col-lg-12">
 
-            @yield('content')
+        @yield('content')
 
-        </div>
     </div>
+</div>
 <footer id="footer" style="    margin-right: -40px;margin-left: -10px;margin-bottom:33px;margin-top: 500px;background-color: lightskyblue"><!--Footer-->
-        <div class="footer-top" >
-            <div class="container">
-                <div class="row">
-                </div>
+    <div class="footer-top" >
+        <div class="container">
+            <div class="row">
             </div>
         </div>
+    </div>
     <div class="footer-bottom">
         <div class="container">
             <div class="row">

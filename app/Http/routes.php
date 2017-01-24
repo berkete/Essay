@@ -66,3 +66,7 @@ Route::get('/getDelete',['as'=>'getDelete','uses'=>'AdminController@getDelete'])
 Route::post('/postImport',['as'=>'postImport','uses'=>'AdminController@postImport']);
 //directing to the calculation
 Route::any('/getsearch','AdminController@getsearch');
+Route::get('/lists','AdminController@lists');
+Route::get('/getDownload/{filename}','AdminController@getDownload');
+Route::get('/getDeletes/{filename}','AdminController@getDeletes');
+

@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
 use Maatwebsite\Excel\Facades\Excel;
@@ -59,7 +60,6 @@ class AdminController extends Controller
         if(Input::hasFile('upload')){
 //            $path = Input::file('upload')->getRealPath();
             $path = Input::file('upload');
-
 //            $file_count = count($path);
             // start count how many uploaded
 //            $uploadcount = 0;
@@ -83,13 +83,12 @@ class AdminController extends Controller
                 }
 //
             }
-                //Used to insert the insert array values to the database
-                if(!empty($insert)){
-                    DB::table('customers')->insert($insert);
-                    return redirect('/home')->with("Insert Record successfully.");
-                }
-
-            } // if end
+            //Used to insert the insert array values to the database
+            if(!empty($insert)){
+                DB::table('customers')->insert($insert);
+                return redirect('/home')->with("Insert Record successfully.");
+            }
+        } // if end
 
 
     }
@@ -252,6 +251,45 @@ class AdminController extends Controller
         // only last data
         $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder);
         return response((array)$list2);
+
+    }
+    public function lists(){
+        $files = public_path().'/uploaded_files/';
+        $path=scandir($files, 1);
+//        $size[] = filesize($path);
+//        var_dump($size);
+
+//        $files= storage_path()."/uploaded_files/";
+//        if(!File::exists($files)) abort(404);
+//        $name= $files;
+//        $path = $files->get();
+
+
+//        $type = $files->mimeType();
+//        var_dump($type);
+//        $response = Response::make($files, 200);
+//        $response->header("Content-Type", $type);
+////
+//        return $response;
+        return view('file.list',compact('files'));
+
+    }
+    public function getDownload($filename){
+
+        $path= public_path()."/uploaded_files/".$filename;
+        return response()->download($path);
+    }
+    public function getDeletes($filename){
+        $path= public_path()."/uploaded_files/".$filename;
+//        if ($path!=null){
+//
+//            $path->unlink();
+            return redirect()->back();
+//        }
+//        else{
+//            return('wrong Id');
+//        }
+
 
     }
 }
