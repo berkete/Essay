@@ -3,24 +3,135 @@
 @extends('layouts.app')
 @section('content')
     <div class="row">
-        <div id="file-zone">
-            <div id="clickHere" style="margin-left: 290px;margin-top: 100px">
+        {{--<div id="file-zone">--}}
+            {{--<div id="clickHere" style="margin-left: 290px;margin-top: 100px">--}}
 
-                <form action="postImport" method="post" enctype="multipart/form-data" >
-                    <div class="col-sm-6">
+                <form action="postImport" method="post" enctype="multipart/form-data" ondragstart='ParseFile()'>
+                    <div class="col-sm-4">
                         <input type="hidden" name="_token" value="{{csrf_token()}}">
                         <label for="fileselect" class="btn btn-info" style="margin-left: 54px;background-clip: content-box;border-style: dashed">File Import and Upload</label>
-                        <input type="file" name="upload[]" class="dropzone " multiple value="Drag and drop" style="align-self: center;background-color:beige;border-color:violet;border-style: dashed">
+                        <input type="file" name="upload[]" class="dropzone " id="upload" multiple value="Drag and drop" style="align-self: center;background-color:beige;border-color:azure;border-style: dashed">
+                       <input type="submit" class="btn btn-success"  value="Import and Upload" style="margin-left: 63px;margin-top: 11px;background-color: black;">
+
                     </div>
-                    <div class="col-sm-1">
-                        <input type="submit" class="btn btn-success"  id="submit" value="Import" style="margin-left: -110px;margin-top: 33px;background-color: darkorchid;">
+                    <div class="col-sm-2" id="submitbutton">
                     </div>
                 </form>
-            </div>
+            {{--</div>--}}
+        {{--</div>--}}
+        <div id="messages" class="col-sm-6">
+            <table class="table" id="property_list" style="width: 70%">
+                <thead>
+                  <tr>
+                      <th>File Name</th>
+                    <th>File Size</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="success">
+                  </tr>
+                </tbody>
+              </table>
+            <p>Status Messages</p>
         </div>
-
     </div>
+    <hr>
+    <hr>
     <script type="text/javascript">
+
+        $('#upload').bind('change', function() {
+            var uploadFile=document.getElementById('upload');
+            var trhtml='';
+            var counts=(uploadFile.files).length;
+            console.log(counts);
+            $('#messages').append("<strong>Number of files</strong>:"+counts);
+        $.each(uploadFile.files,function (key ,value) {
+            console.log(value.type);
+
+            trhtml='<tr class="success"><td>' + value.name+'</td><td>'+Math.floor(value.size/1024) + "KB"+'</td></tr>';
+            $('#property_list').append(trhtml);
+        });
+
+//            alert('This file size is: ' + this.files[0].size/1024/1024 + "MB"+this.files[0].name);
+        });
+
+//        "<p>File information: <strong>" + file.name +
+//                                    "</strong> type: <strong>" + file.type +
+//                                    "</strong> size: <strong>" + file.size +
+//                                    "</strong> bytes</p>";
+//        $(document).ready(function(){
+//                function $id(id) {
+//                    return document.getElementById(id);
+//                }
+//
+//                //
+//                // output information
+//                function Output(msg) {
+//                    var m = $id("messages");
+//                    m.innerHTML = msg + m.innerHTML;
+//                }
+//                // call initialization file
+//                if (window.File && window.FileList && window.FileReader) {
+//                    Init();
+//                }
+//
+//                //
+//                // initialize
+//                function Init() {
+//
+//                    var fileselect = $id("fileselect"),
+//                            filedrag = $id("filedrag"),
+//                            submitbutton = $id("submitbutton");
+//
+//                    // file select
+//                    fileselect.addEventListener("change", FileSelectHandler, false);
+//
+//                    // is XHR2 available?
+//                    var xhr = new XMLHttpRequest();
+//                    if (xhr.upload) {
+//
+//                        // file drop
+//                        filedrag.addEventListener("dragover", FileDragHover, false);
+//                        filedrag.addEventListener("dragleave", FileDragHover, false);
+//                        filedrag.addEventListener("drop", FileSelectHandler, false);
+//                        filedrag.style.display = "block";
+//
+//                        // remove submit button
+//                        submitbutton.style.display = "inherit";
+//                    }
+//
+//                }
+//                // file drag hover
+//                function FileDragHover(e) {
+//                    e.stopPropagation();
+//                    e.preventDefault();
+//                    e.target.className = (e.type == "dragover" ? "hover" : "");
+//                }
+//                // file selection
+//                function FileSelectHandler(e) {
+//
+//                    // cancel event and hover styling
+//                    FileDragHover(e);
+//
+//                    // fetch FileList object
+//                    var files = e.target.files || e.dataTransfer.files;
+//
+//                    // process all File objects
+//                    for (var i = 0, f; f = files[i]; i++) {
+//                        ParseFile(f);
+//                    }
+//
+//                }
+//                function ParseFile(file) {
+//
+//                    Output(
+//                            "<p>File information: <strong>" + file.name +
+//                            "</strong> type: <strong>" + file.type +
+//                            "</strong> size: <strong>" + file.size +
+//                            "</strong> bytes</p>"
+//                    );
+//                }
+//        });
 //        $.fn.fileZone = function() {
 ////            var buttonId = "clickHere";
 //            var mouseOverClass = "mouse-over";

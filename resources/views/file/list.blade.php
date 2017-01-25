@@ -25,6 +25,9 @@
 
             </tr>
             </thead>
+            <?php
+            date_default_timezone_set("Asia/Tokyo")
+            ?>
             @foreach(scandir($files, 1) as $key=>$value)
                 {{--@foreach($files as $file)--}}
                 @if(!($value==".DS_Store"||$value=='..'||$value=='.'))
@@ -33,7 +36,7 @@
                         <td><a href="/getDownload/{{$value}}" class="btn btn-large pull-left"><i class="fa fa-download"></i>{{$value}}</a></td>
                         {{--{{$size[]=filesize($file)}}--}}
                         <td><a href="#"></a>{{(floor(filesize($files.'/'.$value)/1024)."KB")}}</td>
-                        <td><a href="#"></a>{{date_default_timezone_set('Asia/Tokyo').date('jS F Y h:i:s A',filectime($files.'/'.$value))}}</td>
+                        <td><a href="#"></a>{{date('jS F Y h:i:s A',filectime($files.'/'.$value))}}</td>
                         <td><a href="#"></a>{{mime_content_type($files.'/'.$value)}}</td>
 
                         <td><a href="getDeletes/{{$value}}"  class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i>Delete</a></td>

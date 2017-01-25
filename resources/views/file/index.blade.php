@@ -42,11 +42,11 @@
                     <li ID="export-to-excel"><a href="{{URL::to('/getExport')}}">Export DB to excel</a></li>
                      <li ID="download"><a href="{{URL::to('/lists')}}">Download dat files</a></li>
                      <li class="divider"></li>
-                    <li><a href="{{URL::to('/update')}}">Update userTable</a></li>
-                    <li><a href="#">Others</a></li>
+                    {{--<li><a href="{{URL::to('/update')}}">Update userTable</a></li>--}}
+                    {{--<li><a href="#">Others</a></li>--}}
                  </ul>
                 <a href="{{URL::to('getImport')}}" class="btn btn-info"><span class="glyphicon glyphicon-import">インポート/Import</span></a>
-                 <a href="{{URL::to('getDelete')}}" class="btn btn-danger"><span class="glyphicon glyphicon-trash">すべて削除/Delete All</span></a>
+                 <a href="{{URL::to('getDelete')}}" class="btn btn-danger" id="delete_all"><span class="glyphicon glyphicon-trash">すべて削除/Delete All</span></a>
             </div>
         </div>
         {{--End of the menu--}}
@@ -101,6 +101,15 @@
         $('#year').select2();
         $('#month').select2();
     });
+    $(function(){
+        $("#delete_all").click(function(e){
+           var reply= confirm("Do you want to delete all? to confirm click OK");
+
+            if(!reply){
+                e.preventDefault();
+            }
+    });
+        });
     // used to display the details of data when clicking on display button
     $(function () {
         $('#display').click(function () {
