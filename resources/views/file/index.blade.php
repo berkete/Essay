@@ -5,6 +5,10 @@
         <hr>
         {{--begining of the menu--}}
         <div class="row" align="center" style="background-color: mintcream">
+
+            @if(Session::has('already'))
+                <p class="bg-danger pull-right" >{{session('already')}}</p>
+                @endif
             @if($years)
                 <div class="col-sm-2" style="margin-top: -19px">
                     <label for="year"></label>
@@ -34,9 +38,10 @@
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                  </button>
-                 <ul class="dropdown-menu" role="menu" id="export-menu">
-                    <li ID="export-to-excel"><a href="{{URL::to('/getExport')}}">Export To excel</a></li>
-                    <li class="divider"></li>
+                 <ul class="dropdown-menu dropdown-menu-right" role="menu" id="export-menu">
+                    <li ID="export-to-excel"><a href="{{URL::to('/getExport')}}">Export DB to excel</a></li>
+                     <li ID="download"><a href="{{URL::to('/lists')}}">Download dat files</a></li>
+                     <li class="divider"></li>
                     <li><a href="{{URL::to('/update')}}">Update userTable</a></li>
                     <li><a href="#">Others</a></li>
                  </ul>

@@ -8,6 +8,7 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -60,28 +61,26 @@ class AdminController extends Controller
         if(Input::hasFile('upload')){
 //            $path = Input::file('upload')->getRealPath();
             $path = Input::file('upload');
-//            $file_count = count($path);
-            // start count how many uploaded
-//            $uploadcount = 0;
             foreach($path as $file) {
                 $data = Excel::load($file, function ($reader) {
                     $reader->noHeading();
                 }, 'shift_jis')->all()->toArray();
                 $count = count($file);
-                $name = date("m-d:H") . $file->getClientOriginalName();
-                $file->move("uploaded_files", $name);
-                if(!empty($data) && $count) {
-                    foreach ($data as $key => $value) {
-                        $count_value = count($value);
-                        if ($count_value == 10) { // Normal data list
-                            $insert[] = ['created_at' => $value[0], 'in' => $value[1], 'out' => $value[2], 'door' => $value[3], 'status' => $value[4], 'company' => $value[5], 'status2' => $value[6], 'company2' => $value[7], 'card_number' => $value[8], 'card_holder' => $value[9]];
-                        } elseif ($count_value < 10)//  skips the empty data company2 is empty and skipped
-                        {
-                            $insert[] = ['created_at' => $value[0], 'in' => $value[1], 'out' => $value[2], 'door' => $value[3], 'status' => $value[4], 'company' => $value[5], 'status2' => $value[6], 'company2' => null, 'card_number' => $value[7], 'card_holder' => $value[8]];
-                        }
-                    }// end of foreach
+                $name = $file->getClientOriginalName();
+                if (!file_exists($name)) {
+                    $file->move("uploaded_files", $name);
+                    if (!empty($data) && $count) {
+                        foreach ($data as $key => $value) {
+                            $count_value = count($value);
+                            if ($count_value == 10) { // Normal data list
+                                $insert[] = ['created_at' => $value[0], 'in' => $value[1], 'out' => $value[2], 'door' => $value[3], 'status' => $value[4], 'company' => $value[5], 'status2' => $value[6], 'company2' => $value[7], 'card_number' => $value[8], 'card_holder' => $value[9]];
+                            } elseif ($count_value < 10)//  skips the empty data company2 is empty and skipped
+                            {
+                                $insert[] = ['created_at' => $value[0], 'in' => $value[1], 'out' => $value[2], 'door' => $value[3], 'status' => $value[4], 'company' => $value[5], 'status2' => $value[6], 'company2' => null, 'card_number' => $value[7], 'card_holder' => $value[8]];
+                            }
+                        }// end of foreach
+                    }
                 }
-//
             }
             //Used to insert the insert array values to the database
             if(!empty($insert)){
@@ -89,8 +88,6 @@ class AdminController extends Controller
                 return redirect('/home')->with("Insert Record successfully.");
             }
         } // if end
-
-
     }
     public function getExport()
     {
@@ -179,14 +176,7 @@ class AdminController extends Controller
                 }
                 // reset ( every day )
                 if ($key < ($count-1)) {
-
-//                    var_dump("ok");
-//                    var_dump($value->day);
-//                    var_dump($calculations[$key + 1]->day);
                     if ($value->day !== $calculations[$key + 1]->day) {
-
-//                        var_dump("ok2");
-
                         $list2[] = array('month' => $value->month, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter" =>$enter_time, "exit" =>$calculations[$key]->time);
                         $everyday_first_data_flg=1;
                         //        var_dump($valuelist);
@@ -197,17 +187,9 @@ class AdminController extends Controller
                    }
                 }
                 if ($value->day == $calculations[$key]->day) {
-
-//                    var_dump("AAA:".$value->status .":".$value->company );
-
-                                       // AAA:入側:入室
                     if ($value->status == '入室' && $value->company == '入側') {
 //                        var_dump("ok3");
                         if ($key < ($count - 1)) {
-
-//                            var_dump("ok4");
-
-
                             $x = strtotime(($value->time));
                             $y = strtotime($calculations[$key + 1]->time);
                             $z = ($y - $x) / 3600;
@@ -218,7 +200,6 @@ class AdminController extends Controller
                                 $hoursin=$hoursin+1;
                                 $minutein=0.0;
                             }
-//                            $sumin=$hoursin;
                         }
 
                     }
@@ -251,45 +232,21 @@ class AdminController extends Controller
         // only last data
         $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder);
         return response((array)$list2);
-
     }
     public function lists(){
         $files = public_path().'/uploaded_files/';
         $path=scandir($files, 1);
-//        $size[] = filesize($path);
-//        var_dump($size);
-
-//        $files= storage_path()."/uploaded_files/";
-//        if(!File::exists($files)) abort(404);
-//        $name= $files;
-//        $path = $files->get();
-
-
-//        $type = $files->mimeType();
-//        var_dump($type);
-//        $response = Response::make($files, 200);
-//        $response->header("Content-Type", $type);
-////
-//        return $response;
         return view('file.list',compact('files'));
-
     }
     public function getDownload($filename){
-
+        Session::flash('download_media','File Downloaded Successfully');
         $path= public_path()."/uploaded_files/".$filename;
         return response()->download($path);
     }
     public function getDeletes($filename){
+        Session::flash('delete_media','File deleted successfully');
         $path= public_path()."/uploaded_files/".$filename;
-//        if ($path!=null){
-//
-//            $path->unlink();
-            return redirect()->back();
-//        }
-//        else{
-//            return('wrong Id');
-//        }
-
-
+        unlink($path);
+        return redirect()->back();
     }
 }
