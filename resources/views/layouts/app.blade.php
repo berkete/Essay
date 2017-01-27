@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css">
     <script src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="pagination/jquery.simplePagination.js"></script>
+    <link type="text/css" rel="stylesheet" href="pagination/simplePagination.css"/>
 
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/jquery.scrollUp.min.js')}}"></script>
@@ -43,14 +45,17 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 </head><!--/head-->
 <header id="header"><!--header-->
-    <div class="header-middle" style="background-color:deepskyblue;margin-left: -41px"><!--header-middle-->
+    <div class="header-middle" style="background-color:gainsboro;margin-left: -41px"><!--header-middle-->
+        <p class="alert alert-info" align="center">Office Entry Report!</p>
+
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="pull-right">
+
                         <ul class="nav navbar-nav">
-                            <li><a href="{{url('/home')}}"><i class="glyphicon glyphicon-home"></i>ホム/Home</a></li>
-                            <li><a href="{{url('/getsearch')}}"><i class="glyphicon glyphicon-floppy-saved"></i>計算/Calculation</a></li>
+                            <li><a href="{{url('/home')}}" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-home"></i>ホーム</a></li>
+                            <li><a href="{{url('/getsearch')}}"  class="btn btn-default btn-sm"><i class="glyphicon glyphicon-floppy-saved"></i>計算</a></li>
                         </ul>
                     </div>
                 </div>
@@ -69,7 +74,7 @@
 
     </div>
 </div>
-<footer id="footer" style="    margin-right: -40px;margin-left: -10px;margin-bottom:33px;margin-top: 500px;background-color: lightskyblue"><!--Footer-->
+<footer id="footer" style="    margin-right: -40px;margin-left: -10px;margin-bottom:-21px;margin-top: 650px;background-color: lightskyblue"><!--Footer-->
     <div class="footer-top" >
         <div class="container">
             <div class="row">

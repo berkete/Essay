@@ -104,9 +104,12 @@ class AdminController extends Controller
     }
     public function getDelete()
     {
-
+        Session::has('delete_all','ファイルをすべて削除します。');
         DB::table('customers')->delete();
-
+        $files = public_path().'/uploaded_files/';
+//        $path=scandir($files,1);
+//        var_dump($path);
+        array_map('unlink', glob("$files/*.dat"));
         return redirect()->back();
 
     }
@@ -234,19 +237,34 @@ class AdminController extends Controller
         return response((array)$list2);
     }
     public function lists(){
-        $files = public_path().'/uploaded_files/';
+        $files = public_path().('/uploaded_files/');
         $path=scandir($files, 1);
         return view('file.list',compact('files'));
     }
     public function getDownload($filename){
-        Session::flash('download_media','File Downloaded Successfully');
+//        Session::flash('download_media','');
         $path= public_path()."/uploaded_files/".$filename;
         return response()->download($path);
     }
     public function getDeletes($filename){
-        Session::flash('delete_media','File deleted successfully');
+        Session::flash('delete_media','ファイルを削除しました。');
         $path= public_path()."/uploaded_files/".$filename;
         unlink($path);
         return redirect()->back();
+    }
+    public function getDeleteall(){
+
+        $files = public_path().'/uploaded_files/';
+        $path=scandir($files,1);
+//        var_dump($path);
+        array_map('unlink', glob("$files/*.dat"));
+
+//        foreach ($path as $key=>$value){
+////            unlink($);
+//            var_dump($value);
+//
+//        }
+        return redirect()->back();
+
     }
 }

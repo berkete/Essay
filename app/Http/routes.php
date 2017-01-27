@@ -69,4 +69,6 @@ Route::any('/getsearch','AdminController@getsearch');
 Route::get('/lists','AdminController@lists');
 Route::get('/getDownload/{filename}','AdminController@getDownload');
 Route::get('/getDeletes/{filename}','AdminController@getDeletes');
+Route::get('/getDeleteall','AdminController@getDeleteall');
+
 

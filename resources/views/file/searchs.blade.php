@@ -1,14 +1,28 @@
 @extends('layouts.app')
 @section('content')
+    <hr>
+    <div class="row">
+        <div class="col-sm-4">
+            <p class="alert alert-info" align="center">時間計算ページ</p>
+        </div>
+        <div class="col-sm-4">
+            <p class="alert alert-info" align="center">セレクトボックスを選んで表示ボタンをクリックしてください。</p>
+        </div>
+        <div class="col-sm-4">
+            <p id="total_time" class="alert alert-info" align="center"></p>
+            {{--<p id="total_time" style="background-color: rgba(255, 255, 255, 0.68);text-align: right;font-style: italic;"></p>--}}
+        </div>
+    </div>
+    <hr>
    @if($customer1)
        <form action="/searchs" method="post">
            {{ csrf_field() }}
-           <div class="row" style="color:cornflowerblue;text-decoration: blink;font-size: large;margin-top: 100px">
+           <div class="row" style="color:cornflowerblue;text-decoration: blink;font-size: large;margin-top:7px">
                <div class="col-sm-3">年</div>
                <div class="col-sm-3">月</div>
                <div class="col-sm-3">名前</div>
            </div>
-        <div class="row" style="color:cornflowerblue" id="mainselect">
+        <div class="row" style="color:cornflowerblue;background-color: lightblue" id="mainselect">
            <div class="col-sm-2">
                <label for="year"></label>
                <select name="year" id="year" class="form-control" placeholder="Select">
@@ -38,13 +52,11 @@
                    @endforeach
                </select>
            </div>
-           <div class="col-sm 3"><input type="button"  align="right" value="+Show" id="showyear" class="btn btn-success" style="margin-top: 18px">
+           <div class="col-sm 3"><input type="button"  align="right" value="表示" id="showyear" class="btn btn-success" style="margin-top: 18px">
            </div>
         </div>
         </form>
-       <hr style="background-color: #0000cc">
-       <p id="total_time" style="background-color: rgba(255, 255, 255, 0.68);text-align: right;font-style: italic;"></p>
-       <hr style="background-color: #0000cc; color: #0000cc">
+
    @endif
    <table style="margin-top:50px">
        <thead>
@@ -182,6 +194,8 @@
                                  $.each(data, function (index, value) {
                                    trHTML = '<tr><td>' + data[index].month+'/'+data[index].day + '</td><td>' + data[index].sumin+'時間'+　data[index].minutein+　'分'+  '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+  '</td><td>' + data[index].enter+ '</td><td>' + data[index].exit+ '</td></tr>';
                                    $("#table_calculation").append(trHTML);
+                                   $("#table_calculation").css("background-color", "white");
+
                                      //Total time inside the office
                                      total_hour_in=total_hour_in+data[index].sumin;
                                      total_minute_in=total_minute_in+data[index].minutein;
@@ -204,7 +218,7 @@
                                      }
                                  });
 
-                           $("#total_time").append("Total Time Inside :"+total_hour_in+":"+total_minute_in+"<br/>"+"Total Time Outside :"+total_hour_out+":"+total_minute_out+"<br/>"+"Total Time :"+total_hour+":"+total_minute);
+                           $("#total_time").append("中にいる時間　合計 &emsp;"+total_hour_in+"時間"+total_minute_in+"分<br/>"+"外にいる時間　合計 &emsp;"+total_hour_out+"時間"+total_minute_out+"分<br/>"+"合計時間 &emsp;&emsp;&emsp;&emsp;   "+total_hour+"時間"+total_minute+"分");
                            $("#showyear").click(function (e) {
                                e.preventDefault();
                                $("#total_time").show().empty();

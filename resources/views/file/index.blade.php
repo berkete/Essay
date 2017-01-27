@@ -1,16 +1,18 @@
 @extends('layouts.app')
 @section('content')
         <hr>
-        <p class="alert alert-info" align="center">Office Entry Report!</p>
         <hr>
         {{--begining of the menu--}}
         <div class="row" align="center" style="background-color: mintcream">
 
+            @if(Session::has('delete_all'))
+                <p class="bg-danger pull-right" >{{session('delete_all')}}</p>
+            @endif
             @if(Session::has('already'))
                 <p class="bg-danger pull-right" >{{session('already')}}</p>
                 @endif
             @if($years)
-                <div class="col-sm-2" style="margin-top: -19px">
+                <div class="col-sm-1" style="margin-top: -19px">
                     <label for="year"></label>
                     <select name="year" id="year" class="form-control" placeholder="Select">
                         <option value="" selected disabled> 年を選択</option>
@@ -21,7 +23,7 @@
                 </div>
             @endif
             @if($months)
-                <div class="col-sm-2" style="margin-top: -19px">
+                <div class="col-sm-1" style="margin-top: -19px">
                     <label for="month"></label>
                     <select name="month" id="month" class="form-control">
                         <option name="name" value="" selected disabled><i style="color: #00b3ee">月を選択</i></option>
@@ -30,25 +32,44 @@
                     </select>
                 </div>
             @endif
-            <div class="btn-group">
-                <input type="button"  align="right" value="表示/Display" id="display" class="btn btn-circle btn-success">
+            {{--<div class="btn-group">--}}
+                <div class="col-sm-2">
+                    <input type="button"  align="right" value="表示一覧" id="display" class="btn btn-circle btn-success">
+                </div>
+                <div class="col-sm-2">
+                    <a href="{{URL::to('getImport')}}" class="btn btn-info"><span class="glyphicon glyphicon-import">インポート</span></a>
+                </div>
 
-                 <button type="button" class="btn btn-info"><span class="glyphicon glyphicon glyphicon-export">輸出する(Export)</span></button>
-                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                 </button>
-                 <ul class="dropdown-menu dropdown-menu-right" role="menu" id="export-menu">
-                    <li ID="export-to-excel"><a href="{{URL::to('/getExport')}}">Export DB to excel</a></li>
-                     <li ID="download"><a href="{{URL::to('/lists')}}">Download dat files</a></li>
-                     <li class="divider"></li>
+                <div class="col-sm-2">
+                    <a href="{{URL::to('getExport')}}" class="btn btn-info"><span class="glyphicon glyphicon-export">エクスポート</span></a>
+                </div>
+                <div class="col-sm-2">
+                    <a href="{{URL::to('/lists')}}" class="btn btn-info"><span class="glyphicon glyphicon-download">ダウンロードDATファイル</span></a>
+                </div>
+
+                <div class="col-sm-2">
+                    <a href="{{URL::to('getDelete')}}" class="btn btn-danger" id="delete_all"><span class="glyphicon glyphicon-trash">すべて削除</span></a>
+                </div>
+
+
+                 {{--<button type="button" class="btn btn-info"><span class="glyphicon glyphicon glyphicon-export">輸出する(Export)</span></button>--}}
+                 {{--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">--}}
+                        {{--<span class="caret"></span>--}}
+                        {{--<span class="sr-only">Toggle Dropdown</span>--}}
+                 {{--</button>--}}
+                 {{--<ul class="dropdown-menu dropdown-menu-right" role="menu" id="export-menu">--}}
+                    {{--<li ID="export-to-excel"><a href="{{URL::to('/getExport')}}">Export DB to excel</a></li>--}}
+                     {{--<li ID="download"><a href="{{URL::to('/lists')}}">Download dat files</a></li>--}}
+                     {{--<li class="divider"></li>--}}
                     {{--<li><a href="{{URL::to('/update')}}">Update userTable</a></li>--}}
                     {{--<li><a href="#">Others</a></li>--}}
-                 </ul>
-                <a href="{{URL::to('getImport')}}" class="btn btn-info"><span class="glyphicon glyphicon-import">インポート/Import</span></a>
-                 <a href="{{URL::to('getDelete')}}" class="btn btn-danger" id="delete_all"><span class="glyphicon glyphicon-trash">すべて削除/Delete All</span></a>
+                 {{--</ul>--}}
+
+
+
+
             </div>
-        </div>
+        {{--</div>--}}
         {{--End of the menu--}}
         {{--Begining of Table used to display per day--}}
     <div class="row" >
@@ -56,14 +77,14 @@
             <table class="table table-bordered" id="display_list">
                 <thead>
                  <tr>
-                    <th>Working Date </th>
-                    <th>Enterance Door</th>
-                    <th>status</th>
-                    <th>Company</th>
-                    <th>status2</th>
-                    <th>Company2</th>
-                    <th>card number</th>
-                    <th>Holder</th>
+                    <th>日時 </th>
+                    <th>ドア</th>
+                    <th>入室/退室</th>
+                    <th>センサー</th>
+                    <th>ステータス</th>
+                    <th>会社</th>
+                    <th>カード番号</th>
+                    <th>名前</th>
                  </tr>
                 </thead>
                 <tbody>
@@ -139,24 +160,40 @@
                             $("#display_list").append(trHTML);
                         });
                         // applying datatable jquery library
-                        $('#display_list').DataTable( {
+                     var t= $('#display_list').DataTable( {
                             "bServerSide":true,
-                            "bProcessing":true,
+                            "bProcessing":false,
                             "sAjaxSource": "view_list",
                             "iTotalRecords":"10",
                             "iTotalDisplayRecords":"10",
                             "sAjaxDataProp" : "data",
+                            "bFilter":true,
                             "paging": true,
                             "ordering":false,
                             "searchable":false,
-                            "info": false
-//                            "scrollX": true,
+                            "info": false,
+                            "sDom": '<"top"i>rt<"bottom"flp><"clear">',
+                            "columnDefs": [ {
+                                "searchable": false,
+                                "orderable": false,
+                                "targets": 0
+                            } ],
+                            "order": [[ 1, 'asc' ]]
+                            //                            "scrollX": true,
 //                            "order": [[ 0, "asc" ]],
 //                            scrollY: 800
                         });
+                        t.on( 'order.dt search.dt', function () {
+                            t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                                cell.innerHTML = i+1;
+                            } );
+                        } ).draw();
                     });
 
         });
+
+
     });
+
 </script>
     @endsection
