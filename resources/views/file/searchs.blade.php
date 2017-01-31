@@ -13,14 +13,18 @@
             {{--<p id="total_time" style="background-color: rgba(255, 255, 255, 0.68);text-align: right;font-style: italic;"></p>--}}
         </div>
     </div>
-    <hr>
-   @if($customer1)
+    {{--<hr>--}}
+
+
+    @if($customer1)
        <form action="/searchs" method="post">
            {{ csrf_field() }}
            <div class="row" style="color:cornflowerblue;text-decoration: blink;font-size: large;margin-top:7px">
                <div class="col-sm-3">年</div>
-               <div class="col-sm-3">月</div>
-               <div class="col-sm-3">名前</div>
+               <div class="col-sm-2">月</div>
+               <div class="col-sm-2">名前</div>
+               <a href="{{url('/total')}}" class="col-sm-2 btn btn-info ">calculation per Month</a>
+               <a href="{{url('/total_name')}}" class="col-sm-3 btn btn-info">calculation per Year</a>
            </div>
         <div class="row" style="color:cornflowerblue;background-color: lightblue" id="mainselect">
            <div class="col-sm-2">
@@ -58,29 +62,29 @@
         </form>
 
    @endif
-   <table style="margin-top:50px">
+   <table style="margin-top:50px" class="table">
        <thead>
        <tr>
        <thead>
        {{--Table used to display the static headers because we going to use show().empty method --}}
        <tr>
-           <th style="padding-right: 152px">月/日</th>
-           <th style="padding-right: 214px">IN</th>
-           <th style="padding-right: 234px">OUT</th>
-           <th style="padding-right: 200px">出社</th>
-           <th style="padding-right: 152px">退社</th>
+           <th >月/日</th>
+           <th>IN</th>
+           <th>OUT</th>
+           <th>出社</th>
+           <th>退社</th>
        </tr>
        </thead>
-       <tfoot id="total_time">
+       <tfoot >
        <tr>
        </tr>
        </tfoot>
-       <tbody>
+       <tbody id="displays">
        </tbody>
 
        {{--Table used to display the ajax data--}}
    </table>
-           <table class="table" id="table_calculation">
+           <table  id="table_calculation">
                <tbody>
                </tbody>
 
@@ -91,11 +95,11 @@
 
        $(document).ready(function () {
 
-          $(".table").hide();
-           $("#showyear").click(function (e) {
-               e.preventDefault();
-               $(".table").show().empty();
-           });
+//          $(".table").hide();
+//           $("#showyear").click(function (e) {
+//               e.preventDefault();
+//               $("#displays").show().empty();
+//           });
 
            $('#year').change(function (e) {
                e.preventDefault();
@@ -193,29 +197,33 @@
                                var total_minute=0.0;
                                  $.each(data, function (index, value) {
                                    trHTML = '<tr><td>' + data[index].month+'/'+data[index].day + '</td><td>' + data[index].sumin+'時間'+　data[index].minutein+　'分'+  '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+  '</td><td>' + data[index].enter+ '</td><td>' + data[index].exit+ '</td></tr>';
-                                   $("#table_calculation").append(trHTML);
-                                   $("#table_calculation").css("background-color", "white");
+                                   $("#displays").append(trHTML);
+                                   $("#displays").css("background-color", "white");
 
                                      //Total time inside the office
                                      total_hour_in=total_hour_in+data[index].sumin;
                                      total_minute_in=total_minute_in+data[index].minutein;
                                      if(total_minute_in>59){
                                          total_hour_in=total_hour_in+1;
-                                         total_minute_in=total_minute_in-60;
+                                         total_minute_in=total_minute_in-60.0;
                                      }
                                      //total Time outside the office
                                      total_hour_out=total_hour_out+data[index].sumout;
                                      total_minute_out=total_minute_out+data[index].minuteout;
                                      if(total_minute_out>59){
                                          total_hour_out=total_hour_out+1;
-                                         total_minute_out=total_minute_out-60;
+                                         total_minute_out=total_minute_out-60.0;
                                      }
                                      total_hour=total_hour_in+total_hour_out;
                                      total_minute=total_minute_in+total_minute_out;
                                      if(total_minute>59){
                                          total_hour=total_hour+1;
-                                         total_minute=total_minute-60;
+                                         total_minute=total_minute-60.0;
                                      }
+                                     $("#showyear").click(function (e) {
+                                         e.preventDefault();
+                                         $("#displays").show().empty();
+                                     });
                                  });
 
                            $("#total_time").append("中にいる時間　合計 &emsp;"+total_hour_in+"時間"+total_minute_in+"分<br/>"+"外にいる時間　合計 &emsp;"+total_hour_out+"時間"+total_minute_out+"分<br/>"+"合計時間 &emsp;&emsp;&emsp;&emsp;   "+total_hour+"時間"+total_minute+"分");

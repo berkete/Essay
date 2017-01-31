@@ -39,29 +39,36 @@
     {{--<hr>--}}
     <script type="text/javascript">
 
-        $('#upload').bind('change', function() {
+        $('#upload').bind('change', function(e) {
             var uploadFile=document.getElementById('upload');
             var trhtml='';
             var counts=(uploadFile.files).length;
-            console.log(counts);
-            $('#messages').append("<strong>Number of files</strong>:"+counts);
-        $.each(uploadFile.files,function (key ,value) {
-            console.log(value.type);
-
-            trhtml='<tr class="success"><td>' + value.name+'</td><td>'+Math.floor(value.size/1024) + "KB"+'</td></tr>';
-            $('#property_list').append(trhtml);
-        });
+//            console.log(counts);
+            if(counts<35) {
+                $('#messages').append("<strong>Number of files</strong>:" + counts);
+                $.each(uploadFile.files, function (key, value) {
+//                    console.log(value.type);
+                    trhtml = '<tr class="success"><td>' + value.name + '</td><td>' + Math.floor(value.size / 1024) + "KB" + '</td></tr>';
+                    $('#property_list').append(trhtml);
+                });
+            }
+            else{
+                alert("Number of file greater than max \n please select less than 35 files");
+                e.preventDefault();
+                $('#import').prop('disabled', true);
+            }
 
 //            alert('This file size is: ' + this.files[0].size/1024/1024 + "MB"+this.files[0].name);
         });
         $(function () {
             $("#import").click(function (e) {
-//                  var uploads=("#import").val();
-                  var imports=confirm("please select the value before importing");
-                  if (!imports){
-                      e.preventDefault();
+                var uploadFile=document.getElementById('upload');
+                var counts=(uploadFile.files).length;
 
-                }
+                 if(counts<1) {
+                     var imports = confirm("Please select the file before import");
+                         e.preventDefault();
+                 }
 
 
             });

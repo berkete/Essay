@@ -107,10 +107,10 @@
                 url: "ajax-month"
             })
                     .success(function( data ) {
-                        console.log("shume:"+data);
+//                        console.log("shume:"+data);
                         $("#month").empty();
                         $.each(data,function (index,value) {
-                            console.log(value.month,index);
+//                            console.log(value.month,index);
                             $("#month").append('<option value="'+ value.month+'">'+value.month+'</option>');
                         });
 
@@ -136,10 +136,10 @@
         $('#display').click(function () {
             var myYear=$('#year').val();
             var myMonth=$('#month').val();
-            console.log("myYear:"+myYear);
-            console.log("myMonth:"+myMonth);
+//            console.log("myYear:"+myYear);
+//            console.log("myMonth:"+myMonth);
             var myJSON = { year: myYear, month: myMonth};
-            console.log("myjson2:"+myJSON);
+//            console.log("myjson2:"+myJSON);
             $.ajax({
                 type: "get",
                 cache: false,

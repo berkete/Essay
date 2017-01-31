@@ -13,7 +13,8 @@
 
 @endif
         <a href="getDeleteall"  class="btn btn-danger pull-right" id="delete_all_dat"><i class="glyphicon glyphicon-trash"></i>すべて削除</a>
-        <table class="table">
+
+        <table class="table" id="content">
             <thead>
             <tr class="danger">
                 <th>ファイル名（ダウンロード）</th>
@@ -41,7 +42,7 @@
             @foreach($filelist as $key=>$value)
                 {{--@foreach($files as $file)--}}
                 @if(!($value==".DS_Store"||$value=='..'||$value=='.'))
-                    <tbody id="table_page">
+                    <tbody>
                     <tr class="success">
                         <td><a href="/getDownload/{{$value}}" class="btn btn-large pull-left"><i class="fa fa-download"></i>{{$value}}</a></td>
                         {{--{{$size[]=filesize($file)}}--}}
@@ -55,11 +56,13 @@
                     {{--@endforeach--}}
                     @endforeach
                     </tbody>
-                <p id="page"></p>
+
         </table>
 
     @endif
-<script type="text/javascript">
+    <div id="pagination">Simple Pagination</div>
+
+    <script type="text/javascript">
     $(function(){
         $("#delete_all_dat").click(function(e){
             var reply= confirm("Do you want to delete all? to confirm click OK");
@@ -69,11 +72,25 @@
             }
         });
     });
-    $(function() {
-        $("#table_page").pagination({
-            items: 5,
-            itemsOnPage: 1,
-            cssStyle: 'light-theme'
+
+    $(function($) {
+        var items = $("#content tbody tr");
+        var numItems = items.length;
+        var perPage = 10;
+        // only show the first 2 (or "first per_page") items initially
+        items.slice(perPage).show();
+        // now setup pagination
+        $("#pagination").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "light-theme",
+            onPageClick: function(pageNumber) { // this is where the magic happens
+                // someone changed page, lets hide/show trs appropriately
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide() // first hide everything, then show for the new page
+                        .slice(showFrom, showTo).show();
+            }
         });
     });
 </script>

@@ -21,15 +21,17 @@ class AdminController extends Controller
         $years = DB::table('customers')
             ->select(DB::raw('YEAR(created_at) as year'))
             ->groupBy("year")
+            ->orderBy("year","desc")
             ->get();
          // used to select months in the display list
         $months = DB::table('customers')
             ->select(DB::raw('MONTH(created_at) as month'))
-            ->groupBy("month")
+            ->orderBy("month","asc")
             ->get();
 
         return view('file.index', compact('users','years','months'));
     }
+
     public function view_list(){
         $yearInput = Input::get('year');
         $monthInput = Input::get('month');
@@ -52,6 +54,351 @@ class AdminController extends Controller
         return response($list2);
 
     }
+    public function total_name(){
+
+        {
+            // Used to select year in the display list
+            $users = Customer::paginate(50);
+            $years = DB::table('customers')
+                ->select(DB::raw('YEAR(created_at) as year'))
+                ->groupBy("year")
+                ->get();
+            // used to select months in the display list
+            $card_holders = DB::table('customers')
+                ->select(DB::raw('card_holder','card_number'))
+                ->groupBy("card_number")
+                ->get();
+
+            return view('file.one_year', compact('users','years','card_holders'));
+        }
+    }
+    public function total_name_list(){
+        $yearInput = Input::get('year');
+//        $monthInput = Input::get('month');
+//        $nameInput = Input::get('name');
+        // Database data with specific days(group by day)
+        // database data for calculation  for each date
+        $calculations = DB::table('customers')
+            ->select(DB::raw('created_at,time(created_at) as time,day(created_at) as day,month(created_at) as month,card_holder,card_number,status,company'))
+            ->whereRaw('year(created_at) =?', [$yearInput])
+//            ->whereRaw(('month(created_at) =?'), [$monthInput])
+//            ->whereRaw(('card_holder like ?'), [$nameInput])
+            ->orderBy('card_number', 'asc')
+            ->orderBy('created_at', 'asc')
+
+//                        ->groupBy('month')
+            ->get();
+        $sumin = 0.0;      // Intializing the time total that the employee stayed in office
+        $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
+        $count = count($calculations);
+        $displaylist = [];
+        $valuelist = [];
+//        $hoursin=0;
+//        $minutein=0;
+//        $hoursout=0;
+//        $minuteout=0;
+        $everyday_first_data_flg=1;
+        $sumin = 0.0;      // Intializing the time total that the employee stayed in office
+        $sumout = 0.0;
+        foreach ($calculations as $key => $value) {
+            if($everyday_first_data_flg===1) {
+                $enter_time=$value->time;
+                $everyday_first_data_flg = 0;
+            }
+            // reset ( every day )
+            if ($key < ($count-1)) {
+                if ($value->day !== $calculations[$key + 1]->day && $value->card_number !== $calculations[$key + 1]->card_number) {
+                    $list2[] = array('month' => $value->month, 'card_holder' => $value->card_holder,"day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter" =>$enter_time, "exit" =>$calculations[$key]->time);
+                    $everyday_first_data_flg=1;
+                    //        var_dump($valuelist);
+                    $sumin  = 0.0;     // Intializing the time total that the employee stayed in office
+                    $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
+                    $minutein=0.0;
+                    $minuteout=0.0;
+                }
+            }
+            if ($value->month == $calculations[$key]->month && $value->card_number == $calculations[$key]->card_number && $value->card_holder!=="未登録カード") {
+                if ($value->status == '入室' && $value->company == '入側') {
+//                        var_dump("ok3");
+                    if ($key < ($count - 1)) {
+                        $x = strtotime(($value->time));
+                        $y = strtotime($calculations[$key + 1]->time);
+                        if ($value->day == $calculations[$key + 1]->day) {
+                            $z = ($y - $x) / 3600;
+                        }
+                        $sumin += $z;
+                        $hoursin = floor($sumin);
+                        $minutein = round(60 * ($sumin - $hoursin));
+                        if ($minutein>59){
+                            $hoursin=$hoursin+1;
+                            $minutein=$minutein-60.0;
+                        }
+                    }
+
+                }
+            }
+            if ($value->month == $calculations[$key]->month && $value->card_number == $calculations[$key]->card_number && $value->card_holder!=="未登録カード") {
+//                     var_dump("value".$value->status.":".$value->company);
+                if ($value->status == '退室' && $value->company == '出側') {
+//                            var_dump("count".$count.":".$key);
+                    if($key < ($count-1) ){
+                        $a = strtotime(($value->time));
+                        $b = strtotime($calculations[$key + 1]->time);
+                        if ($value->day == $calculations[$key + 1]->day) {
+                            $f = ($b - $a) / 3600;
+                        }
+                        $sumout += $f;
+                        $hoursout = floor($sumout);
+                        $minuteout = round(60 * ($sumout - $hoursout));
+                        if ($minuteout>59){
+                            $hoursout=$hoursout+1;
+                            $minuteout=$minuteout-60.0;
+                        }
+                    }
+                }
+            }
+            //used to fetch the last time for the last data
+            $last_month=$value->month;
+            $last_day=$value->day;
+            $last_time=$value->time;
+        }
+        // only last data
+        $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder);
+        return response((array)$list2);
+
+    }
+    public function total()
+    {
+        // Used to select year in the display list
+        $users = Customer::paginate(50);
+        $years = DB::table('customers')
+            ->select(DB::raw('YEAR(created_at) as year'))
+            ->groupBy("year")
+            ->get();
+        // used to select months in the display list
+        $months = DB::table('customers')
+            ->select(DB::raw('MONTH(created_at) as month'))
+            ->groupBy("month")
+            ->get();
+
+        return view('file.total_list', compact('users','years','months'));
+    }
+    public function total_list(){
+        $yearInput = Input::get('year');
+        $monthInput = Input::get('month');
+//        $nameInput = Input::get('name');
+        // Database data with specific days(group by day)
+        // database data for calculation  for each date
+        $calculations = DB::table('customers')
+            ->select(DB::raw('created_at,time(created_at) as time,day(created_at) as day,month(created_at) as month,card_holder,card_number,status,company'))
+            ->whereRaw('year(created_at) =?', [$yearInput])
+            ->whereRaw(('month(created_at) =?'), [$monthInput])
+//            ->whereRaw(('card_holder like ?'), [$nameInput])
+            ->orderBy('card_number', 'asc')
+            ->orderBy('created_at', 'asc')
+
+//                        ->groupBy('month')
+            ->get();
+        $sumin = 0.0;      // Intializing the time total that the employee stayed in office
+        $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
+        $count = count($calculations);
+        $displaylist = [];
+        $valuelist = [];
+//        $hoursin=0;
+//        $minutein=0;
+//        $hoursout=0;
+//        $minuteout=0;
+        $everyday_first_data_flg=1;
+        $sumin = 0.0;      // Intializing the time total that the employee stayed in office
+        $sumout = 0.0;
+        foreach ($calculations as $key => $value) {
+            if($everyday_first_data_flg===1) {
+                $enter_time=$value->time;
+                $everyday_first_data_flg = 0;
+            }
+            // reset ( every day )
+            if ($key < ($count-1)) {
+                if ($value->day !== $calculations[$key + 1]->day && $value->card_number !== $calculations[$key + 1]->card_number) {
+                    $list2[] = array('month' => $value->month, 'card_holder' => $value->card_holder,"day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter" =>$enter_time, "exit" =>$calculations[$key]->time);
+                    $everyday_first_data_flg=1;
+                    //        var_dump($valuelist);
+                    $sumin  = 0.0;     // Intializing the time total that the employee stayed in office
+                    $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
+                    $minutein=0.0;
+                    $minuteout=0.0;
+                }
+            }
+            if ($value->month == $calculations[$key]->month && $value->card_number == $calculations[$key]->card_number && $value->card_holder!=="未登録カード") {
+                if ($value->status == '入室' && $value->company == '入側') {
+//                        var_dump("ok3");
+                    if ($key < ($count - 1)) {
+                        $x = strtotime(($value->time));
+                        $y = strtotime($calculations[$key + 1]->time);
+                        if ($value->day == $calculations[$key + 1]->day) {
+                            $z = ($y - $x) / 3600;
+                        }
+                        $sumin += $z;
+                        $hoursin = floor($sumin);
+                        $minutein = round(60 * ($sumin - $hoursin));
+                        if ($minutein>59){
+                            $hoursin=$hoursin+1;
+                            $minutein=$minutein-60.0;
+                        }
+                    }
+
+                }
+            }
+            if ($value->month == $calculations[$key]->month && $value->card_number == $calculations[$key]->card_number && $value->card_holder!=="未登録カード") {
+//                     var_dump("value".$value->status.":".$value->company);
+                if ($value->status == '退室' && $value->company == '出側') {
+//                            var_dump("count".$count.":".$key);
+                    if($key < ($count-1) ){
+                        $a = strtotime(($value->time));
+                        $b = strtotime($calculations[$key + 1]->time);
+                        if ($value->day == $calculations[$key + 1]->day) {
+                            $f = ($b - $a) / 3600;
+                        }
+                        $sumout += $f;
+                        $hoursout = floor($sumout);
+                        $minuteout = round(60 * ($sumout - $hoursout));
+                        if ($minuteout>59){
+                            $hoursout=$hoursout+1;
+                            $minuteout=$minuteout-60.0;
+                        }
+                    }
+                }
+            }
+            //used to fetch the last time for the last data
+            $last_month=$value->month;
+            $last_day=$value->day;
+            $last_time=$value->time;
+        }
+        // only last data
+        $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder);
+        return response((array)$list2);
+    }
+
+//        $yearInput = Input::get('year');
+//        $monthInput = Input::get('month');
+//        $calculations = DB::table('customers')
+//            ->select(DB::raw('created_at,year(created_at) as year,month(created_at) as month,card_holder,door,status,company,company2,status2,card_number'))
+//            ->whereRaw('year(created_at) =?', [$yearInput])
+//            ->whereRaw(('month(created_at) =?'), [$monthInput])
+////            ->whereRaw(('card_holder like ?'), [$nameInput])
+//            ->groupBy('card_holder','month')
+//            ->get();
+////
+////        $sumin = 0.0;      // Intializing the time total that the employee stayed in office
+////        $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
+////        $count = count($calculations);
+////        $displaylist = [];
+////        $valuelist = [];
+//////        $hoursin=0;
+//////        $minutein=0;
+//////        $hoursout=0;
+//////        $minuteout=0;
+////        $everyday_first_data_flg=1;
+////        $sumin = 0.0;      // Intializing the time total that the employee stayed in office
+////        $sumout = 0.0;
+////        foreach ($calculations as $key => $value) {
+////            if($everyday_first_data_flg===1) {
+////                $enter_time=$value->time;
+////                $everyday_first_data_flg = 0;
+////            }
+////            // reset ( every day )
+////            if ($key < ($count-1)) {
+////                if ($value->day !== $calculations[$key + 1]->day) {
+////                    $list2[] = array('month' => $value->month, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter" =>$enter_time, "exit" =>$calculations[$key]->time);
+////                    $everyday_first_data_flg=1;
+////                    //        var_dump($valuelist);
+////                    $sumin  = 0.0;     // Intializing the time total that the employee stayed in office
+////                    $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
+////                    $minutein=0.0;
+////                    $minuteout=0.0;
+////                }
+////            }
+////            if ($value->day == $calculations[$key]->day) {
+////                if ($value->status == '入室' && $value->company == '入側') {
+//////                        var_dump("ok3");
+////                    if ($key < ($count - 1)) {
+////                        $x = strtotime(($value->time));
+////                        $y = strtotime($calculations[$key + 1]->time);
+////                        $z = ($y - $x) / 3600;
+////                        $sumin += $z;
+////                        $hoursin = floor($sumin);
+////                        $minutein = round(60 * ($sumin - $hoursin));
+////                        if ($minutein==60){
+////                            $hoursin=$hoursin+1;
+////                            $minutein=0.0;
+////                        }
+////                    }
+////
+////                }
+////            }
+////            if ($value->day == $calculations[$key]->day) {
+//////                     var_dump("value".$value->status.":".$value->company);
+////                if ($value->status == '退室' && $value->company == '出側') {
+//////                            var_dump("count".$count.":".$key);
+////                    if($key < ($count-1) ){
+////                        $a = strtotime(($value->time));
+////                        $b = strtotime($calculations[$key + 1]->time);
+////                        if ($value->day == $calculations[$key + 1]->day) {
+////                            $f = ($b - $a) / 3600;
+////                        }
+////                        $sumout += $f;
+////                        $hoursout = floor($sumout);
+////                        $minuteout = round(60 * ($sumout - $hoursout));
+////                        if ($minuteout==60){
+////                            $hoursout=$hoursout+1;
+////                            $minuteout=0.0;
+////                        }
+////                    }
+////                }
+////            }
+////            //used to fetch the last time for the last data
+////            $last_month=$value->month;
+////            $last_day=$value->day;
+////            $last_time=$value->time;
+////        }
+////        // only last data
+////        $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder);
+////        return response((array)$list2);
+//
+////     $views=Customer::orderBy('created_at','asc')->get();
+////        $list2=array();
+////        foreach ($views as $view){
+////            $list2[] = array("dates" => $view->created_at, "door" => $view->door,"status" => $view->status, "company" => $view->company,"status2"=>$view->status2,"company2"=>$view->company2,"card_number"=>$view->card_number,
+////                "card_holder"=>$view->card_holder);
+////        }
+////
+////        return response($list2);
+//
+//
+////     $views=Customer::orderBy('created_at','asc')->get();
+//        $list2=array();
+//        foreach ($calculations as $view){
+//            $list2[] = array("dates" => $view->created_at, "door" => $view->door,"status" => $view->status, "company" => $view->company,"status2"=>$view->status2,"company2"=>$view->company2,"card_number"=>$view->card_number,
+//                "card_holder"=>$view->card_holder);
+//        }
+//
+//        return response($list2);
+//
+
+//        $yearInput = Input::get('year');
+//        $monthInput = Input::get('month');
+
+        // database data for calculation  for each date
+//        $calculations = DB::table('customers')
+//            ->select(DB::raw('day(created_at) as day,year(created_at) as year,month(created_at) as month,time(created_at)as time,card_holder,door,status,company,company2,status2,card_number'))
+//            ->whereRaw('year(created_at) =?', [$yearInput])
+//            ->whereRaw(('month(created_at) =?'), [$monthInput])
+////            ->whereRaw(('card_holder like ?'), [$nameInput])
+//            ->orderBy('created_at', 'asc')
+////            ->groupBy('day')
+//            ->get();
+
+//    }
+
     public function getImport()
     {
         return view('file.upload');
@@ -67,7 +414,7 @@ class AdminController extends Controller
                 }, 'shift_jis')->all()->toArray();
                 $count = count($file);
                 $name = $file->getClientOriginalName();
-                if (!file_exists($name)) {
+                if (!file_exists("uploaded_files/".$name)) {
                     $file->move("uploaded_files", $name);
                     if (!empty($data) && $count) {
                         foreach ($data as $key => $value) {
@@ -80,6 +427,13 @@ class AdminController extends Controller
                             }
                         }// end of foreach
                     }
+                }
+                else{
+
+    echo"<script type=\"text/javascript\">window.alert('The File already uploaded please choose new file to upload and import');
+         window.location.href = '/getImport';
+         </script>";
+//                    return back();
                 }
             }
             //Used to insert the insert array values to the database
@@ -195,13 +549,15 @@ class AdminController extends Controller
                         if ($key < ($count - 1)) {
                             $x = strtotime(($value->time));
                             $y = strtotime($calculations[$key + 1]->time);
-                            $z = ($y - $x) / 3600;
+                            if ($value->day == $calculations[$key + 1]->day) {
+                                $z = ($y - $x) / 3600;
+                            }
                             $sumin += $z;
                             $hoursin = floor($sumin);
                             $minutein = round(60 * ($sumin - $hoursin));
-                            if ($minutein==60){
-                                $hoursin=$hoursin+1;
-                                $minutein=0.0;
+                            if ($minutein>59){
+                                $hoursin=$hoursin+1.0;
+                                $minutein=$minutein-60.0;
                             }
                         }
 
@@ -220,9 +576,9 @@ class AdminController extends Controller
                             $sumout += $f;
                             $hoursout = floor($sumout);
                             $minuteout = round(60 * ($sumout - $hoursout));
-                              if ($minuteout==60){
-                                  $hoursout=$hoursout+1;
-                                  $minuteout=0.0;
+                              if ($minuteout>59){
+                                  $hoursout=$hoursout+1.0;
+                                  $minuteout=$minuteout-60.0;
                               }
                           }
                         }
