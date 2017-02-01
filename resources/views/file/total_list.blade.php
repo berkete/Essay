@@ -27,7 +27,7 @@
 
     <div class="row" >
         <div class="col-sm-12" style="background-color:#d9edf7">
-            <table class="table table-bordered" >
+            <table class="dataTable table-bordered" id="example">
                 <thead>
                 <tr>
                     <th>No.</th>
@@ -38,13 +38,20 @@
                     <th>Total_time</th>
                 </tr>
                 </thead>
-                <tbody id="display_list">
+                <tbody>
                 </tbody>
             </table>
+            <table id="table_calculation">
+                <tbody>
+                </tbody>
+
+            </table>
         </div>
+
     </div>
 <div id="list_display"></div>
     <script type="text/javascript">
+
         // used to display months when changing year
         $(document).ready(function () {
             $('#year').change(function (e) {
@@ -73,6 +80,24 @@
             $('#year').select2();
             $('#month').select2();
         });
+        $(document).ready(function() {
+            $('#example').DataTable( {
+//                columns: [
+//                    { title: "No." },
+//                    { title: "Year/Month" },
+//                    { title: "Name" },
+//                    { title: "Total_time_inside" },
+//                    { title: "Start Total_time_outside" },
+//                    { title: "Total_time" }
+//                ],
+                paging:false,
+                "bRetrieve": true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            } );
+        } );
         // used to display the details of data when clicking on display button
         $(function () {
             $('#display').click(function () {
@@ -99,55 +124,29 @@
                                 var total_hour=data[index].sumin+data[index].sumout;
                                 var total_minute=data[index].minutein+data[index].minuteout;
                                 if (total_minute>59){
-                                    total_hour=total_hour+1;
+                                    total_hour=total_hour+1.0;
                                     total_minute=total_minute-60.0;
                                 }
-                                if (data[index].card_holder!=="未登録カード" && Math.abs(data[index].sumin)>0){
+                                if (data[index].card_holder!=="未登録カード" && total_hour>0.0){
                                     trHTML = '<tr><td>' + (index+1)+ '</td><td>'+myYear+'/'+ data[index].month+ '</td><td>' + data[index].card_holder+ '</td><td>' +Math.abs(data[index].sumin)+'時間'+　data[index].minutein+　'分' + '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+ '</td><td>' + Math.abs(total_hour)+'時間'+ total_minute+　'分'+ '</td></tr>';
-                                    $("#display_list").append(trHTML);
-                                    $("#display_list").css("background-color", "white");
+                                    $("#example").append(trHTML);
+                                    $("#example").css("background-color", "white");
+
                                 }
                                 $("#display").click(function (e) {
                                     e.preventDefault();
-                                    $("#display_list").show().empty();
+                                    $("#example").show().empty();
                                 });
                             });
-                            // applying datatable jquery library
-//                            var t= $('#display_list').DataTable( {
-//                                "bServerSide":true,
-//                                "bProcessing":false,
-//                                "sAjaxSource": "view_list",
-//                                "iTotalRecords":"10",
-//                                "iTotalDisplayRecords":"10",
-//                                "sAjaxDataProp" : "data",
-//                                "bFilter":true,
-//                                "paging": true,
-//                                "ordering":false,
-//                                "searchable":false,
-//                                "info": false,
-//                                "sDom": '<"top"i>rt<"bottom"flp><"clear">',
-//                                "columnDefs": [ {
-//                                    "searchable": false,
-//                                    "orderable": false,
-//                                    "targets": 0
-//                                } ],
-//                                "order": [[ 1, 'asc' ]]
-//                                //                            "scrollX": true,
-////                            "order": [[ 0, "asc" ]],
-////                            scrollY: 800
-//                            });
-//                            t.on( 'order.dt search.dt', function () {
-//                                t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-//                                    cell.innerHTML = i+1;
-//                                } );
-//                            } ).draw();
+
+
                         });
 
 
 
+        });
+        });
 
-        });
-        });
 
     </script>
 @endsection

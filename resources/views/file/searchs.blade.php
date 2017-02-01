@@ -204,20 +204,20 @@
                                      total_hour_in=total_hour_in+data[index].sumin;
                                      total_minute_in=total_minute_in+data[index].minutein;
                                      if(total_minute_in>59){
-                                         total_hour_in=total_hour_in+1;
+                                         total_hour_in=total_hour_in+1.0;
                                          total_minute_in=total_minute_in-60.0;
                                      }
                                      //total Time outside the office
                                      total_hour_out=total_hour_out+data[index].sumout;
                                      total_minute_out=total_minute_out+data[index].minuteout;
                                      if(total_minute_out>59){
-                                         total_hour_out=total_hour_out+1;
+                                         total_hour_out=total_hour_out+1.0;
                                          total_minute_out=total_minute_out-60.0;
                                      }
                                      total_hour=total_hour_in+total_hour_out;
                                      total_minute=total_minute_in+total_minute_out;
                                      if(total_minute>59){
-                                         total_hour=total_hour+1;
+                                         total_hour=total_hour+1.0;
                                          total_minute=total_minute-60.0;
                                      }
                                      $("#showyear").click(function (e) {

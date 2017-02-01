@@ -158,6 +158,10 @@
                             trHTML = '<tr><td>' + value.dates+'</td><td>'+value.door + '</td><td>' + value.status+'</td><td>'+ value.company +  '</td><td>' + value.status2+ '</td><td>' + value.company2+ '</td><td>'
                                     + value.card_number+ '</td><td>' + value.card_holder + '</td></tr>';
                             $("#display_list").append(trHTML);
+                            $("#display").click(function (e) {
+                                e.preventDefault();
+                                $("#display_list").show().empty();
+                            });
                         });
                         // applying datatable jquery library
                      var t= $('#display_list').DataTable( {

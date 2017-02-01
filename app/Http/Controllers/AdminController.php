@@ -76,7 +76,6 @@ class AdminController extends Controller
         $yearInput = Input::get('year');
 //        $monthInput = Input::get('month');
 //        $nameInput = Input::get('name');
-        // Database data with specific days(group by day)
         // database data for calculation  for each date
         $calculations = DB::table('customers')
             ->select(DB::raw('created_at,time(created_at) as time,day(created_at) as day,month(created_at) as month,card_holder,card_number,status,company'))
@@ -93,10 +92,6 @@ class AdminController extends Controller
         $count = count($calculations);
         $displaylist = [];
         $valuelist = [];
-//        $hoursin=0;
-//        $minutein=0;
-//        $hoursout=0;
-//        $minuteout=0;
         $everyday_first_data_flg=1;
         $sumin = 0.0;      // Intializing the time total that the employee stayed in office
         $sumout = 0.0;
@@ -108,51 +103,52 @@ class AdminController extends Controller
             // reset ( every day )
             if ($key < ($count-1)) {
                 if ($value->day !== $calculations[$key + 1]->day && $value->card_number !== $calculations[$key + 1]->card_number) {
-                    $list2[] = array('month' => $value->month, 'card_holder' => $value->card_holder,"day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter" =>$enter_time, "exit" =>$calculations[$key]->time);
-                    $everyday_first_data_flg=1;
+                    $list2[] = array('month' => $value->month, 'card_holder' => $value->card_holder, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout, "enter" => $enter_time, "exit" => $calculations[$key]->time);
+                    $everyday_first_data_flg = 1;
                     //        var_dump($valuelist);
-                    $sumin  = 0.0;     // Intializing the time total that the employee stayed in office
+                    $sumin = 0.0;     // Intializing the time total that the employee stayed in office
                     $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
-                    $minutein=0.0;
-                    $minuteout=0.0;
+                    $minutein = 0.0;
+                    $minuteout = 0.0;
                 }
-            }
-            if ($value->month == $calculations[$key]->month && $value->card_number == $calculations[$key]->card_number && $value->card_holder!=="未登録カード") {
-                if ($value->status == '入室' && $value->company == '入側') {
-//                        var_dump("ok3");
-                    if ($key < ($count - 1)) {
-                        $x = strtotime(($value->time));
-                        $y = strtotime($calculations[$key + 1]->time);
-                        if ($value->day == $calculations[$key + 1]->day) {
-                            $z = ($y - $x) / 3600;
-                        }
-                        $sumin += $z;
-                        $hoursin = floor($sumin);
-                        $minutein = round(60 * ($sumin - $hoursin));
-                        if ($minutein>59){
-                            $hoursin=$hoursin+1;
-                            $minutein=$minutein-60.0;
-                        }
-                    }
 
-                }
-            }
-            if ($value->month == $calculations[$key]->month && $value->card_number == $calculations[$key]->card_number && $value->card_holder!=="未登録カード") {
-//                     var_dump("value".$value->status.":".$value->company);
-                if ($value->status == '退室' && $value->company == '出側') {
-//                            var_dump("count".$count.":".$key);
-                    if($key < ($count-1) ){
-                        $a = strtotime(($value->time));
-                        $b = strtotime($calculations[$key + 1]->time);
-                        if ($value->day == $calculations[$key + 1]->day) {
-                            $f = ($b - $a) / 3600;
+                if ($value->month == $calculations[$key+1]->month && $value->card_number == $calculations[$key+1]->card_number && $value->card_holder !== "未登録カード") {
+                    if ($value->status == '入室' && $value->company == '入側') {
+//                        var_dump("ok3");
+                        if ($key < ($count - 1)) {
+                            $x = strtotime(($value->time));
+                            $y = strtotime($calculations[$key + 1]->time);
+                            if ($value->day == $calculations[$key + 1]->day) {
+                                $z = ($y - $x) / 3600;
+                            }
+                            $sumin += $z;
+                            $hoursin = floor($sumin);
+                            $minutein = round(60 * ($sumin - $hoursin));
+                            if ($minutein > 59) {
+                                $hoursin = $hoursin + 1.0;
+                                $minutein = $minutein - 60.0;
+                            }
                         }
-                        $sumout += $f;
-                        $hoursout = floor($sumout);
-                        $minuteout = round(60 * ($sumout - $hoursout));
-                        if ($minuteout>59){
-                            $hoursout=$hoursout+1;
-                            $minuteout=$minuteout-60.0;
+
+                    }
+                }
+                if ($value->month == $calculations[$key+1]->month && $value->card_number == $calculations[$key+1]->card_number && $value->card_holder !== "未登録カード") {
+//                     var_dump("value".$value->status.":".$value->company);
+                    if ($value->status == '退室' && $value->company == '出側') {
+//                            var_dump("count".$count.":".$key);
+                        if ($key < ($count - 1)) {
+                            $a = strtotime(($value->time));
+                            $b = strtotime($calculations[$key + 1]->time);
+                            if ($value->day == $calculations[$key + 1]->day) {
+                                $f = ($b - $a) / 3600;
+                            }
+                            $sumout += $f;
+                            $hoursout = floor($sumout);
+                            $minuteout = round(60 * ($sumout - $hoursout));
+                            if ($minuteout > 59) {
+                                $hoursout = $hoursout + 1.0;
+                                $minuteout = $minuteout - 60.0;
+                            }
                         }
                     }
                 }
@@ -194,7 +190,7 @@ class AdminController extends Controller
             ->whereRaw('year(created_at) =?', [$yearInput])
             ->whereRaw(('month(created_at) =?'), [$monthInput])
 //            ->whereRaw(('card_holder like ?'), [$nameInput])
-            ->orderBy('card_number', 'asc')
+            ->orderBy('card_holder', 'asc')
             ->orderBy('created_at', 'asc')
 
 //                        ->groupBy('month')
@@ -212,58 +208,63 @@ class AdminController extends Controller
         $sumin = 0.0;      // Intializing the time total that the employee stayed in office
         $sumout = 0.0;
         foreach ($calculations as $key => $value) {
-            if($everyday_first_data_flg===1) {
-                $enter_time=$value->time;
+//            var_dump("value");
+//            var_dump($value);
+//            var_dump("<br/><br/>");
+
+            if ($everyday_first_data_flg === 1) {
+                $enter_time = $value->time;
                 $everyday_first_data_flg = 0;
             }
             // reset ( every day )
-            if ($key < ($count-1)) {
-                if ($value->day !== $calculations[$key + 1]->day && $value->card_number !== $calculations[$key + 1]->card_number) {
-                    $list2[] = array('month' => $value->month, 'card_holder' => $value->card_holder,"day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter" =>$enter_time, "exit" =>$calculations[$key]->time);
-                    $everyday_first_data_flg=1;
+            if ($key < ($count - 1)) {
+                if ($value->day !== $calculations[$key + 1]->day && $value->card_holder !== $calculations[$key + 1]->card_holder) {
+                    $list2[] = array('month' => $value->month, 'card_holder' => $value->card_holder, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout, "enter" => $enter_time, "exit" => $calculations[$key]->time);
+                    $everyday_first_data_flg = 1;
                     //        var_dump($valuelist);
-                    $sumin  = 0.0;     // Intializing the time total that the employee stayed in office
+                    $sumin = 0.0;     // Intializing the time total that the employee stayed in office
                     $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
-                    $minutein=0.0;
-                    $minuteout=0.0;
+                    $minutein = 0.0;
+                    $minuteout = 0.0;
                 }
-            }
-            if ($value->month == $calculations[$key]->month && $value->card_number == $calculations[$key]->card_number && $value->card_holder!=="未登録カード") {
-                if ($value->status == '入室' && $value->company == '入側') {
-//                        var_dump("ok3");
-                    if ($key < ($count - 1)) {
-                        $x = strtotime(($value->time));
-                        $y = strtotime($calculations[$key + 1]->time);
-                        if ($value->day == $calculations[$key + 1]->day) {
-                            $z = ($y - $x) / 3600;
-                        }
-                        $sumin += $z;
-                        $hoursin = floor($sumin);
-                        $minutein = round(60 * ($sumin - $hoursin));
-                        if ($minutein>59){
-                            $hoursin=$hoursin+1;
-                            $minutein=$minutein-60.0;
-                        }
-                    }
 
-                }
-            }
-            if ($value->month == $calculations[$key]->month && $value->card_number == $calculations[$key]->card_number && $value->card_holder!=="未登録カード") {
-//                     var_dump("value".$value->status.":".$value->company);
-                if ($value->status == '退室' && $value->company == '出側') {
-//                            var_dump("count".$count.":".$key);
-                    if($key < ($count-1) ){
-                        $a = strtotime(($value->time));
-                        $b = strtotime($calculations[$key + 1]->time);
-                        if ($value->day == $calculations[$key + 1]->day) {
-                            $f = ($b - $a) / 3600;
+                if ($value->month == $calculations[$key+1]->month && $value->card_holder == $calculations[$key+1]->card_holder && $value->card_holder !== "未登録カード") {
+                    if ($value->status == '入室' && $value->company == '入側') {
+//                        var_dump("ok3");
+                        if ($key < ($count - 1)) {
+                            $x = strtotime(($value->time));
+                            $y = strtotime($calculations[$key + 1]->time);
+                            if ($value->day == $calculations[$key + 1]->day) {
+                                $z = ($y - $x) / 3600;
+                            }
+                            $sumin += $z;
+                            $hoursin = floor($sumin);
+                            $minutein = round(60.0 * ($sumin - $hoursin));
+                            if ($minutein > 59) {
+                                $hoursin = $hoursin + 1.0;
+                                $minutein = $minutein - 60.0;
+                            }
                         }
-                        $sumout += $f;
-                        $hoursout = floor($sumout);
-                        $minuteout = round(60 * ($sumout - $hoursout));
-                        if ($minuteout>59){
-                            $hoursout=$hoursout+1;
-                            $minuteout=$minuteout-60.0;
+
+                    }
+                }
+                if ($value->month == $calculations[$key+1]->month && $value->card_holder == $calculations[$key+1]->card_holder && $value->card_holder !== "未登録カード") {
+//                     var_dump("value".$value->status.":".$value->company);
+                    if ($value->status == '退室' && $value->company == '出側') {
+//                            var_dump("count".$count.":".$key);
+                        if ($key < ($count - 1)) {
+                            $a = strtotime(($value->time));
+                            $b = strtotime($calculations[$key + 1]->time);
+                            if ($value->day == $calculations[$key + 1]->day) {
+                                $f = ($b - $a) / 3600;
+                            }
+                            $sumout += $f;
+                            $hoursout = floor($sumout);
+                            $minuteout = round(60.0 * ($sumout - $hoursout));
+                            if ($minuteout > 59) {
+                                $hoursout = $hoursout + 1.0;
+                                $minuteout = $minuteout - 60.0;
+                            }
                         }
                     }
                 }
@@ -519,10 +520,6 @@ class AdminController extends Controller
         $count = count($calculations);
         $displaylist = [];
         $valuelist = [];
-//        $hoursin=0;
-//        $minutein=0;
-//        $hoursout=0;
-//        $minuteout=0;
         $everyday_first_data_flg=1;
             $sumin = 0.0;      // Intializing the time total that the employee stayed in office
             $sumout = 0.0;
