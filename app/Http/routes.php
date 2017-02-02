@@ -38,6 +38,8 @@ Route::get('/', function () {
 //used to return data to the ajax for dropdown lists
 Route::get('/ajax-month',function (){
     $yearInput=Input::get('year');
+//    $monthInput=Input::get('month');
+
     $year=DB::table('customers')
         ->select(DB::raw('month(created_at) as month '))
         ->whereRaw('year(created_at) =?',[$yearInput])

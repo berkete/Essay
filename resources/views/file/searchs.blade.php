@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title',' Each Day and Month total')
 @section('content')
     <hr>
     <div class="row">
@@ -10,12 +11,8 @@
         </div>
         <div class="col-sm-4">
             <p id="total_time" class="alert alert-info" align="center"></p>
-            {{--<p id="total_time" style="background-color: rgba(255, 255, 255, 0.68);text-align: right;font-style: italic;"></p>--}}
         </div>
     </div>
-    {{--<hr>--}}
-
-
     @if($customer1)
        <form action="/searchs" method="post">
            {{ csrf_field() }}
@@ -23,8 +20,6 @@
                <div class="col-sm-3">年</div>
                <div class="col-sm-2">月</div>
                <div class="col-sm-2">名前</div>
-               <a href="{{url('/total')}}" class="col-sm-2 btn btn-info ">calculation per Month</a>
-               <a href="{{url('/total_name')}}" class="col-sm-3 btn btn-info">calculation per Year</a>
            </div>
         <div class="row" style="color:cornflowerblue;background-color: lightblue" id="mainselect">
            <div class="col-sm-2">
@@ -60,53 +55,33 @@
            </div>
         </div>
         </form>
-
    @endif
    <table style="margin-top:50px" class="table">
        <thead>
        <tr>
        <thead>
-       {{--Table used to display the static headers because we going to use show().empty method --}}
-       <tr>
-           <th >月/日</th>
-           <th>IN</th>
-           <th>OUT</th>
-           <th>出社</th>
-           <th>退社</th>
-       </tr>
+           <tr>
+               <th >月/日</th>
+               <th>IN</th>
+               <th>OUT</th>
+               <th>出社</th>
+               <th>退社</th>
+           </tr>
        </thead>
-       <tfoot >
-       <tr>
-       </tr>
-       </tfoot>
        <tbody id="displays">
        </tbody>
-
-       {{--Table used to display the ajax data--}}
    </table>
-           <table  id="table_calculation">
-               <tbody>
-               </tbody>
-
-           </table>
-
+           {{--<table  id="table_calculation">--}}
+               {{--<tbody>--}}
+               {{--</tbody>--}}
+           {{--</table>--}}
    <script type="text/javascript">
-
-
        $(document).ready(function () {
-
-//          $(".table").hide();
-//           $("#showyear").click(function (e) {
-//               e.preventDefault();
-//               $("#displays").show().empty();
-//           });
-
            $('#year').change(function (e) {
                e.preventDefault();
-
                var myData=$('#year');
-
-
+//               var Monthdata=$('#month').val();
+//               var url=['ajax-month','ajax-name'];
                $.ajax({
                    type: "get",
                    cache: false,
@@ -116,24 +91,42 @@
                    url: "ajax-month"
                })
                        .success(function( data ) {
-                           console.log("shume:"+data);
+//                           console.log("shume:"+data);
                    $("#month").empty();
                    $.each(data,function (index,value) {
-                       console.log(value.month,index);
+//                       console.log(value.month,index);
                        $("#month").append('<option value="'+ value.month+'">'+value.month+'</option>');
                    });
 
                });
+//               var myJSON = { year: myData, month: Monthdata};
+//               $.ajax({
+//                   type: "get",
+//                   cache: false,
+//                   dataType: "json",
+//                   data: Monthdata,
+//                   contentType:'charset=UTF-8',
+//                   url: "ajax-name"
+//               })
+//                       .success(function( data ) {
+////                           console.log("shume:"+data);
+//                           $("#name").empty();
+//                           $.each(data,function (index,value) {
+////                       console.log(value.month,index);
+//                               $("#name").append('<option value="'+ value.card_holder+'">'+value.card_holder+'</option>');
+//                           });
+//
+//                       });
            });
        });
        $(function () {
            $('#month').change(function () {
                var myYear=$('#year').val();
                var myMonth=$('#month').val();
-               console.log("myYear:"+myYear);
-               console.log("myMonth:"+myMonth);
+//               console.log("myYear:"+myYear);
+//               console.log("myMonth:"+myMonth);
                var myJSON = { year: myYear, month: myMonth};
-               console.log("myjson:"+myJSON);
+//               console.log("myjson:"+myJSON);
                $.ajax({
                    type: "get",
                    cache: false,
@@ -144,15 +137,13 @@
                    url: "ajax-name"
                })
                        .success(function( response) {
-                           console.log("shume:"+response);
+//                           console.log("shume:"+response);
                            $("#name").empty();
-
                            $.each(response,function (index,value) {
 //                               console.log("shume2"+value.card_holder);
                                 if(value.card_holder!=='未登録カード'){
                                     $("#name").append('<option value="'+ value.card_holder+'">'+value.card_holder+'</option>');
                                 }
-
                            });
            });
                        });
@@ -162,7 +153,6 @@
        $('#name').select2();
        $('#year').select2();
        $('#month').select2();
-//       $('#table_calculation').DataTable();
        });
        //display function
        $(function () {
@@ -170,11 +160,11 @@
                var myYear=$('#year').val();
                var myMonth=$('#month').val();
                var myName=$('#name').val();
-               console.log("myYear:"+myYear);
-               console.log("myMonth:"+myMonth);
-               console.log("myName:"+myName);
+//               console.log("myYear:"+myYear);
+//               console.log("myMonth:"+myMonth);
+//               console.log("myName:"+myName);
                var myJSON = { year: myYear, month: myMonth,name:myName};
-               console.log("myjson2:"+myJSON);
+//               console.log("myjson2:"+myJSON);
                $.ajax({
                    type: "get",
                    cache: false,
@@ -186,7 +176,7 @@
                    url: "display"
                })
                        .success(function(data) {
-                           console.log("shume22:" + data);
+//                           console.log("shume22:" + data);
                                 // intializing the table rows
                                var trHTML='';
                                var total_hour_in=0.0;
@@ -225,21 +215,12 @@
                                          $("#displays").show().empty();
                                      });
                                  });
-
                            $("#total_time").append("中にいる時間　合計 &emsp;"+total_hour_in+"時間"+total_minute_in+"分<br/>"+"外にいる時間　合計 &emsp;"+total_hour_out+"時間"+total_minute_out+"分<br/>"+"合計時間 &emsp;&emsp;&emsp;&emsp;   "+total_hour+"時間"+total_minute+"分");
                            $("#showyear").click(function (e) {
                                e.preventDefault();
                                $("#total_time").show().empty();
                            });
-
-
-                           console.log("In"+total_hour_in+":"+total_minute_in);
-                           console.log("Out"+total_hour_out+":"+total_minute_out);
-
-
-
                        });
-
            });
        });
 

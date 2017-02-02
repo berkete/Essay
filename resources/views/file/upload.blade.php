@@ -1,6 +1,9 @@
 {{--<meta name="csrf-token" content="{{ csrf_token() }}" charset="Shift_JIS" />--}}
 
 @extends('layouts.app')
+@section('title','Import and Upload')
+
+
 @section('content')
     <div class="row">
         {{--<div id="file-zone">--}}

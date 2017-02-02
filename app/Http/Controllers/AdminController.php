@@ -28,64 +28,51 @@ class AdminController extends Controller
             ->select(DB::raw('MONTH(created_at) as month'))
             ->orderBy("month","asc")
             ->get();
-
         return view('file.index', compact('users','years','months'));
     }
-
     public function view_list(){
+        // used to send ajax response to the index blade
         $yearInput = Input::get('year');
         $monthInput = Input::get('month');
         $views = DB::table('customers')
             ->select(DB::raw('created_at,year(created_at) as year,month(created_at) as month,card_holder,door,status,company,company2,status2,card_number'))
             ->whereRaw('year(created_at) =?', [$yearInput])
             ->whereRaw(('month(created_at) =?'), [$monthInput])
-//            ->whereRaw(('card_holder like ?'), [$nameInput])
             ->orderBy('created_at', 'asc')
             ->get();
-//
-
-//     $views=Customer::orderBy('created_at','asc')->get();
         $list2=array();
         foreach ($views as $view){
             $list2[] = array("dates" => $view->created_at, "door" => $view->door,"status" => $view->status, "company" => $view->company,"status2"=>$view->status2,"company2"=>$view->company2,"card_number"=>$view->card_number,
                 "card_holder"=>$view->card_holder);
         }
-
         return response($list2);
 
     }
     public function total_name(){
-
         {
             // Used to select year in the display list
             $users = Customer::paginate(50);
             $years = DB::table('customers')
                 ->select(DB::raw('YEAR(created_at) as year'))
                 ->groupBy("year")
+                ->orderBy("year",'desc')
                 ->get();
             // used to select months in the display list
             $card_holders = DB::table('customers')
                 ->select(DB::raw('card_holder','card_number'))
                 ->groupBy("card_number")
                 ->get();
-
             return view('file.one_year', compact('users','years','card_holders'));
         }
     }
     public function total_name_list(){
+        // used to send ajax response to the one_year blade
         $yearInput = Input::get('year');
-//        $monthInput = Input::get('month');
-//        $nameInput = Input::get('name');
-        // database data for calculation  for each date
         $calculations = DB::table('customers')
             ->select(DB::raw('created_at,time(created_at) as time,day(created_at) as day,month(created_at) as month,card_holder,card_number,status,company'))
             ->whereRaw('year(created_at) =?', [$yearInput])
-//            ->whereRaw(('month(created_at) =?'), [$monthInput])
-//            ->whereRaw(('card_holder like ?'), [$nameInput])
             ->orderBy('card_number', 'asc')
             ->orderBy('created_at', 'asc')
-
-//                        ->groupBy('month')
             ->get();
         $sumin = 0.0;      // Intializing the time total that the employee stayed in office
         $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
@@ -111,7 +98,6 @@ class AdminController extends Controller
                     $minutein = 0.0;
                     $minuteout = 0.0;
                 }
-
                 if ($value->month == $calculations[$key+1]->month && $value->card_number == $calculations[$key+1]->card_number && $value->card_holder !== "未登録カード") {
                     if ($value->status == '入室' && $value->company == '入側') {
 //                        var_dump("ok3");
@@ -161,7 +147,6 @@ class AdminController extends Controller
         // only last data
         $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder);
         return response((array)$list2);
-
     }
     public function total()
     {
@@ -170,6 +155,7 @@ class AdminController extends Controller
         $years = DB::table('customers')
             ->select(DB::raw('YEAR(created_at) as year'))
             ->groupBy("year")
+            ->orderBy("year",'desc')
             ->get();
         // used to select months in the display list
         $months = DB::table('customers')
@@ -180,45 +166,32 @@ class AdminController extends Controller
         return view('file.total_list', compact('users','years','months'));
     }
     public function total_list(){
+        // used to send ajax response to the total_list blade
         $yearInput = Input::get('year');
         $monthInput = Input::get('month');
-//        $nameInput = Input::get('name');
-        // Database data with specific days(group by day)
-        // database data for calculation  for each date
         $calculations = DB::table('customers')
             ->select(DB::raw('created_at,time(created_at) as time,day(created_at) as day,month(created_at) as month,card_holder,card_number,status,company'))
             ->whereRaw('year(created_at) =?', [$yearInput])
             ->whereRaw(('month(created_at) =?'), [$monthInput])
-//            ->whereRaw(('card_holder like ?'), [$nameInput])
-            ->orderBy('card_holder', 'asc')
+            ->orderBy('card_number', 'asc')
             ->orderBy('created_at', 'asc')
-
-//                        ->groupBy('month')
             ->get();
         $sumin = 0.0;      // Intializing the time total that the employee stayed in office
         $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
         $count = count($calculations);
         $displaylist = [];
         $valuelist = [];
-//        $hoursin=0;
-//        $minutein=0;
-//        $hoursout=0;
-//        $minuteout=0;
         $everyday_first_data_flg=1;
         $sumin = 0.0;      // Intializing the time total that the employee stayed in office
         $sumout = 0.0;
         foreach ($calculations as $key => $value) {
-//            var_dump("value");
-//            var_dump($value);
-//            var_dump("<br/><br/>");
-
             if ($everyday_first_data_flg === 1) {
                 $enter_time = $value->time;
                 $everyday_first_data_flg = 0;
             }
             // reset ( every day )
             if ($key < ($count - 1)) {
-                if ($value->day !== $calculations[$key + 1]->day && $value->card_holder !== $calculations[$key + 1]->card_holder) {
+                if ($value->day !== $calculations[$key + 1]->day && $value->card_number !== $calculations[$key + 1]->card_number) {
                     $list2[] = array('month' => $value->month, 'card_holder' => $value->card_holder, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout, "enter" => $enter_time, "exit" => $calculations[$key]->time);
                     $everyday_first_data_flg = 1;
                     //        var_dump($valuelist);
@@ -227,8 +200,7 @@ class AdminController extends Controller
                     $minutein = 0.0;
                     $minuteout = 0.0;
                 }
-
-                if ($value->month == $calculations[$key+1]->month && $value->card_holder == $calculations[$key+1]->card_holder && $value->card_holder !== "未登録カード") {
+                if ($value->month == $calculations[$key+1]->month && $value->card_number == $calculations[$key+1]->card_number && $value->card_holder !== "未登録カード") {
                     if ($value->status == '入室' && $value->company == '入側') {
 //                        var_dump("ok3");
                         if ($key < ($count - 1)) {
@@ -248,7 +220,7 @@ class AdminController extends Controller
 
                     }
                 }
-                if ($value->month == $calculations[$key+1]->month && $value->card_holder == $calculations[$key+1]->card_holder && $value->card_holder !== "未登録カード") {
+                if ($value->month == $calculations[$key+1]->month && $value->card_number == $calculations[$key+1]->card_number && $value->card_holder !== "未登録カード") {
 //                     var_dump("value".$value->status.":".$value->company);
                     if ($value->status == '退室' && $value->company == '出側') {
 //                            var_dump("count".$count.":".$key);
@@ -278,136 +250,14 @@ class AdminController extends Controller
         $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder);
         return response((array)$list2);
     }
-
-//        $yearInput = Input::get('year');
-//        $monthInput = Input::get('month');
-//        $calculations = DB::table('customers')
-//            ->select(DB::raw('created_at,year(created_at) as year,month(created_at) as month,card_holder,door,status,company,company2,status2,card_number'))
-//            ->whereRaw('year(created_at) =?', [$yearInput])
-//            ->whereRaw(('month(created_at) =?'), [$monthInput])
-////            ->whereRaw(('card_holder like ?'), [$nameInput])
-//            ->groupBy('card_holder','month')
-//            ->get();
-////
-////        $sumin = 0.0;      // Intializing the time total that the employee stayed in office
-////        $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
-////        $count = count($calculations);
-////        $displaylist = [];
-////        $valuelist = [];
-//////        $hoursin=0;
-//////        $minutein=0;
-//////        $hoursout=0;
-//////        $minuteout=0;
-////        $everyday_first_data_flg=1;
-////        $sumin = 0.0;      // Intializing the time total that the employee stayed in office
-////        $sumout = 0.0;
-////        foreach ($calculations as $key => $value) {
-////            if($everyday_first_data_flg===1) {
-////                $enter_time=$value->time;
-////                $everyday_first_data_flg = 0;
-////            }
-////            // reset ( every day )
-////            if ($key < ($count-1)) {
-////                if ($value->day !== $calculations[$key + 1]->day) {
-////                    $list2[] = array('month' => $value->month, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter" =>$enter_time, "exit" =>$calculations[$key]->time);
-////                    $everyday_first_data_flg=1;
-////                    //        var_dump($valuelist);
-////                    $sumin  = 0.0;     // Intializing the time total that the employee stayed in office
-////                    $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
-////                    $minutein=0.0;
-////                    $minuteout=0.0;
-////                }
-////            }
-////            if ($value->day == $calculations[$key]->day) {
-////                if ($value->status == '入室' && $value->company == '入側') {
-//////                        var_dump("ok3");
-////                    if ($key < ($count - 1)) {
-////                        $x = strtotime(($value->time));
-////                        $y = strtotime($calculations[$key + 1]->time);
-////                        $z = ($y - $x) / 3600;
-////                        $sumin += $z;
-////                        $hoursin = floor($sumin);
-////                        $minutein = round(60 * ($sumin - $hoursin));
-////                        if ($minutein==60){
-////                            $hoursin=$hoursin+1;
-////                            $minutein=0.0;
-////                        }
-////                    }
-////
-////                }
-////            }
-////            if ($value->day == $calculations[$key]->day) {
-//////                     var_dump("value".$value->status.":".$value->company);
-////                if ($value->status == '退室' && $value->company == '出側') {
-//////                            var_dump("count".$count.":".$key);
-////                    if($key < ($count-1) ){
-////                        $a = strtotime(($value->time));
-////                        $b = strtotime($calculations[$key + 1]->time);
-////                        if ($value->day == $calculations[$key + 1]->day) {
-////                            $f = ($b - $a) / 3600;
-////                        }
-////                        $sumout += $f;
-////                        $hoursout = floor($sumout);
-////                        $minuteout = round(60 * ($sumout - $hoursout));
-////                        if ($minuteout==60){
-////                            $hoursout=$hoursout+1;
-////                            $minuteout=0.0;
-////                        }
-////                    }
-////                }
-////            }
-////            //used to fetch the last time for the last data
-////            $last_month=$value->month;
-////            $last_day=$value->day;
-////            $last_time=$value->time;
-////        }
-////        // only last data
-////        $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder);
-////        return response((array)$list2);
-//
-////     $views=Customer::orderBy('created_at','asc')->get();
-////        $list2=array();
-////        foreach ($views as $view){
-////            $list2[] = array("dates" => $view->created_at, "door" => $view->door,"status" => $view->status, "company" => $view->company,"status2"=>$view->status2,"company2"=>$view->company2,"card_number"=>$view->card_number,
-////                "card_holder"=>$view->card_holder);
-////        }
-////
-////        return response($list2);
-//
-//
-////     $views=Customer::orderBy('created_at','asc')->get();
-//        $list2=array();
-//        foreach ($calculations as $view){
-//            $list2[] = array("dates" => $view->created_at, "door" => $view->door,"status" => $view->status, "company" => $view->company,"status2"=>$view->status2,"company2"=>$view->company2,"card_number"=>$view->card_number,
-//                "card_holder"=>$view->card_holder);
-//        }
-//
-//        return response($list2);
-//
-
-//        $yearInput = Input::get('year');
-//        $monthInput = Input::get('month');
-
-        // database data for calculation  for each date
-//        $calculations = DB::table('customers')
-//            ->select(DB::raw('day(created_at) as day,year(created_at) as year,month(created_at) as month,time(created_at)as time,card_holder,door,status,company,company2,status2,card_number'))
-//            ->whereRaw('year(created_at) =?', [$yearInput])
-//            ->whereRaw(('month(created_at) =?'), [$monthInput])
-////            ->whereRaw(('card_holder like ?'), [$nameInput])
-//            ->orderBy('created_at', 'asc')
-////            ->groupBy('day')
-//            ->get();
-
-//    }
-
     public function getImport()
     {
         return view('file.upload');
     }
     public function postImport()
     {
+        //used to import the files to the database and directory in the import page
         if(Input::hasFile('upload')){
-//            $path = Input::file('upload')->getRealPath();
             $path = Input::file('upload');
             foreach($path as $file) {
                 $data = Excel::load($file, function ($reader) {
@@ -446,27 +296,23 @@ class AdminController extends Controller
     }
     public function getExport()
     {
+        //used export all database data to excel in the home page
         $export = Customer::all();
         Excel::create('export data', function ($excel) use ($export) {
             $excel->sheet('Sheet 1', function ($sheet) use ($export) {
                 $sheet->fromArray($export);
             });
-
         })->export('xls');
-
         return redirect()->back();
-
     }
     public function getDelete()
     {
+        // this function is used to delete both the database data and the directory files together in the home page
         Session::has('delete_all','ファイルをすべて削除します。');
         DB::table('customers')->delete();
         $files = public_path().'/uploaded_files/';
-//        $path=scandir($files,1);
-//        var_dump($path);
         array_map('unlink', glob("$files/*.dat"));
         return redirect()->back();
-
     }
     public function getsearch()
     {
@@ -491,8 +337,6 @@ class AdminController extends Controller
             ->whereRaw(('month(created_at) =?'), [$monthInput])
             ->whereRaw(('card_holder like ?'), [$nameInput])
             ->groupBy('day')->get();
-
-
         return view('file.searchs', compact('customers', 'customer1', 'customer2', 'displays'));
     }
     public function display()
@@ -591,33 +435,23 @@ class AdminController extends Controller
     }
     public function lists(){
         $files = public_path().('/uploaded_files/');
-        $path=scandir($files, 1);
+        $path=scandir($files, 1);// used to list all files in the directory
         return view('file.list',compact('files'));
     }
     public function getDownload($filename){
-//        Session::flash('download_media','');
         $path= public_path()."/uploaded_files/".$filename;
-        return response()->download($path);
+        return response()->download($path);// to download individual file from  the public directory
     }
     public function getDeletes($filename){
         Session::flash('delete_media','ファイルを削除しました。');
         $path= public_path()."/uploaded_files/".$filename;
-        unlink($path);
+        unlink($path);//used to delete a single file from the directory
         return redirect()->back();
     }
     public function getDeleteall(){
-
         $files = public_path().'/uploaded_files/';
         $path=scandir($files,1);
-//        var_dump($path);
-        array_map('unlink', glob("$files/*.dat"));
-
-//        foreach ($path as $key=>$value){
-////            unlink($);
-//            var_dump($value);
-//
-//        }
+        array_map('unlink', glob("$files/*.dat"));// Used to delete or unlink all the data in the directory in the dat file upload page
         return redirect()->back();
-
     }
 }
