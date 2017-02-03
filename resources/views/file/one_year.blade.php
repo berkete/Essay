@@ -17,16 +17,16 @@
                 </select>
             </div>
         @endif
-        @if($card_holders)
-            <div class="col-sm-2" style="margin-top: -19px">
-                <label for="month"></label>
-                <select name="name" id="name" class="form-control">
-                    <option name="name" value="" selected disabled><i style="color: #00b3ee">名前を選択</i></option>
-                    @foreach($card_holders as $card_holder)
-                    @endforeach
-                </select>
-            </div>
-        @endif
+        {{--@if($card_holders)--}}
+            {{--<div class="col-sm-2" style="margin-top: -19px">--}}
+                {{--<label for="month"></label>--}}
+                {{--<select name="name" id="name" class="form-control">--}}
+                    {{--<option name="name" value="" selected disabled><i style="color: #00b3ee">名前を選択</i></option>--}}
+                    {{--@foreach($card_holders as $card_holder)--}}
+                    {{--@endforeach--}}
+                {{--</select>--}}
+            {{--</div>--}}
+        {{--@endif--}}
             <div class="col-sm-1">
                 <input type="button"  align="right" value="表示一覧" id="display" class="btn btn-circle btn-default">
             </div>
@@ -58,28 +58,28 @@
     <div id="list_display"></div>
     <script type="text/javascript">
         // used to display months when changing year
-        $(document).ready(function () {
-            $('#year').change(function (e) {
-                e.preventDefault();
-                var myData=$('#year');
-                $.ajax({
-                    type: "get",
-                    cache: false,
-                    dataType: "json",
-                    data: myData,
-                    contentType:'charset=UTF-8',
-                    url: "ajax-name2"
-                })
-                        .success(function( data ) {
-                            console.log("shume:"+data);
-                            $("#name").empty();
-                            $.each(data,function (index,value) {
-                                console.log(value.month,index);
-                                $("#name").append('<option value="'+ value.card_holder+'" disabled>'+value.card_holder+'</option>');
-                            });
-                        });
-            });
-        });
+//        $(document).ready(function () {
+//            $('#year').change(function (e) {
+//                e.preventDefault();
+//                var myData=$('#year');
+//                $.ajax({
+//                    type: "get",
+//                    cache: false,
+//                    dataType: "json",
+//                    data: myData,
+//                    contentType:'charset=UTF-8',
+//                    url: "ajax-name2"
+//                })
+//                        .success(function( data ) {
+//                            console.log("shume:"+data);
+//                            $("#name").empty();
+//                            $.each(data,function (index,value) {
+//                                console.log(value.month,index);
+//                                $("#name").append('<option value="'+ value.card_holder+'" disabled>'+value.card_holder+'</option>');
+//                            });
+//                        });
+//            });
+//        });
         //Applying the selector jquery library
         $(function() {
             $('#year').select2();

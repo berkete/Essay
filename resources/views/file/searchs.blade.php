@@ -71,55 +71,73 @@
        <tbody id="displays">
        </tbody>
    </table>
-           {{--<table  id="table_calculation">--}}
-               {{--<tbody>--}}
-               {{--</tbody>--}}
-           {{--</table>--}}
    <script type="text/javascript">
        $(document).ready(function () {
            $('#year').change(function (e) {
                e.preventDefault();
+               $.fn.myfunction();
+
                var myData=$('#year');
-//               var Monthdata=$('#month').val();
-//               var url=['ajax-month','ajax-name'];
+//               var myName=$("#name").val();
+//               console.log(myName);
                $.ajax({
                    type: "get",
                    cache: false,
                    dataType: "json",
                    data: myData,
                    contentType:'charset=UTF-8',
-                   url: "ajax-month"
+                   url: "ajax-month",
+                   async: true
                })
                        .success(function( data ) {
 //                           console.log("shume:"+data);
-                   $("#month").empty();
-                   $.each(data,function (index,value) {
+                           $("#month").empty();
+                           $.each(data,function (index,value) {
 //                       console.log(value.month,index);
-                       $("#month").append('<option value="'+ value.month+'">'+value.month+'</option>');
-                   });
-
-               });
-//               var myJSON = { year: myData, month: Monthdata};
-//               $.ajax({
-//                   type: "get",
-//                   cache: false,
-//                   dataType: "json",
-//                   data: Monthdata,
-//                   contentType:'charset=UTF-8',
-//                   url: "ajax-name"
-//               })
-//                       .success(function( data ) {
-////                           console.log("shume:"+data);
-//                           $("#name").empty();
-//                           $.each(data,function (index,value) {
-////                       console.log(value.month,index);
-//                               $("#name").append('<option value="'+ value.card_holder+'">'+value.card_holder+'</option>');
-//                           });
+                               $("#month").append('<option value="'+ value.month+'">'+value.month+'</option>');
+//                               $("#displays").append(tr);
+                               $("#showyear").click(function () {
+                                   $("#displays").show().empty();
+                               });
+//                               if(flag==1){
+//                                   tr.show.empty();
 //
-//                       });
+//                               }
+//                               else{
+////                                  alert();
+//                               }
+
+//                               $("#name").append('<option value="'+ value.card_holder+'">'+value.card_holder+'</option>');
+
+                           });
+               });
+
            });
        });
-       $(function () {
+
+       $.fn.myfunction=function () {
+           var myData=$('#year');
+           $.ajax({
+               type: "get",
+               cache: false,
+               dataType: "json",
+               data: myData,
+               contentType:'charset=UTF-8',
+               url: "ajax-name2",
+               async: true
+
+           })
+                   .success(function( data ) {
+//                       console.log("shume:"+data);
+                       $("#name").empty();
+                       $.each(data,function (index,value) {
+//                           console.log(value.card_holder,index);
+                           $("#name").append('<option value="'+ value.card_holder+'" >'+value.card_holder+'</option>');
+
+                       });
+                   });
+       };
+     $(function() {
            $('#month').change(function () {
                var myYear=$('#year').val();
                var myMonth=$('#month').val();
@@ -145,7 +163,7 @@
                                     $("#name").append('<option value="'+ value.card_holder+'">'+value.card_holder+'</option>');
                                 }
                            });
-           });
+                        });
                        });
            });
        // Data selector jquery library call
@@ -189,7 +207,6 @@
                                    trHTML = '<tr><td>' + data[index].month+'/'+data[index].day + '</td><td>' + data[index].sumin+'時間'+　data[index].minutein+　'分'+  '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+  '</td><td>' + data[index].enter+ '</td><td>' + data[index].exit+ '</td></tr>';
                                    $("#displays").append(trHTML);
                                    $("#displays").css("background-color", "white");
-
                                      //Total time inside the office
                                      total_hour_in=total_hour_in+data[index].sumin;
                                      total_minute_in=total_minute_in+data[index].minutein;
@@ -219,6 +236,7 @@
                            $("#showyear").click(function (e) {
                                e.preventDefault();
                                $("#total_time").show().empty();
+
                            });
                        });
            });

@@ -17,7 +17,7 @@ class AdminController extends Controller
     public function index()
     {
           // Used to select year in the display list
-        $users = Customer::paginate(50);
+        $users = Customer::paginate(20);
         $years = DB::table('customers')
             ->select(DB::raw('YEAR(created_at) as year'))
             ->groupBy("year")
@@ -298,7 +298,7 @@ class AdminController extends Controller
     {
         //used export all database data to excel in the home page
         $export = Customer::all();
-        Excel::create('export data', function ($excel) use ($export) {
+        Excel::create(date('Y/m/d').'Key-p data', function ($excel) use ($export) {
             $excel->sheet('Sheet 1', function ($sheet) use ($export) {
                 $sheet->fromArray($export);
             });
@@ -325,6 +325,7 @@ class AdminController extends Controller
         $customer1 = DB::table('customers')
             ->select(DB::raw('YEAR(created_at) as year'))
             ->groupBy("year")
+            ->orderBy("year","desc")
             ->get();
         // used to group users
         $customer2 = Customer::groupBy('card_holder')->get();

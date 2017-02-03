@@ -41,7 +41,7 @@ Route::get('/ajax-month',function (){
 //    $monthInput=Input::get('month');
 
     $year=DB::table('customers')
-        ->select(DB::raw('month(created_at) as month '))
+        ->select(DB::raw('month(created_at) as month','card_holder'))
         ->whereRaw('year(created_at) =?',[$yearInput])
         ->orderBy("month","desc")
         ->groupBy("month")

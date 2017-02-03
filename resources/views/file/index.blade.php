@@ -3,7 +3,7 @@
    Home
 @endsection
 @section('content')
-        <hr>
+
         <hr>
         <div class="row" align="center" style="background-color: mintcream;width: 105%">
             @if(Session::has('delete_all'))
@@ -49,11 +49,13 @@
 
             </div>
         {{--Begining of Table used to display per day--}}
+        @if($users)
     <div class="row" >
         <div class="col-sm-12" style="background-color:#d9edf7">
-            <table class="table table-bordered" id="display_list">
+            <table class="table table-bordered" id="display_list" style="width: 100%">
                 <thead>
                  <tr>
+                     <th>No.</th>
                     <th>日時 </th>
                     <th>ドア</th>
                     <th>入室/退室</th>
@@ -64,16 +66,37 @@
                     <th>名前</th>
                  </tr>
                 </thead>
-                <tbody id="body_display">
+                <tbody id="body_display" style="background-color: white;width: 100%">
                 </tbody>
+
             </table>
+            <table class="table table-bordered" id="body_displays" style="width: 100%">
+                @foreach($users as $key=>$user)
+                <tbody  style="background-color: white">
+                <td style="width: 3%;">{{$key+1}}</td>
+                <td style="width: 14%;">{{$user->created_at}}</td>
+                <td style="width: 3%;">{{$user->door}}</td>
+                <td style="width: 12%;">{{$user->status}}</td>
+                <td style="width: 12%;">{{$user->company}}</td>
+                <td style="width: 14%;">{{$user->status2}}</td>
+                <td style="width: 10%;">{{$user->company2}}</td>
+                <td style="width: 10%;">{{$user->card_number}}</td>
+                <td style="width: 9%;">{{$user->card_holder}}</td>
+                </tbody>
+                @endforeach
+                {{--<p class="pull-right"></p>{{$users->render()}}--}}
+
+            </table>
+
         </div>
     </div>
+    @endif
 <script type="text/javascript">
     // used to display months when changing year
-    $(document).ready(function () {
+   $(document).ready(function () {
         $('#year').change(function (e) {
             e.preventDefault();
+
             var myData=$('#year');
             $.ajax({
                 type: "get",
@@ -81,7 +104,8 @@
                 dataType: "json",
                 data: myData,
                 contentType:'charset=UTF-8',
-                url: "ajax-month"
+                url: "ajax-month",
+//                async:true
             })
                     .success(function( data ) {
                         $("#month").empty();
@@ -89,6 +113,7 @@
                             $("#month").append('<option value="'+ value.month+'">'+value.month+'</option>');
                         });
                     });
+//            $.fn.myfunctions();
         });
     });
     //Applying the selector jquery library
@@ -107,6 +132,8 @@
     // used to display the details of data when clicking on display button
     $(function () {
         $('#display').click(function () {
+            $("#body_displays").show().empty();
+
             var myYear=$('#year').val();
             var myMonth=$('#month').val();
 //            console.log("myYear:"+myYear);
@@ -121,14 +148,15 @@
                 accept:true,
                 meta:'csrf-token',
                 contentType:'application/json,charset=UTF-8',
-                url: "view_list"
+                url: "view_list",
+//                async:false
             })
                     .success(function(data) {
                         // intializing the table rows
                         var trHTML='';
                         $.each(data, function (index, value) {
 //                            console.log("out:"+value.card_holder);
-                            trHTML = '<tr><td>' + value.dates+'</td><td>'+value.door + '</td><td>' + value.status+'</td><td>'+ value.company +  '</td><td>' + value.status2+ '</td><td>' + value.company2+ '</td><td>'
+                            trHTML = '<tr><td>' +(index+1)+ '</td><td>'+value.dates+'</td><td>'+value.door + '</td><td>' + value.status+'</td><td>'+ value.company +  '</td><td>' + value.status2+ '</td><td>' + value.company2+ '</td><td>'
                                     + value.card_number+ '</td><td>' + value.card_holder + '</td></tr>';
                             $("#display_list").append(trHTML);
                             $("#display").click(function (e) {
@@ -137,14 +165,18 @@
                             });
                         });
                         $(document).ready(function() {
-                            $('#display_list').DataTable( {
-                                "pageLength": 50,
-                                "bRetrieve": true,
-                                dom: 'Bfrtip',
-                                buttons: [
+                         $('#display_list').DataTable( {
+                             pageLength:50,
+//                                stateSave: false,
+                             "bRetrieve": true,
+                              paging:true,
+                              info:false,
+                              dom: 'Bfrtip',
+                              buttons: [
 //                                    'copy', 'csv', 'excel', 'pdf', 'print'
                                 ]
-                            } );
+                               
+                            });
                         } );
                         $("button").click(function(){
                             var row = $(this).closest("tr");       // Finds the closest row <tr>
@@ -182,34 +214,6 @@
                             });
                         });
                         // applying datatable jquery library
-//                     var t= $('#display_list').DataTable( {
-//                            "bServerSide":true,
-//                            "bProcessing":false,
-//                            "sAjaxSource": "view_list",
-//                            "iTotalRecords":"10",
-//                            "iTotalDisplayRecords":"10",
-//                            "sAjaxDataProp" : "data",
-//                            "bFilter":true,
-//                            "paging": true,
-//                            "ordering":false,
-//                            "searchable":false,
-//                            "info": false,
-//                            "sDom": '<"top"i>rt<"bottom"flp><"clear">',
-//                            "columnDefs": [ {
-//                                "searchable": false,
-//                                "orderable": false,
-//                                "targets": 0
-//                            } ],
-//                            "order": [[ 1, 'asc' ]]
-//                            //                            "scrollX": true,
-////                            "order": [[ 0, "asc" ]],
-////                            scrollY: 800
-//                        });
-//                        t.on( 'order.dt search.dt', function () {
-//                            t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-//                                cell.innerHTML = i+1;
-//                            } );
-//                        } );
                     });
 
         });
