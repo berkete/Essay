@@ -3,7 +3,6 @@
    Home
 @endsection
 @section('content')
-
         <hr>
         <div class="row" align="center" style="background-color: mintcream;width: 105%">
             @if(Session::has('delete_all'))
@@ -41,12 +40,11 @@
                     <li> <a href="{{URL::to('getImport')}}" class="alert-info " style="padding-bottom: 10px"><span class="glyphicon glyphicon-import">インポート</span></a></li>
                     <li><a href="{{URL::to('getExport')}}" class="alert-info "style="padding-bottom: 10px"><span class="glyphicon glyphicon-export">エクスポート</span></a></li>
                     <li><a href="{{URL::to('/lists')}}" class="alert-info "style="padding-bottom: 10px"><span class="glyphicon glyphicon-download">ダウンロードDATファイル</span></a></li>
-                    <li> <button class="btn alert-info " style="padding-bottom: 17px"><span class="glyphicon glyphicon-export">コレパーギエクスポート</span></button></li>
-                    <li> <span ></span><input type="button" class=" print btn alert-info glyphicon-print " value="プリント" style="padding-bottom: 17px"></li>
+                    <li> <button class="btn alert-info " style="padding-bottom: 17px"><span class="glyphicon glyphicon-export">このページをエクスポート</span></button></li>
+                    <li> <input type="button" class=" print btn alert-info glyphicon-print " value="印刷" style="padding-bottom: 17px"></li>
                    <li><a href="{{URL::to('getDelete')}}" class="alert-info" id="delete_all" style="padding-bottom: 10px"><span class="glyphicon glyphicon-trash">すべて削除</span></a></li>
                 </ul>
                 </div>
-
             </div>
         {{--Begining of Table used to display per day--}}
         @if($users)
@@ -68,7 +66,6 @@
                 </thead>
                 <tbody id="body_display" style="background-color: white;width: 100%">
                 </tbody>
-
             </table>
             <table class="table table-bordered" id="body_displays" style="width: 100%">
                 @foreach($users as $key=>$user)
@@ -84,7 +81,7 @@
                 <td style="width: 9%;">{{$user->card_holder}}</td>
                 </tbody>
                 @endforeach
-                {{--<p class="pull-right"></p>{{$users->render()}}--}}
+                    {{--<p class="pull-right"></p>{{$users->render()}}--}}
 
             </table>
 
@@ -96,7 +93,6 @@
    $(document).ready(function () {
         $('#year').change(function (e) {
             e.preventDefault();
-
             var myData=$('#year');
             $.ajax({
                 type: "get",
@@ -113,7 +109,6 @@
                             $("#month").append('<option value="'+ value.month+'">'+value.month+'</option>');
                         });
                     });
-//            $.fn.myfunctions();
         });
     });
     //Applying the selector jquery library
@@ -133,11 +128,8 @@
     $(function () {
         $('#display').click(function () {
             $("#body_displays").show().empty();
-
             var myYear=$('#year').val();
             var myMonth=$('#month').val();
-//            console.log("myYear:"+myYear);
-//            console.log("myMonth:"+myMonth);
             var myJSON = { year: myYear, month: myMonth};
 //            console.log("myjson2:"+myJSON);
             $.ajax({

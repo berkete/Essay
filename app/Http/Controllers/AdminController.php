@@ -90,7 +90,7 @@ class AdminController extends Controller
             // reset ( every day )
             if ($key < ($count-1)) {
                 if ($value->day !== $calculations[$key + 1]->day && $value->card_number !== $calculations[$key + 1]->card_number) {
-                    $list2[] = array('month' => $value->month, 'card_holder' => $value->card_holder, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout, "enter" => $enter_time, "exit" => $calculations[$key]->time);
+                    $list2[] = array('month' => $value->month,'card_number' => $value->card_number, 'card_holder' => $value->card_holder, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout, "enter" => $enter_time, "exit" => $calculations[$key]->time);
                     $everyday_first_data_flg = 1;
                     //        var_dump($valuelist);
                     $sumin = 0.0;     // Intializing the time total that the employee stayed in office
@@ -145,7 +145,7 @@ class AdminController extends Controller
             $last_time=$value->time;
         }
         // only last data
-        $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder);
+        $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder,"card_number"=>$value->card_number);
         return response((array)$list2);
     }
     public function total()
@@ -192,7 +192,7 @@ class AdminController extends Controller
             // reset ( every day )
             if ($key < ($count - 1)) {
                 if ($value->day !== $calculations[$key + 1]->day && $value->card_number !== $calculations[$key + 1]->card_number) {
-                    $list2[] = array('month' => $value->month, 'card_holder' => $value->card_holder, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout, "enter" => $enter_time, "exit" => $calculations[$key]->time);
+                    $list2[] = array('month' => $value->month,'card_number' => $value->card_number, 'card_holder' => $value->card_holder, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout, "enter" => $enter_time, "exit" => $calculations[$key]->time);
                     $everyday_first_data_flg = 1;
                     //        var_dump($valuelist);
                     $sumin = 0.0;     // Intializing the time total that the employee stayed in office
@@ -247,7 +247,7 @@ class AdminController extends Controller
             $last_time=$value->time;
         }
         // only last data
-        $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder);
+        $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder,'card_number' => $value->card_number);
         return response((array)$list2);
     }
     public function getImport()
@@ -281,7 +281,7 @@ class AdminController extends Controller
                 }
                 else{
 
-    echo"<script type=\"text/javascript\">window.alert('The File already uploaded please choose new file to upload and import');
+    echo"<script type=\"text/javascript\">window.alert('そのファイルは、すでにアップロードされています。別のファイルを選んでください。');
          window.location.href = '/getImport';
          </script>";
 //                    return back();
@@ -290,7 +290,7 @@ class AdminController extends Controller
             //Used to insert the insert array values to the database
             if(!empty($insert)){
                 DB::table('customers')->insert($insert);
-                return redirect('/home')->with("Insert Record successfully.");
+                return redirect('/home')->with("インポートが完了しました。");
             }
         } // if end
     }

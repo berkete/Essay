@@ -76,10 +76,7 @@
            $('#year').change(function (e) {
                e.preventDefault();
                $.fn.myfunction();
-
                var myData=$('#year');
-//               var myName=$("#name").val();
-//               console.log(myName);
                $.ajax({
                    type: "get",
                    cache: false,
@@ -99,16 +96,6 @@
                                $("#showyear").click(function () {
                                    $("#displays").show().empty();
                                });
-//                               if(flag==1){
-//                                   tr.show.empty();
-//
-//                               }
-//                               else{
-////                                  alert();
-//                               }
-
-//                               $("#name").append('<option value="'+ value.card_holder+'">'+value.card_holder+'</option>');
-
                            });
                });
 
@@ -141,10 +128,7 @@
            $('#month').change(function () {
                var myYear=$('#year').val();
                var myMonth=$('#month').val();
-//               console.log("myYear:"+myYear);
-//               console.log("myMonth:"+myMonth);
                var myJSON = { year: myYear, month: myMonth};
-//               console.log("myjson:"+myJSON);
                $.ajax({
                    type: "get",
                    cache: false,
@@ -155,10 +139,8 @@
                    url: "ajax-name"
                })
                        .success(function( response) {
-//                           console.log("shume:"+response);
                            $("#name").empty();
                            $.each(response,function (index,value) {
-//                               console.log("shume2"+value.card_holder);
                                 if(value.card_holder!=='未登録カード'){
                                     $("#name").append('<option value="'+ value.card_holder+'">'+value.card_holder+'</option>');
                                 }
@@ -178,11 +160,7 @@
                var myYear=$('#year').val();
                var myMonth=$('#month').val();
                var myName=$('#name').val();
-//               console.log("myYear:"+myYear);
-//               console.log("myMonth:"+myMonth);
-//               console.log("myName:"+myName);
                var myJSON = { year: myYear, month: myMonth,name:myName};
-//               console.log("myjson2:"+myJSON);
                $.ajax({
                    type: "get",
                    cache: false,
@@ -194,7 +172,6 @@
                    url: "display"
                })
                        .success(function(data) {
-//                           console.log("shume22:" + data);
                                 // intializing the table rows
                                var trHTML='';
                                var total_hour_in=0.0;

@@ -17,16 +17,6 @@
                 </select>
             </div>
         @endif
-        {{--@if($card_holders)--}}
-            {{--<div class="col-sm-2" style="margin-top: -19px">--}}
-                {{--<label for="month"></label>--}}
-                {{--<select name="name" id="name" class="form-control">--}}
-                    {{--<option name="name" value="" selected disabled><i style="color: #00b3ee">名前を選択</i></option>--}}
-                    {{--@foreach($card_holders as $card_holder)--}}
-                    {{--@endforeach--}}
-                {{--</select>--}}
-            {{--</div>--}}
-        {{--@endif--}}
             <div class="col-sm-1">
                 <input type="button"  align="right" value="表示一覧" id="display" class="btn btn-circle btn-default">
             </div>
@@ -43,11 +33,12 @@
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>Year </th>
-                        <th>Name</th>
-                        <th>Total_time_inside</th>
-                        <th>Total_time_outside</th>
-                        <th>Total_time</th>
+                        <th>年/月 </th>
+                        <th>カード番号</th>
+                        <th>名前</th>
+                        <th>中にいる時間</th>
+                        <th>外にいる時間</th>
+                        <th>合計時間 </th>
                     </tr>
                 </thead>
                 <tbody id="display_list">
@@ -57,29 +48,6 @@
     </div>
     <div id="list_display"></div>
     <script type="text/javascript">
-        // used to display months when changing year
-//        $(document).ready(function () {
-//            $('#year').change(function (e) {
-//                e.preventDefault();
-//                var myData=$('#year');
-//                $.ajax({
-//                    type: "get",
-//                    cache: false,
-//                    dataType: "json",
-//                    data: myData,
-//                    contentType:'charset=UTF-8',
-//                    url: "ajax-name2"
-//                })
-//                        .success(function( data ) {
-//                            console.log("shume:"+data);
-//                            $("#name").empty();
-//                            $.each(data,function (index,value) {
-//                                console.log(value.month,index);
-//                                $("#name").append('<option value="'+ value.card_holder+'" disabled>'+value.card_holder+'</option>');
-//                            });
-//                        });
-//            });
-//        });
         //Applying the selector jquery library
         $(function() {
             $('#year').select2();
@@ -149,8 +117,8 @@
                                     total_hour=total_hour+1.0;
                                     total_minute=total_minute-60.0;
                                 }
-                                if (data[index].card_holder!=="未登録カード" && total_hour>0.0){
-                                    trHTML = '<tr><td>' + (index+1)+ '</td><td>'+myYear+ '</td><td>' + data[index].card_holder+ '</td><td>' +Math.abs(data[index].sumin)+'時間'+　data[index].minutein+　'分' + '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+ '</td><td>' + Math.abs(total_hour)+'時間'+ total_minute+　'分'+ '</td></tr>';
+                                if (data[index].card_holder!=="未登録カード" && data[index].card_number!=="未登録カード"  && total_hour>0.0){
+                                    trHTML = '<tr><td>' + (index+1)+ '</td><td>'+myYear+ '</td><td>' +data[index].card_number + '</td><td>'+data[index].card_holder+'</td><td>' +Math.abs(data[index].sumin)+'時間'+　data[index].minutein+　'分' + '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+ '</td><td>' + Math.abs(total_hour)+'時間'+ total_minute+　'分'+ '</td></tr>';
                                     $("#display_list").append(trHTML);
                                     $("#display_list").css("background-color", "white");
                                 }

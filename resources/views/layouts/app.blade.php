@@ -75,7 +75,6 @@
             </div>
     </div><!--/header-middle-->
     <div>
-
     </div>
 </header><!--/header-->
 <div class="container">

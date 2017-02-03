@@ -42,11 +42,12 @@
                 <thead>
                     <tr >
                         <th>No.</th>
-                        <th>Year/Month </th>
-                        <th>Name</th>
-                        <th>Total_time_inside</th>
-                        <th>Total_time_outside</th>
-                        <th>Total_time</th>
+                        <th>年/月 </th>
+                        <th>年/カード番号 </th>
+                        <th>名前</th>
+                        <th>中にいる時間</th>
+                        <th>外にいる時間</th>
+                        <th>合計時間 </th>
                     </tr>
                 </thead>
                 <tbody id="table_calculation">
@@ -150,7 +151,7 @@
                                     total_minute=total_minute-60.0;
                                 }
                                 if (data[index].card_holder!=="未登録カード" && total_hour>0.0){
-                                    trHTML = '<tr><td>' + (index+1)+ '</td><td>'+myYear+'/'+ data[index].month+ '</td><td>' + data[index].card_holder+ '</td><td>' +Math.abs(data[index].sumin)+'時間'+　data[index].minutein+　'分' + '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+ '</td><td>' + Math.abs(total_hour)+'時間'+ total_minute+　'分'+ '</td></tr>';
+                                    trHTML = '<tr><td>' + (index+1)+ '</td><td>'+myYear+'/'+ data[index].month+ '</td><td>' + data[index].card_number+ '</td><td>' + data[index].card_holder+ '</td><td>'+Math.abs(data[index].sumin)+'時間'+　data[index].minutein+　'分' + '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+ '</td><td>' + Math.abs(total_hour)+'時間'+ total_minute+　'分'+ '</td></tr>';
                                     $("#monthly_report").append(trHTML);
                                     $("#monthly_report").css("background-color", "white");
 
