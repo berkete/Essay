@@ -59,21 +59,53 @@ Route::get('/ajax-name',function (){
 });
 Route::get('/ajax-name2',function (){
     $yearInput=Input::get('year');
-//    $monthInput=Input::get('month');
     $name=DB::table('customers')
         ->select(DB::raw('card_holder'))
         ->whereRaw('year(created_at) = :year', ['year' => $yearInput])
-        ->groupBy('card_holder')->orderBy("card_number","ASC")->get();
+        ->orderBy("card_number","ASC")
+        ->groupBy('card_holder')
+        ->get();
     return $name;
 });
+
+//used to choose days from the month
+Route::get('/ajax-daily',function (){
+    $yearInput=Input::get('year');
+    $monthInput=Input::get('month');
+    $daily=DB::table('customers')
+        ->select(DB::raw('day(created_at) as day'))
+        ->whereRaw('month(created_at) = :month and year(created_at) = :year', ['month' => $monthInput,'year' => $yearInput])
+        ->orderBy("day","desc")
+        ->groupBy('day')
+        ->get();
+    return $daily;
+});
+//used to choose days when selecting year
+Route::get('/ajax-daily2',function (){
+    $yearInput=Input::get('year');
+    $daily2=DB::table('customers')
+        ->select(DB::raw('day(created_at) as day'))
+        ->whereRaw('year(created_at) = :year', ['year' => $yearInput])
+        ->orderBy("day","desc")
+        ->groupBy('day')->get();
+    return $daily2;
+});
+Route::get('/daily_report','AdminController@daily_report');
+
 //used to display the calculation result
 Route::get('/display','AdminController@display');
+Route::get('/daily_display','AdminController@daily_display');
+
+
 //used to list monthly information
 Route::get('/view_list','AdminController@view_list');
 Route::get('/total_list','AdminController@total_list');
 Route::get('/total','AdminController@total');
 Route::get('/total_name_list','AdminController@total_name_list');
 Route::get('/total_name','AdminController@total_name');
+
+Route::get('/daily_report','AdminController@daily_report');
+
 Route::get('/home','AdminController@index');
 
 

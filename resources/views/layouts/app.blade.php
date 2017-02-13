@@ -18,6 +18,8 @@
     <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
     <script src="jQuery-Plugin-To-Export-Table/dist/tableExport.js"></script>
     <script src="Export-Html-Table/src/jquery.table2excel.js"></script>
+    <script src="jquery-DATEPICKER-1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="jquery-DATEPICKER-1.12.1/jquery-ui.css">
     {{--//Print plugin--}}
     <script src="DoersGuild-jQuery.print/jQuery.print.js"></script>
 
@@ -68,6 +70,7 @@
                         <ul class="nav navbar-nav container-fluid">
                             <li><a href="{{url('/home')}}" class="alert-info"><i class="glyphicon glyphicon-home"></i>ホーム</a></li>
                             <li><a href="{{url('/getsearch')}}"  class=" alert-info btn-sm"><i class="glyphicon glyphicon-floppy-saved"></i>計算(日)</a></li>
+                            <li><a href="{{url('/daily_report')}}"  class=" alert-info btn-sm"><i class="glyphicon glyphicon-floppy-saved"></i>計算(日報)</a></li>
                             <li><a href="{{url('/total')}}"  class="alert-info btn-sm"><i class="glyphicon glyphicon-floppy-saved"></i>計算(月)</a></li>
                             <li><a href="{{url('/total_name')}}"  class="alert-info btn-sm"><i class="glyphicon glyphicon-floppy-saved"></i> 計算(年)</a></li>
                         </ul>

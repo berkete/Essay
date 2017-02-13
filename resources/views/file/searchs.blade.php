@@ -32,30 +32,30 @@
                </select>
            </div>
    @endif
-   @if($customers)
+   {{--@if($customers)--}}
            <div class="col-sm-2">
                <label for="month"></label>
                <select name="month" id="month" class="form-control">
                    <option name="name" value="" selected disabled><i style="color: #00b3ee">月を選択</i></option>
-               @foreach($customers as $customer)
-                   @endforeach
+               {{--@foreach($customers as $customer)--}}
+                   {{--@endforeach--}}
                </select>
            </div>
-   @endif
-   @if($customer2)
+   {{--@endif--}}
+   {{--@if($customer2)--}}
            <div class="col-sm-3">
                <label for="name"></label>
                <select name="name" id="name" class="form-control">
                    <option name="name" value="" data-placeholder="select year">名前を選択</option>
-                   @foreach($customer2 as $customer)
-                   @endforeach
+                   {{--@foreach($customer2 as $customer)--}}
+                   {{--@endforeach--}}
                </select>
            </div>
            <div class="col-sm 3"><input type="button"  align="right" value="表示" id="showyear" class="btn btn-success" style="margin-top: 18px">
            </div>
         </div>
         </form>
-   @endif
+   {{--@endif--}}
    <table style="margin-top:50px" class="table">
        <thead>
        <tr>
@@ -180,7 +180,26 @@
                                var total_minute_out=0.0;
                                var total_hour=0.0;
                                var total_minute=0.0;
-                                 $.each(data, function (index, value) {
+                               var hours_av_exit=0.0;
+                               var minutes_av_exit=0.0;
+                               var second_av_exit=0.0;
+                               var average_enterance;
+
+                           var count=data.length;
+                            console.log(count);
+                           $.each(data, function (index, value) {
+//                                     console.log("value:"+value+"index:"+index);
+                                     average_enterance=data[index].average_enterance;
+                                     var arr_exit=data[index].exit.split(':');
+                                     var hours_exit=parseInt(arr_exit[0]);
+                                     var minutes_exit=parseInt(arr_exit[1]);
+                                     var seconds_exit=parseInt(arr_exit[2]);
+                                           hours_av_exit=hours_av_exit+hours_exit;
+                                           minutes_av_exit=minutes_av_exit+minutes_exit;
+                                           second_av_exit=second_av_exit+seconds_exit;
+
+
+//                                     console.log("hours"+hours_av_exit+"minutes"+minutes_av_exit+"seconds"+second_av_exit);
                                    trHTML = '<tr><td>' + data[index].month+'/'+data[index].day + '</td><td>' + data[index].sumin+'時間'+　data[index].minutein+　'分'+  '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+  '</td><td>' + data[index].enter+ '</td><td>' + data[index].exit+ '</td></tr>';
                                    $("#displays").append(trHTML);
                                    $("#displays").css("background-color", "white");
@@ -192,7 +211,8 @@
                                          total_minute_in=total_minute_in-60.0;
                                      }
                                      //total Time outside the office
-                                     total_hour_out=total_hour_out+data[index].sumout;
+
+                                 total_hour_out=total_hour_out+data[index].sumout;
                                      total_minute_out=total_minute_out+data[index].minuteout;
                                      if(total_minute_out>59){
                                          total_hour_out=total_hour_out+1.0;
@@ -209,7 +229,22 @@
                                          $("#displays").show().empty();
                                      });
                                  });
-                           $("#total_time").append("中にいる時間　合計 &emsp;"+total_hour_in+"時間"+total_minute_in+"分<br/>"+"外にいる時間　合計 &emsp;"+total_hour_out+"時間"+total_minute_out+"分<br/>"+"合計時間 &emsp;&emsp;&emsp;&emsp;   "+total_hour+"時間"+total_minute+"分");
+                           console.log(minutes_av_exit/count);
+                           console.log(second_av_exit/count);
+
+                           if(minutes_av_exit/count>=59){
+                               hours_av_exit+=1.0;
+                               minutes_av_exit-=60.0;
+                           }
+                           else if(second_av_exit/count>=59){
+                               minutes_av_exit+=1.0;
+                               second_av_exit-=60.0;
+                           }
+                           console.log(minutes_av_exit/count);
+                           console.log(second_av_exit/count);
+
+                           var average_exit_time=Math.floor(hours_av_exit/count)+":"+Math.floor(minutes_av_exit/count)+":"+Math.floor(second_av_exit/count);
+                           $("#total_time").append("中にいる時間　合計 &emsp;"+total_hour_in+"時間"+total_minute_in+"分<br/>"+"外にいる時間　合計 &emsp;"+total_hour_out+"時間"+total_minute_out+"分<br/>"+"合計時間 &emsp;&emsp;&emsp;&emsp;   "+total_hour+"時間"+total_minute+"分<br>"+"Average_Enterance_time&emsp;&emsp;"+average_enterance+"<br>Average_Exit_time&emsp;&emsp;"+average_exit_time);
                            $("#showyear").click(function (e) {
                                e.preventDefault();
                                $("#total_time").show().empty();
