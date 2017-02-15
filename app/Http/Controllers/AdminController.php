@@ -245,6 +245,15 @@ class AdminController extends Controller
                         }
                         $count_enterance_time++;
                     }
+                    if ($average_enterance_hour<10){
+                        $average_enterance_hour="0".$average_enterance_hour;
+                    }
+                    if ($average_enterance_minute<10){
+                        $average_enterance_minute="0".$average_enterance_minute;
+                    }
+                    if ($average_enterance_second<10){
+                        $average_enterance_second="0".$average_enterance_second;
+                    }
                     $average_enterance = $average_enterance_hour . ":" . $average_enterance_minute . ":" . $average_enterance_second;
                 }
                 if ($value->card_number != $calculations[$key + 1]->card_number || $value->day != $calculations[$key + 1]->day) {
@@ -275,6 +284,15 @@ class AdminController extends Controller
                             $average_exit_minute = $average_exit_minute - 60.0;
                         }
                         $count_exit_time++;
+                    }
+                    if ($average_exit_hour<10){
+                        $average_exit_hour="0".$average_exit_hour;
+                    }
+                    if ($average_exit_minute<10){
+                        $average_exit_minute="0".$average_exit_minute;
+                    }
+                    if ($average_exit_second<10){
+                        $average_exit_second="0".$average_exit_second;
                     }
                     $average_h_m_s = $average_exit_hour . ":" . $average_exit_minute . ":" . $average_exit_second;
                 }
@@ -450,7 +468,7 @@ class AdminController extends Controller
         $nameInput = Input::get('name');
         // database data for calculation  for each date
         $calculations = DB::table('customers')
-            ->select(DB::raw('created_at,time(created_at) as time,day(created_at) as day,month(created_at) as month,card_holder,status,company'))
+            ->select(DB::raw('created_at,time(created_at) as time,day(created_at) as day,month(created_at) as month,card_holder,card_number,status,company'))
             ->whereRaw('year(created_at) =?', [$yearInput])
             ->whereRaw(('month(created_at) =?'), [$monthInput])
             ->whereRaw(('card_holder like ?'), [$nameInput])
@@ -462,96 +480,130 @@ class AdminController extends Controller
         $displaylist = [];
         $valuelist = [];
         $everyday_first_data_flg=1;
-            $sumin = 0.0;      // Intializing the time total that the employee stayed in office
-            $sumout = 0.0;
-            $avg_enterance_hour=0.0;
-            $avg_enterance_minute=0.0;
-            $avg_enterance_second=0.0;
-            $count2=0;
-            foreach ($calculations as $key => $value) {
-                if($everyday_first_data_flg===1) {
-                    $enter_time=$value->time;
-                    $a      = preg_split('/[: ]/', $enter_time);
+        $sumin = 0.0;      // Intializing the time total that the employee stayed in office
+        $sumout = 0.0;
+        $avg_entrance_hour=0.0;
+        $avg_entrance_minute=0.0;
+        $avg_entrance_second=0.0;
+        $count2=1;
+        foreach ($calculations as $key => $value) {
+            if ($key < ($count-1)) {
+            if($everyday_first_data_flg===1) {
+                $enter_time=$value->time;
+                $a      = preg_split('/[: ]/', $enter_time);
+                $hour   = $a[0];
+                $minute = $a[1];
+                $second   = $a[2];
+                if($hour<10){
+                    $avg_entrance_hour=$avg_entrance_hour+$hour;
+                    $avg_entrance_minute=$avg_entrance_minute+$minute;
+                    $avg_entrance_second=$avg_entrance_second+$second;
+
+                    $average_hour=floor($avg_entrance_hour/$count2);
+                    $average_minute=round($avg_entrance_minute/$count2)+round(60*($avg_entrance_hour/$count2-$average_hour));
+                    $average_second=round($avg_entrance_second/$count2);
+                    if ($average_second>59){
+                        $average_minute=$average_minute+1;
+                        $average_second=$average_second-60;
+                    }
+                    if ($average_minute>59){
+                        $average_hour=$average_hour+1;
+                        $average_minute=$average_minute-60;
+                    }
                     $count2++;
-                    $hour   = $a[0];
-                    $minute = $a[1];
-                    $second   = $a[2];
-                    if($hour<10){
-                        $avg_enterance_hour=$avg_enterance_hour+$hour;
-                        $avg_enterance_minute=$avg_enterance_minute+$minute;
-                        $avg_enterance_second=$avg_enterance_second+$second;
-                    }
-                    else{
-                        $count2--;
-//                        $minute=0;
-//                        $second=0;
-                    }
+
+
+                }
+                if ($average_hour<10){
+                    $average_hour="0".$average_hour;
+                }
+                if ($average_minute<10){
+                    $average_minute="0".$average_minute;
+                }
+                if ($average_second<10){
+                    $average_second="0".$average_second;
+                }
+
+                $average_entrance=$average_hour.":".$average_minute.":".$average_second;
+
+//                    else{
+//                        $count2--;
+////                        $minute=0;
+////                        $second=0;
+//                    }
+//                    $everyday_first_data_flg = 0;
+            }
+                if ($value->card_number != $calculations[$key + 1]->card_number || $value->day != $calculations[$key + 1]->day) {
+                    $everyday_first_data_flg = 1;
+                } else {
                     $everyday_first_data_flg = 0;
                 }
-                // reset ( every day )
-                if ($key < ($count-1)) {
-                    if ($value->day !== $calculations[$key + 1]->day) {
-                        $list2[] = array('month' => $value->month, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter" =>$enter_time, "exit" =>$calculations[$key]->time);
-                        $everyday_first_data_flg=1;
-                        //        var_dump($valuelist);
-                        $sumin  = 0.0;     // Intializing the time total that the employee stayed in office
-                        $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
-                        $minutein=0.0;
-                        $minuteout=0.0;
-                   }
-                }
-                if ($value->day == $calculations[$key]->day) {
-                    if ($value->status == '入室' && $value->company == '入側') {
-//                        var_dump("ok3");
-                        if ($key < ($count - 1)) {
-                            $x = strtotime(($value->time));
-                            $y = strtotime($calculations[$key + 1]->time);
-                            if ($value->day == $calculations[$key + 1]->day) {
-                                $z = ($y - $x) / 3600;
-                            }
-                            $sumin += $z;
-                            $hoursin = floor($sumin);
-                            $minutein = round(60 * ($sumin - $hoursin));
-                            if ($minutein>59){
-                                $hoursin=$hoursin+1.0;
-                                $minutein=$minutein-60.0;
-                            }
-                        }
+            // reset ( every day )
 
-                    }
-                }
-                 if ($value->day == $calculations[$key]->day) {
-//                     var_dump("value".$value->status.":".$value->company);
-                        if ($value->status == '退室' && $value->company == '出側') {
-//                            var_dump("count".$count.":".$key);
-                          if($key < ($count-1) ){
-                            $a = strtotime(($value->time));
-                            $b = strtotime($calculations[$key + 1]->time);
-                            if ($value->day == $calculations[$key + 1]->day) {
-                                   $f = ($b - $a) / 3600;
-                               }
-                            $sumout += $f;
-                            $hoursout = floor($sumout);
-                            $minuteout = round(60 * ($sumout - $hoursout));
-                              if ($minuteout>59){
-                                  $hoursout=$hoursout+1.0;
-                                  $minuteout=$minuteout-60.0;
-                              }
-                          }
+                if ($value->day !== $calculations[$key + 1]->day) {
+                    $list2[] = array('month' => $value->month, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter" =>$average_entrance, "exit" =>$calculations[$key]->time);
+                    $everyday_first_data_flg=1;
+                    //        var_dump($valuelist);
+                    $sumin  = 0.0;     // Intializing the time total that the employee stayed in office
+                    $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
+                    $minutein=0.0;
+                    $minuteout=0.0;
+//                    $count2=1;
+//                    $avg_entrance_hour=0.0;
+//                    $avg_entrance_minute=0.0;
+//                    $avg_entrance_second=0.0;
+
+               }
+            }
+            if ($value->day == $calculations[$key]->day) {
+                if ($value->status == '入室' && $value->company == '入側') {
+//                        var_dump("ok3");
+                    if ($key < ($count - 1)) {
+                        $x = strtotime(($value->time));
+                        $y = strtotime($calculations[$key + 1]->time);
+                        if ($value->day == $calculations[$key + 1]->day) {
+                            $z = ($y - $x) / 3600;
+                        }
+                        $sumin += $z;
+                        $hoursin = floor($sumin);
+                        $minutein = round(60 * ($sumin - $hoursin));
+                        if ($minutein>59){
+                            $hoursin=$hoursin+1.0;
+                            $minutein=$minutein-60.0;
                         }
                     }
-                //used to fetch the last time for the last data
-                $last_month=$value->month;
-                $last_day=$value->day;
-                $last_time=$value->time;
-        }
-        $average_hour=floor($avg_enterance_hour/$count2);
-        $average_minute=floor($avg_enterance_minute/$count2);
-        $average_second=floor($avg_enterance_second/$count2);
-        $average_enterance=$average_hour.":".$average_minute.":".$average_second;
-        // only last data
-        $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder,"average_enterance"=>$average_enterance);
-        return response((array)$list2);
+
+                }
+            }
+             if ($value->day == $calculations[$key]->day) {
+//                     var_dump("value".$value->status.":".$value->company);
+                    if ($value->status == '退室' && $value->company == '出側') {
+//                            var_dump("count".$count.":".$key);
+                      if($key < ($count-1) ){
+                        $a = strtotime(($value->time));
+                        $b = strtotime($calculations[$key + 1]->time);
+                        if ($value->day == $calculations[$key + 1]->day) {
+                               $f = ($b - $a) / 3600;
+                           }
+                        $sumout += $f;
+                        $hoursout = floor($sumout);
+                        $minuteout = round(60 * ($sumout - $hoursout));
+                          if ($minuteout>59){
+                              $hoursout=$hoursout+1.0;
+                              $minuteout=$minuteout-60.0;
+                          }
+                      }
+                    }
+                }
+            //used to fetch the last time for the last data
+            $last_month=$value->month;
+            $last_day=$value->day;
+            $last_time=$value->time;
+    }
+
+    // only last data
+    $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder,"average_enterance"=>$average_entrance);
+    return response((array)$list2);
     }
     public function daily_display()
     {

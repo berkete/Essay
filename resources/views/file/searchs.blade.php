@@ -194,9 +194,18 @@
                                      var hours_exit=parseInt(arr_exit[0]);
                                      var minutes_exit=parseInt(arr_exit[1]);
                                      var seconds_exit=parseInt(arr_exit[2]);
-                                           hours_av_exit=hours_av_exit+hours_exit;
-                                           minutes_av_exit=minutes_av_exit+minutes_exit;
-                                           second_av_exit=second_av_exit+seconds_exit;
+                                   if(hours_exit>11){
+                                       hours_av_exit=hours_av_exit+hours_exit;
+                                       minutes_av_exit=minutes_av_exit+minutes_exit;
+                                       second_av_exit=second_av_exit+seconds_exit;
+
+                                   }
+                                  else {
+                                       count=count-1;
+                                   }
+
+
+
 
 
 //                                     console.log("hours"+hours_av_exit+"minutes"+minutes_av_exit+"seconds"+second_av_exit);
@@ -212,7 +221,7 @@
                                      }
                                      //total Time outside the office
 
-                                 total_hour_out=total_hour_out+data[index].sumout;
+                                     total_hour_out=total_hour_out+data[index].sumout;
                                      total_minute_out=total_minute_out+data[index].minuteout;
                                      if(total_minute_out>59){
                                          total_hour_out=total_hour_out+1.0;
@@ -232,19 +241,31 @@
                            console.log(minutes_av_exit/count);
                            console.log(second_av_exit/count);
 
-                           if(minutes_av_exit/count>=59){
-                               hours_av_exit+=1.0;
-                               minutes_av_exit-=60.0;
+                           var average_hour_exit=Math.round(hours_av_exit/count);
+                           var average_minute_exit=Math.round(minutes_av_exit/count)+Math.round(60*((hours_av_exit/count)-average_hour_exit));
+                           var average_second_exit=Math.round(second_av_exit/count);
+                           if(average_minute_exit>59){
+                               average_hour_exit+=1.0;
+                               average_minute_exit-=60.0;
                            }
-                           else if(second_av_exit/count>=59){
-                               minutes_av_exit+=1.0;
-                               second_av_exit-=60.0;
+                           if(average_second_exit>59){
+                               average_minute_exit+=1.0;
+                               average_second_exit-=60.0;
                            }
+                           if(average_hour_exit<10){
+                               average_hour_exit="0"+average_hour_exit;
+                           }
+                           if(average_minute_exit<10){
+                               average_minute_exit="0"+average_minute_exit;
+                           }
+                           if(average_second_exit<10){
+                               average_second_exit="0"+average_second_exit;
+                           }
+
                            console.log(minutes_av_exit/count);
                            console.log(second_av_exit/count);
-
-                           var average_exit_time=Math.floor(hours_av_exit/count)+":"+Math.floor(minutes_av_exit/count)+":"+Math.floor(second_av_exit/count);
-                           $("#total_time").append("中にいる時間　合計 &emsp;"+total_hour_in+"時間"+total_minute_in+"分<br/>"+"外にいる時間　合計 &emsp;"+total_hour_out+"時間"+total_minute_out+"分<br/>"+"合計時間 &emsp;&emsp;&emsp;&emsp;   "+total_hour+"時間"+total_minute+"分<br>"+"Average_Enterance_time&emsp;&emsp;"+average_enterance+"<br>Average_Exit_time&emsp;&emsp;"+average_exit_time);
+                           var average_exit_time=average_hour_exit+":"+average_minute_exit+":"+average_second_exit;
+                           $("#total_time").append("中にいる時間　合計 &emsp;&emsp;"+total_hour_in+"時間"+total_minute_in+"分<br/>"+"外にいる時間　合計 &emsp;"+total_hour_out+"時間"+total_minute_out+"分<br/>"+"合計時間 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;   "+total_hour+"時間"+total_minute+"分<br>"+"平均出社時間&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+average_enterance+"<br>平均退社時間&emsp;&emsp;&emsp;&emsp;&emsp;"+average_exit_time);
                            $("#showyear").click(function (e) {
                                e.preventDefault();
                                $("#total_time").show().empty();

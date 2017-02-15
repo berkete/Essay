@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<h3>daily report</h3>
+<h3>日報</h3>
 
 @if($daily_years)
     {{--<form action="/searchs" method="post">--}}
