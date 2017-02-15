@@ -48,7 +48,6 @@ class AdminController extends Controller
         return response($list2);
 
     }
-
     public function daily_report(){
         $daily_years = DB::table('customers')
             ->select(DB::raw('YEAR(created_at) as year'))
@@ -187,24 +186,27 @@ class AdminController extends Controller
             ->orderBy('card_number', 'asc')
             ->orderBy('created_at', 'asc')
             ->get();
+// ===========================================================================================All intializations  start
         $sumin = 0.0;      // Intializing the time total that the employee stayed in office
         $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
         $count = count($calculations);
-        $displaylist = [];
-        $valuelist = [];
         $everyday_first_data_flg=1;
-        $everyday_first_data_flg_enterance=1;
         $sumin = 0.0;      // Intializing the time total that the employee stayed in office
         $sumout = 0.0;
         $enter_time=0;
+            //Intializing average checkout time
         $avg_exit_hour_sum=0.0;
         $avg_exit_minute_sum=0.0;
         $avg_exit_second_sum=0.0;
-        $avg_enterance_hour=0.0;
-        $avg_enterance_minute=0.0;
-        $avg_enterance_second=0.0;
+            //Intializing average entrance time
+        $avg_enterance_hour_sum=0.0;
+        $avg_enterance_minute_sum=0.0;
+        $avg_enterance_second_sum=0.0;
         $average_h_m_s=0;
         $average_enterance=0;
+        $average_enterance_hour=0;
+        $average_enterance_minute=0;
+        $average_enterance_second=0;
 
         $average_exit=0.0;
         $exit_time_sum=0.0;
@@ -212,44 +214,47 @@ class AdminController extends Controller
 //        $average_enterance=0;
         $count_enterance_time=1;
         $count_exit_time=1;
-
-
+// ===========================================================================================All intializations ends
         foreach ($calculations as $key => $value) {
             if ($key < ($count - 1)) {
-            if ($value->day==$calculations[$key+1]->day && $everyday_first_data_flg===1) {
-                $enter_time=$value->time;
-                var_dump($enter_time);
-                echo "<br>";
-                $a      = preg_split('/[: ]/', $enter_time);
-                $hour   = $a[0];
-                $minute = $a[1];
-                $second   = $a[2];
-                if($hour<10){
-                    $avg_enterance_hour=$avg_enterance_hour+$hour;
-                    $avg_enterance_minute=$avg_enterance_minute+$minute;
-                    $avg_enterance_second=$avg_enterance_second+$second;
-                    $average_enterance_hour=floor($avg_enterance_hour/$count_enterance_time);
-                    $average_enterance_minute=round($avg_enterance_minute/$count_enterance_time)+round($avg_enterance_minute/$count_enterance_time-$average_enterance_hour);
-                    $average_enterance_second=round($avg_enterance_second/$count_enterance_time);
-                    if($average_enterance_minute>59){
-                        $average_enterance_hour=$average_enterance_hour+1.0;
-                        $average_enterance_minute=$average_enterance_minute-60.0;
-                    }
-                    if ($average_enterance_second>59){
-                        $average_enterance_minute=$average_enterance_minute+1.0;
-                        $average_enterance_second=$average_enterance_second-60.0;
-                    }
-                    $count_enterance_time++;
-                    $everyday_first_data_flg = 0;
+                //Average enreance time
+                if ($everyday_first_data_flg === 1) {
+                    $enter_time = $value->time;
+                    $a = preg_split('/[: ]/', $enter_time);
+                    $hour = $a[0];
+                    $minute = $a[1];
+                    $second = $a[2];
+//                    if ($value->day)
+                    if ($hour < 10) {
+                        $avg_enterance_hour_sum = $avg_enterance_hour_sum + $hour;
+                        $avg_enterance_minute_sum = $avg_enterance_minute_sum + $minute;
+                        $avg_enterance_second_sum = $avg_enterance_second_sum + $second;
+//                        var_dump($avg_enterance_hour_sum);
+//                        var_dump($count_enterance_time);
+                        $average_enterance_hour = floor($avg_enterance_hour_sum / $count_enterance_time);
+                        $average_enterance_minute = round($avg_enterance_minute_sum / $count_enterance_time) + round(60 * ($avg_enterance_hour_sum / $count_enterance_time - $average_enterance_hour));
+                        $average_enterance_second = round($avg_enterance_second_sum / $count_enterance_time);
 
+                        if ($average_enterance_minute > 59) {
+                            $average_enterance_hour = $average_enterance_hour + 1;
+                            $average_enterance_minute = $average_enterance_minute - 60.0;
+                        }
+                        if ($average_enterance_second > 59) {
+                            $average_enterance_minute = $average_enterance_minute + 1.0;
+                            $average_enterance_second = $average_enterance_second - 60.0;
+                        }
+                        $count_enterance_time++;
+                    }
+                    $average_enterance = $average_enterance_hour . ":" . $average_enterance_minute . ":" . $average_enterance_second;
                 }
-                $average_enterance=$average_enterance_hour.":".$average_enterance_minute.":".$average_enterance_second;
-            }
-
-                if ($value->day!==$calculations[$key+1]->day ) {
+                if ($value->card_number != $calculations[$key + 1]->card_number || $value->day != $calculations[$key + 1]->day) {
+                    $everyday_first_data_flg = 1;
+                } else {
+                    $everyday_first_data_flg = 0;
+                }
+//                Average exit time
+                if ($value->day !== $calculations[$key + 1]->day) {
                     $exit_time = $value->time;
-//                    var_dump($exit_time);
-//                    var_dump($value->card_holder);
                     $b = preg_split('/[: ]/', $exit_time);
                     $hour = $b[0];
                     $minute = $b[1];
@@ -259,57 +264,41 @@ class AdminController extends Controller
                         $avg_exit_minute_sum = $avg_exit_minute_sum + $minute;
                         $avg_exit_second_sum = $avg_exit_second_sum + $second;
                         $average_exit_hour = floor($avg_exit_hour_sum / $count_exit_time);
-                        $average_exit_minute = round($avg_exit_minute_sum / $count_exit_time) + round(60*($avg_exit_hour_sum / $count_exit_time-$average_exit_hour));
+                        $average_exit_minute = round($avg_exit_minute_sum / $count_exit_time) + round(60 * ($avg_exit_hour_sum / $count_exit_time - $average_exit_hour));
                         $average_exit_second = round($avg_exit_second_sum / $count_exit_time);
-                        if ($average_exit_second>59){
-                            $average_exit_minute=$average_exit_minute+1.0;
-                            $average_exit_second=$average_exit_second-60.0;
+                        if ($average_exit_second > 59) {
+                            $average_exit_minute = $average_exit_minute + 1.0;
+                            $average_exit_second = $average_exit_second - 60.0;
                         }
-                        if ($average_exit_minute>59){
-                            $average_exit_hour=$average_exit_hour+1.0;
-                            $average_exit_minute=$average_exit_minute-60.0;
+                        if ($average_exit_minute > 59) {
+                            $average_exit_hour = $average_exit_hour + 1.0;
+                            $average_exit_minute = $average_exit_minute - 60.0;
                         }
                         $count_exit_time++;
                     }
                     $average_h_m_s = $average_exit_hour . ":" . $average_exit_minute . ":" . $average_exit_second;
                 }
-            // reset ( every day )
+                // reset ( every day )
                 if ($value->day !== $calculations[$key + 1]->day && $value->card_number !== $calculations[$key + 1]->card_number) {
-                    $list2[] = array('month' => $value->month,'card_number' => $value->card_number, 'card_holder' => $value->card_holder, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout, "enter" => $average_enterance, "exit" => $average_h_m_s);
+                    $list2[] = array('month' => $value->month, 'card_number' => $value->card_number, 'card_holder' => $value->card_holder, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout, "enter" => $average_enterance, "exit" => $average_h_m_s);
                     $everyday_first_data_flg = 1;
-                    $everyday_first_data_flg_enterance=1;
-
                     //        var_dump($valuelist);
                     $sumin = 0.0;     // Intializing the time total that the employee stayed in office
                     $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
                     $minutein = 0.0;
                     $minuteout = 0.0;
-                    $count_exit_time=1;
-                    $count_enterance_time=1;
-                 //reseting exit time
+                    $count_exit_time = 1;
+                    $count_enterance_time = 1;
+                    //reseting exit time
                     $avg_exit_hour_sum = 0;
                     $avg_exit_minute_sum = 0;
                     $avg_exit_second_sum = 0;
-                    //resting enterance time
-                    $avg_enterance_hour=0.0;
-                    $avg_enterance_minute=0.0;
-                    $avg_enterance_second=0.0;
+                    //resting entrance time
+                    $avg_enterance_hour_sum = 0;
+                    $avg_enterance_minute_sum = 0;
+                    $avg_enterance_second_sum = 0;
                 }
-
-
-                if ($value->card_number== $calculations[$key+1]->card_number) {
-                    if($value->day==$calculations[$key+1]->day && $everyday_first_data_flg_enterance===1){
-
-//                        var_dump($value->time);
-//                        var_dump($value->card_holder);
-                        $everyday_first_data_flg_enterance=0;
-                    }
-                }
-
-//                var_dump($value->month);
-                if ($value->month == $calculations[$key+1]->month && $value->card_number == $calculations[$key+1]->card_number && $value->card_holder !== "未登録カード") {
-//                    var_dump();
-
+                if ($value->month == $calculations[$key + 1]->month && $value->card_number == $calculations[$key + 1]->card_number && $value->card_holder !== "未登録カード") {
                     if ($value->status == '入室' && $value->company == '入側') {
 //                        var_dump("ok3");
                         if ($key < ($count - 1)) {
@@ -330,7 +319,7 @@ class AdminController extends Controller
 
                     }
                 }
-                if ($value->month == $calculations[$key+1]->month && $value->card_number == $calculations[$key+1]->card_number && $value->card_holder !== "未登録カード") {
+                if ($value->month == $calculations[$key + 1]->month && $value->card_number == $calculations[$key + 1]->card_number && $value->card_holder !== "未登録カード") {
 //                     var_dump("value".$value->status.":".$value->company);
                     if ($value->status == '退室' && $value->company == '出側') {
 //                            var_dump("count".$count.":".$key);
@@ -353,19 +342,12 @@ class AdminController extends Controller
             }
 
             //used to fetch the last time for the last data
-            $last_month=$value->month;
-            $last_day=$value->day;
-            $last_time=$value->time;
+            $last_month = $value->month;
+            $last_day = $value->day;
+            $last_time = $value->time;
 
 //            echo("[everyday_first_data_flg:".$everyday_first_data_flg ."]===<br /><br />");
         }
-//        $average_hour=floor($avg_enterance_hour1/$count3);
-//        $average_minute=floor($avg_enterance_minute1/$count3);
-//        $average_second=floor($avg_enterance_second1/$count3);
-//        $average_h_m_s=$average_hour.":".$average_minute.":".$average_second;
-//        var_dump($average_h_m_s);
-//        var_dump($average_minute);
-//        var_dump($average_second);
 
         // only last data
         $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$average_enterance,"exit"=>$average_h_m_s,"card_holder"=>$value->card_holder,'card_number' => $value->card_number);
@@ -466,13 +448,6 @@ class AdminController extends Controller
         $yearInput = Input::get('year');
         $monthInput = Input::get('month');
         $nameInput = Input::get('name');
-        // Database data with specific days(group by day)
-//        $displays = DB::table('customers')
-//            ->select(DB::raw('day(created_at) as day,Month(created_at) as month,time(created_at)as time,MAX(time(created_at))as timee,card_holder,status,company'))
-//            ->whereRaw('year(created_at) =?', [$yearInput])
-//            ->whereRaw(('month(created_at) =?'), [$monthInput])
-//            ->whereRaw(('card_holder like ?'), [$nameInput])
-//            ->groupBy('day')->get();
         // database data for calculation  for each date
         $calculations = DB::table('customers')
             ->select(DB::raw('created_at,time(created_at) as time,day(created_at) as day,month(created_at) as month,card_holder,status,company'))
@@ -494,12 +469,8 @@ class AdminController extends Controller
             $avg_enterance_second=0.0;
             $count2=0;
             foreach ($calculations as $key => $value) {
-//                var_dump($count2);
-
                 if($everyday_first_data_flg===1) {
-//                    $count2=count($value->time);
                     $enter_time=$value->time;
-//                    $enter_hour=date("i",$enter_time);
                     $a      = preg_split('/[: ]/', $enter_time);
                     $count2++;
                     $hour   = $a[0];
@@ -515,15 +486,8 @@ class AdminController extends Controller
 //                        $minute=0;
 //                        $second=0;
                     }
-
-
                     $everyday_first_data_flg = 0;
-//                    var_dump($avg_enterance);
-
-
                 }
-//                $count2=count($hour);
-
                 // reset ( every day )
                 if ($key < ($count-1)) {
                     if ($value->day !== $calculations[$key + 1]->day) {
@@ -584,21 +548,7 @@ class AdminController extends Controller
         $average_hour=floor($avg_enterance_hour/$count2);
         $average_minute=floor($avg_enterance_minute/$count2);
         $average_second=floor($avg_enterance_second/$count2);
-//        var_dump($average_hour);
-//        var_dump($average_minute);
-//        var_dump($average_second);
-
-//        if($average_minute>=59){
-//            $average_hour=$average_hour+1.0;
-//            $average_minute=$average_minute-60.0;
-//        }
-//        if ($average_second>=59){
-//            $average_minute=$average_minute+1.0;
-//            $average_second=$average_second-60.0;
-//        }
         $average_enterance=$average_hour.":".$average_minute.":".$average_second;
-//        var_dump($average_enterance);
-
         // only last data
         $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder,"average_enterance"=>$average_enterance);
         return response((array)$list2);

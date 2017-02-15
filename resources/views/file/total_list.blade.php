@@ -41,13 +41,15 @@
             <table class="table table-bordered" id="monthly_report">
                 <thead>
                     <tr >
-                        <th>No.</th>
-                        <th>年/月 </th>
-                        <th>カード番号 </th>
+                        {{--<th>No.</th>--}}
+                        {{--<th>年/月 </th>--}}
+                        {{--<th>カード番号 </th>--}}
                         <th>名前</th>
                         <th>中にいる時間</th>
                         <th>外にいる時間</th>
                         <th>合計時間 </th>
+                        <th>入口平均的</th>
+                        <th>出口平均的</th>
                     </tr>
                 </thead>
                 <tbody id="table_calculation">
@@ -150,8 +152,9 @@
                                     total_hour=total_hour+1.0;
                                     total_minute=total_minute-60.0;
                                 }
-                                if (data[index].card_holder!=="未登録カード" && total_hour>0.0){
-                                    trHTML = '<tr><td>' + (index+1)+ '</td><td>'+myYear+'/'+ data[index].month+ '</td><td>' + data[index].card_number+ '</td><td>' + data[index].card_holder+ '</td><td>'+Math.abs(data[index].sumin)+'時間'+　data[index].minutein+　'分' + '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+ '</td><td>' + Math.abs(total_hour)+'時間'+ total_minute+　'分'+ '</td><td>' +data[index].enter +'</td><td>' +data[index].exit+'</td></tr>';
+                                if (data[index].card_holder!=="未登録カード" && total_hour>0.0 && data[index].card_number!=="未登録カード" ){
+//                                    trHTML = '<tr><td>' + (index+1)+ '</td><td>'+myYear+'/'+ data[index].month+ '</td><td>' + data[index].card_number+ '</td><td>' + data[index].card_holder+ '</td><td>'+Math.abs(data[index].sumin)+'時間'+　data[index].minutein+　'分' + '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+ '</td><td>' + Math.abs(total_hour)+'時間'+ total_minute+　'分'+ '</td><td>' +data[index].enter +'</td><td>' +data[index].exit+'</td></tr>';
+                                    trHTML = '<tr><td>' + data[index].card_holder+ '</td><td>'+Math.abs(data[index].sumin)+'時間'+　data[index].minutein+　'分' + '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+ '</td><td>' + Math.abs(total_hour)+'時間'+ total_minute+　'分'+ '</td><td>' +data[index].enter +'</td><td>' +data[index].exit+'</td></tr>';
                                     $("#monthly_report").append(trHTML);
                                     $("#monthly_report").css("background-color", "white");
 
