@@ -34,10 +34,10 @@
                 </select>
             </div>
             <div class="col-sm-3">
-                <p>Calendar: <input id="fullDate" type="text" style="display:none">
+                <p>カレンダーから選択: <input id="fullDate" type="text" style="display:none">
                 </p>
             </div>
-                <div class="col-sm-1"><input type="button"  align="right" value="表示" id="hyoji" class="btn btn-success" style="margin-top: 18px">
+                <div cla ss="col-sm-1"><input type="button"  align="right" value="表示" id="hyoji" class="btn btn-success" style="margin-top: 18px">
                 </div>
             <input type="hidden" id="datepicker" />
         </div>
@@ -56,6 +56,20 @@
     <tbody id="displays">
     </tbody>
 </table>
+    <style type="text/css">
+        .ui-datepicker{
+            background: dodgerblue;
+            border: 1px solid #555;
+            color: #EEE;
+        }
+        .ui-datepicker-trigger{
+            background-color: dodgerblue;
+            border: 1px solid #555;
+            color: #AAAAAA;
+            margin-top: 15px;
+        }
+
+    </style>
     <script type="text/javascript">
 
     $(document).ready(function () {
@@ -92,7 +106,8 @@
         $("#fullDate").datepicker({
             showOn:"button",
 //            buttonImageOnly: true,
-            showButtonPanel: true,
+//            showButtonPanel: true,
+
             buttonText: "Choose",
             buttonImage:'images/calendar_icon.png',
             changeMonth: true,
@@ -117,6 +132,7 @@
                 $("#month").val(months).prop('selected',true);
                 $("#day").val(days).prop('selected',true);
             }
+
         });
     });
     $.fn.myfunction=function () {

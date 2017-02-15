@@ -48,8 +48,8 @@
                         <th>IN</th>
                         <th>OUT</th>
                         <th>合計時間 </th>
-                        <th>入口平均的</th>
-                        <th>出口平均的</th>
+                        <th>平均出社時間</th>
+                        <th>平均退社時間</th>
                     </tr>
                 </thead>
                 <tbody id="table_calculation">
@@ -57,6 +57,7 @@
             </table>
         </div>
     </div>
+
     <div id="list_display"></div>
         <script type="text/javascript">
         // used to display months when changing year

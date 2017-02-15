@@ -245,13 +245,13 @@ class AdminController extends Controller
                         }
                         $count_enterance_time++;
                     }
-                    if ($average_enterance_hour<10){
+                    if ($average_enterance_hour<10 && strlen($average_enterance_hour)<2){
                         $average_enterance_hour="0".$average_enterance_hour;
                     }
-                    if ($average_enterance_minute<10){
+                    if ($average_enterance_minute<10&& strlen($average_enterance_minute)<2){
                         $average_enterance_minute="0".$average_enterance_minute;
                     }
-                    if ($average_enterance_second<10){
+                    if ($average_enterance_second<10&& strlen($average_enterance_second)<2){
                         $average_enterance_second="0".$average_enterance_second;
                     }
                     $average_enterance = $average_enterance_hour . ":" . $average_enterance_minute . ":" . $average_enterance_second;
@@ -486,6 +486,10 @@ class AdminController extends Controller
         $avg_entrance_minute=0.0;
         $avg_entrance_second=0.0;
         $count2=1;
+        $average_hour=0;
+        $average_minute=0;
+        $average_second=0;
+
         foreach ($calculations as $key => $value) {
             if ($key < ($count-1)) {
             if($everyday_first_data_flg===1) {
@@ -511,8 +515,6 @@ class AdminController extends Controller
                         $average_minute=$average_minute-60;
                     }
                     $count2++;
-
-
                 }
                 if ($average_hour<10){
                     $average_hour="0".$average_hour;
@@ -539,7 +541,6 @@ class AdminController extends Controller
                     $everyday_first_data_flg = 0;
                 }
             // reset ( every day )
-
                 if ($value->day !== $calculations[$key + 1]->day) {
                     $list2[] = array('month' => $value->month, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter" =>$average_entrance, "exit" =>$calculations[$key]->time);
                     $everyday_first_data_flg=1;

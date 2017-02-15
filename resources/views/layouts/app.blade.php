@@ -20,6 +20,8 @@
     <script src="Export-Html-Table/src/jquery.table2excel.js"></script>
     <script src="jquery-DATEPICKER-1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="jquery-DATEPICKER-1.12.1/jquery-ui.css">
+    {{--<link rel="stylesheet" href="jquery-DATEPICKER-1.12.1/jquery-ui.theme.css">--}}
+
     {{--//Print plugin--}}
     <script src="DoersGuild-jQuery.print/jQuery.print.js"></script>
 

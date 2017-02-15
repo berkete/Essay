@@ -1,10 +1,8 @@
 @extends('layouts.app')
-@section('title')
-   Home
-@endsection
+@section('title','Home')
 @section('content')
         <hr>
-        <div class="row" align="center" style="background-color: mintcream;width: 105%">
+        <div class="row" align="center" style="background-color:#d9edf7;width: 103%">
             @if(Session::has('delete_all'))
                 <p class="bg-danger pull-right" >{{session('delete_all')}}</p>
             @endif
@@ -38,10 +36,10 @@
                 <div class="col-sm-9">
                 <ul class="nav navbar-nav container-fluid">
                     <li> <a href="{{URL::to('getImport')}}" class="alert-info " style="padding-bottom: 10px"><span class="glyphicon glyphicon-import">インポート</span></a></li>
-                    <li><a href="{{URL::to('getExport')}}" class="alert-info "style="padding-bottom: 10px"><span class="glyphicon glyphicon-export">エクスポート</span></a></li>
+                    <li><a href="{{URL::to('getExport')}}" class="alert-info " style="padding-bottom: 10px"><span class="glyphicon glyphicon-export">エクスポート</span></a></li>
                     <li><a href="{{URL::to('/lists')}}" class="alert-info "style="padding-bottom: 10px"><span class="glyphicon glyphicon-download">ダウンロードDATファイル</span></a></li>
-                    <li> <button class="btn alert-info " style="padding-bottom: 17px"><span class="glyphicon glyphicon-export">このページをエクスポート</span></button></li>
-                    <li> <input type="button" class=" print btn alert-info glyphicon-print " value="印刷" style="padding-bottom: 17px"></li>
+                    <li> <button class="btn alert-info" id="expo" style="padding-bottom: 10px;margin-top:9px;border-style: none;"><span class="glyphicon glyphicon-export">このページをエクスポート</span></button></li>
+                    <li> <input type="button" id="print" class=" print btn alert-info glyphicon-print " value="印刷" style="padding-bottom: 10px;margin-top:9px;border-style: none;border-width: 0px"></li>
                    <li><a href="{{URL::to('getDelete')}}" class="alert-info" id="delete_all" style="padding-bottom: 10px"><span class="glyphicon glyphicon-trash">すべて削除</span></a></li>
                 </ul>
                 </div>
@@ -88,6 +86,20 @@
         </div>
     </div>
     @endif
+        <style type="text/css">
+            #print:hover{
+                background:whitesmoke ;
+                border: 1px solid #555;
+                /*color: #EEE;*/
+            }
+            #expo:hover{
+                background-color: whitesmoke;
+                border: 1px solid #555;
+                color: #AAAAAA;
+                /*margin-top: 15px;*/
+            }
+
+        </style>
 <script type="text/javascript">
     // used to display months when changing year
    $(document).ready(function () {

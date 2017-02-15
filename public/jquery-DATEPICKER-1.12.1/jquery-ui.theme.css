@@ -61,9 +61,9 @@ works properly when clicked or hovered */
 html .ui-button.ui-state-disabled:hover,
 html .ui-button.ui-state-disabled:active {
 	border: 1px solid #c5c5c5;
-	background: #f6f6f6;
+	background-color: #0000cc;
 	font-weight: normal;
-	color: #454545;
+	color: #111111;
 }
 .ui-state-default a,
 .ui-state-default a:link,
