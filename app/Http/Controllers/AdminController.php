@@ -211,6 +211,8 @@ class AdminController extends Controller
         $average_exit=0.0;
         $exit_time_sum=0.0;
 
+
+
 //        $average_enterance=0;
         $count_enterance_time=1;
         $count_exit_time=1;
@@ -245,15 +247,21 @@ class AdminController extends Controller
                         }
                         $count_enterance_time++;
                     }
-                    if ($average_enterance_hour<10 && strlen($average_enterance_hour)<2){
-                        $average_enterance_hour="0".$average_enterance_hour;
-                    }
-                    if ($average_enterance_minute<10&& strlen($average_enterance_minute)<2){
-                        $average_enterance_minute="0".$average_enterance_minute;
-                    }
-                    if ($average_enterance_second<10&& strlen($average_enterance_second)<2){
-                        $average_enterance_second="0".$average_enterance_second;
-                    }
+
+                    $average_enterance_hour=str_pad($average_enterance_hour, 2, "0", STR_PAD_LEFT);
+                    $average_enterance_minute=str_pad($average_enterance_minute, 2, "0", STR_PAD_LEFT);
+                    $average_enterance_second=str_pad($average_enterance_second, 2, "0", STR_PAD_LEFT);
+
+
+//                    if ($average_enterance_hour<10 && strlen($average_enterance_hour)<2){
+//                        $average_enterance_hour="0".$average_enterance_hour;
+//                    }
+//                    if ($average_enterance_minute<10&& strlen($average_enterance_minute)<2){
+//                        $average_enterance_minute="0".$average_enterance_minute;
+//                    }
+//                    if ($average_enterance_second<10&& strlen($average_enterance_second)<2){
+//                        $average_enterance_second="0".$average_enterance_second;
+//                    }
                     $average_enterance = $average_enterance_hour . ":" . $average_enterance_minute . ":" . $average_enterance_second;
                 }
                 if ($value->card_number != $calculations[$key + 1]->card_number || $value->day != $calculations[$key + 1]->day) {
@@ -285,15 +293,18 @@ class AdminController extends Controller
                         }
                         $count_exit_time++;
                     }
-                    if ($average_exit_hour<10){
-                        $average_exit_hour="0".$average_exit_hour;
-                    }
-                    if ($average_exit_minute<10){
-                        $average_exit_minute="0".$average_exit_minute;
-                    }
-                    if ($average_exit_second<10){
-                        $average_exit_second="0".$average_exit_second;
-                    }
+                    $average_exit_hour=str_pad($average_exit_hour, 2, "0", STR_PAD_LEFT);
+                    $average_exit_minute=str_pad($average_exit_minute, 2, "0", STR_PAD_LEFT);
+                    $average_exit_second=str_pad($average_exit_second, 2, "0", STR_PAD_LEFT);
+//                    if ($average_exit_hour<10){
+//                        $average_exit_hour="0".$average_exit_hour;
+//                    }
+//                    if ($average_exit_minute<10){
+//                        $average_exit_minute="0".$average_exit_minute;
+//                    }
+//                    if ($average_exit_second<10){
+//                        $average_exit_second="0".$average_exit_second;
+//                    }
                     $average_h_m_s = $average_exit_hour . ":" . $average_exit_minute . ":" . $average_exit_second;
                 }
                 // reset ( every day )
@@ -516,15 +527,18 @@ class AdminController extends Controller
                     }
                     $count2++;
                 }
-                if ($average_hour<10){
-                    $average_hour="0".$average_hour;
-                }
-                if ($average_minute<10){
-                    $average_minute="0".$average_minute;
-                }
-                if ($average_second<10){
-                    $average_second="0".$average_second;
-                }
+                $average_hour=str_pad($average_hour, 2, "0", STR_PAD_LEFT);
+                $average_minute=str_pad($average_minute, 2, "0", STR_PAD_LEFT);
+                $average_second=str_pad($average_second, 2, "0", STR_PAD_LEFT);
+//                if ($average_hour<10){
+//                    $average_hour="0".$average_hour;
+//                }
+//                if ($average_minute<10){
+//                    $average_minute="0".$average_minute;
+//                }
+//                if ($average_second<10){
+//                    $average_second="0".$average_second;
+//                }
 
                 $average_entrance=$average_hour.":".$average_minute.":".$average_second;
 
