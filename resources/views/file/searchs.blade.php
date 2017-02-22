@@ -16,7 +16,7 @@
     @if($customer1)
        <form action="/searchs" method="post">
            {{ csrf_field() }}
-           <div class="row" style="color:cornflowerblue;text-decoration: blink;font-size: large;margin-top:7px">
+           <div class="row" style="color:cornflowerblue;text-decoration: blink;font-size: large;margin-top:7px;box-shadow: 0 0 0 4px #668cff;">
                <div class="col-sm-3">年</div>
                <div class="col-sm-2">月</div>
                <div class="col-sm-2">名前</div>
@@ -51,14 +51,16 @@
                    {{--@endforeach--}}
                </select>
            </div>
-           <div class="col-sm 3"><input type="button"  align="right" value="表示" id="showyear" class="btn btn-success" style="margin-top: 18px">
+           <div class="col-sm 3" style="-webkit-box-shadow: 5px 8px 15px #B8B;"><input type="button"  align="right" value="表示" id="showyear" class="btn btn-info" style="margin-top: 18px">
+               <input type="button"  align="right" value="エクスポート" id="export" class="btn btn-info pull-right" style="margin-top: 18px">
+               {{--<button id="" class="btn btn-circle btn-default "></button>--}}
+
            </div>
         </div>
         </form>
-   {{--@endif--}}
-   <table style="margin-top:50px" class="table">
-       <thead>
-       <tr>
+
+       {{--@endif--}}
+   <table style="margin-top:50px" class="table" id="table">
        <thead>
            <tr>
                <th >月/日</th>
@@ -153,6 +155,28 @@
        $('#name').select2();
        $('#year').select2();
        $('#month').select2();
+       });
+       $(document).ready(function () {
+           $("#export").click(function () {
+//                    var row = $(this).closest("tr");       // Finds the closest row <tr>
+//                    var tds = row.find("td");
+               var dt = new Date();
+               var day = dt.getDate();
+               var month = dt.getMonth() + 1;
+               var year = dt.getFullYear();
+               var ext=$("#year").val()+"_"+$("#month").val()+"_"+$("#day").val();
+               var postfix = day + "_" + month+"_"+year;
+               $(".table").tableExport({
+                   headings: true,
+                   footers: true,
+                   formats: ["xls","xlsx","csv"],
+                   fileName: postfix+"daily_report_"+ext,
+                   bootstrap: true,
+                   position: "top",
+                   ignoreRows: null,
+                   ignoreCols: null
+               });
+           });
        });
        //display function
        $(function () {

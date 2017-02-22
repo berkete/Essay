@@ -1,23 +1,22 @@
 @extends('layouts.app')
 @section('content')
-    <h3>daily report</h3>
+    <h3>日報</h3>
 
     @if($daily_years)
         {{--<form action="/searchs" method="post">--}}
         {{--{{ csrf_field() }}--}}
-        <div class="row" style="color:cornflowerblue;text-decoration: blink;font-size: large;margin-top:7px">
+        <div class="row" style="color:cornflowerblue;text-decoration: blink;font-size: large;margin-top:7px;box-shadow: 0 0 0 4px #668cff;">
             <div class="col-sm-3">年</div>
             <div class="col-sm-2">月</div>
             <div class="col-sm-2">日</div>
         </div>
-        <div class="row" style="color:cornflowerblue;background-color: lightblue" id="mainselect">
-
+        <div class="row" style="color:cornflowerblue;background-color: lightblue;-webkit-box-shadow: 5px 8px 15px #B8B;" id="mainselect">
             <div class="col-sm-2">
                 <label for="years"></label>
                 <select name="year" id="year" class="form-control" placeholder="Select">
                     <option value="" selected disabled> 年を選択</option>
                     @foreach($daily_years as $customer)
-                        <option  name="year" id="year" value="{{$customer->year}}">{{$customer->year}}</option>
+                     <option  name="year" id="year" value="{{$customer->year}}">{{$customer->year}}</option>
                     @endforeach
                 </select>
             </div>
@@ -35,7 +34,7 @@
                 </select>
             </div>
             <div class="col-sm-2">
-                <p>カレンダー: <input id="fullDate" type="text" style="display:block">
+                <p>カレンダー: <input id="fullDate" type="text" style="display:none">
                 </p>
 
                 <div id="datepicker" ></div>
@@ -43,14 +42,14 @@
 
             </div>
             <div class="col-sm-4" style="margin-top: 10px">
-                <input type="button"  align="right" value="表示" id="hyoji" class="btn btn-success" >
-                <button class="btn btn-circle btn-default ">エクスポート</button>
-                <input type="button" class=" print btn btn-circle btn-default  " value="プリント" >
+                <input type="button"  align="right" value="表示" id="hyoji" class="btn btn-success pull-left" >
+                {{--<button class="btn btn-circle btn-default" id="export">エクスポート</button>--}}
+                <input type="button" class="export btn btn-circle btn-info pull-right "  value="エクスポート" >
+
+                <input type="button" class=" print btn btn-circle btn-info pull-right "  value="プリント" >
             </div>
         </div>
         <table style="margin-top:50px" class="table">
-            <thead>
-            <tr>
             <thead>
             <tr>
                 <th >名前</th>
@@ -68,6 +67,7 @@
                 background: dodgerblue;
                 border: 1px solid #555;
                 color: #EEE;
+                width: 25%;
             }
             .ui-datepicker-trigger{
                 background-color: dodgerblue;
@@ -117,33 +117,15 @@
                                         }
                                         else{
                                             selected = "";
-
                                         }
-
                                     }
-//                                    console.log("database month"+value.month);
-//                                    console.log("fulldate month"+months);
-//                                   if(value.month!==months){
-//                                        alert("select");
-//                                        return false;
-//                                    }
                                     $("#month").append('<option value="' + value.month + '"' + selected + '>' + value.month + '</option>');
-//                                    }
-//                                    else{
-//                                        console.log("Value month2"+value.month,index);
-
-//                                        $("#month").append('<option value="' + value.month + '">' + value.month + '</option>');
-
-//                                    }
-
                                     $("#showyear").click(function () {
                                         $("#displays").show().empty();
                                     });
                                 });
                             });
-
                 });
-
             });
             $(".print").click(function() {
                 $(".table").print({
@@ -161,25 +143,50 @@
                     doctype: '<!doctype html>'
                 });
             });
-            $("button").click(function(){
-                var row = $(this).closest("tr");       // Finds the closest row <tr>
-                var tds = row.find("td");
-                var dt = new Date();
-                var day = dt.getDate();
-                var month = dt.getMonth() + 1;
-                var year = dt.getFullYear();
-                var postfix = day + "/" + month+"/"+year;
-                $(".table").table2excel({
-                    exclude: ".noExl",
-                    name: "Excel Document Name",
-                    filename: postfix+"Daily_report",
-                    fileext: ".xls",
-                    exclude_img: true,
-                    exclude_links: true,
-                    exclude_inputs: true //do not include extension
+//            $("button").click(function(){
+//                var row = $(this).closest("tr");       // Finds the closest row <tr>
+//                var tds = row.find("td");
+//                var dt = new Date();
+//                var day = dt.getDate();
+//                var month = dt.getMonth() + 1;
+//                var year = dt.getFullYear();
+//                var ext=$("#year").val()+$("#month").val()+$("#day").val();
+//                var postfix = day + "/" + month+"/"+year;
+//                $(".table").table2excel({
+//                    exclude: ".noExl",
+//                    name: "Excel Document table",
+//                    filename: postfix+"Daily_report"+ext,
+//                    fileext: ".xls",
+//                    exclude_img: true,
+//                    exclude_links: true,
+//                    exclude_inputs: true //do not include extension
+//                });
+//            });
+            $(document).ready(function () {
+                $(".export").click(function () {
+//                    var row = $(this).closest("tr");       // Finds the closest row <tr>
+//                    var tds = row.find("td");
+                    var dt = new Date();
+                    var day = dt.getDate();
+                    var month = dt.getMonth() + 1;
+                    var year = dt.getFullYear();
+                    var ext=$("#year").val()+"_"+$("#month").val()+"_"+$("#day").val();
+                    var postfix = day + "_" + month+"_"+year;
+                    $(".table").tableExport({
+                        headings: true,
+                        footers: true,
+                        formats: ["xls","xlsx","csv"],
+                        fileName: postfix+"daily_report_"+ext,
+                        bootstrap: true,
+                        position: "top",
+                        ignoreRows: null,
+                        ignoreCols: null
+                    });
                 });
             });
+
             $(document).ready(function () {
+                //used to pick the year,month and day for the select box including ajax and conditions
                 $("#fullDate").datepicker({
                             showOn:"button",
                             showButtonPanel: true,
@@ -187,137 +194,36 @@
                             buttonImage:'images/calendar.png',
                             changeMonth: true,
                             changeYear: true,
-
-//                      beforeShowDay: function(input,inst){
-//                        var year = $(this).parent().find("#year").val();
-//                        var month = $(this).parent().find("#month").val();
-//                        var date = $(this).parent().find("#day").val();
-//                        $(this).datepicker( "setDate" , year + "/" + month + "/" + date)
-//                    },
                       onClose:function (dateText,ins) {
                           var datesplit=dateText.split('/');
                           var year=datesplit[2];
                           var months=datesplit[0];
                           var days=datesplit[1];
-                          console.log(year);
-
-//                          $('#year').removeAttr('disabled',true);
-//                          $(this).parents().find("#year").val(year);
-//                          $(this).parents().find("#month").val(months);
-//                          $(this).parents().find("#day").val(days);
-                          var Year_data=$('#year');
-//                          console.log("my year"+Year_data);
-                          // exist? not exist? from database
-                        var result=  $.ajax({
+                          var myJSON = { year: year, month: months,day:days};
+                       $.ajax({
                               type: "get",
                               cache: false,
                               dataType: "json",
-                              data: Year_data,
+                              data: myJSON,
                               contentType:'charset=UTF-8',
-                              url: "ajax-month",
+                              url: "ajax-daily-val",
                               async: true
                           })
                                   .success(function( data ) {
-//                                      console.log("shume:"+data);
-                                      $("#month").empty();
-                                      // create select box option
-                                      $.each(data,function (index,value) {
-//                                          console.log("new"+value.month);
-//                                          console.log("calandder"+months);
-//                                          console.log("data index"+data[index].month);
-
-//                                          if(value.month==months){
-//                                              alert("the same");
-////                                              return true;
-//                                          }
-//                                          else{
-//                                              alert("not the same");
-////                                              return false;
-//                                          }
+                                      if(data){
+                                          $("#year").val(year).trigger('change');
+                                          }
+                                       else{
+                                          alert("別の日付を選択してください");
+                                              window.location.reload();
+                                              return false;
 
 
-                                      });
+                                       }
                                   });
-//                          var result = XXXXX;
-                          if(result) {
-                              $("#year").val(year).trigger('change');
-
-                          }else{
-                              return false;
-                       }
-
-                          // create monthly list from database
-                          // create daily list from database
-
-
-//                          console.log("the year value"+$("#year").val());
-//                          console.log("the year value"+year);
-//
-//                          console.log("the month value"+months);
-//                          console.log("the day value"+days);
-
-//                          if($("#fullDate").val()!==""){
-//                              if($("#month").val()!==months || $("#day").val()!==days){
-//                                  confirm("choose another day");
-//                                  $("#fullDate").val()==$("#fullDate").val("");
-//                                  $("#month").val()==$("#month").val("");
-//                                  $("#day").val()==$("#day").val("");
-//
-////                                  return false;
-//                              }
-//                              else {
-//                                  return false;
-//                              }
-
-
-//
-//
-// if(sel_year){
-//                                $("#month").val(months);
-////                                alert("selected");
-//                            }
-
-                          // calendar's month selected monthly list
-//alert(months);
-                          // calendar's daily selected monthly list
-
-//                          alert("hey");
-
-
-
-                          $.fn.myfunction();
-                          $("#day").val(days);
-
-//                          $.fn.call_month();
-//                           $("#day").val(days)
                       }
-
                 });
-
-
-
             });
-//            $.fn.call_month=function () {
-//                $("#fullDate").datepicker({
-//                    beforeShowDay: function(input,inst){
-////                        var year = $(this).parent().find("#year").val();
-////                        var month = $(this).parent().find("#month").val();
-////                        var date = $(this).parent().find("#day").val();
-////                        $(this).datepicker( "setDate" , year + "/" + month + "/" + date)
-////                    },
-//                    onSelect:function (dateText,ins) {
-//                        var datesplit=dateText.split('/');
-//                        var year=datesplit[2];
-//                        var months=datesplit[0];
-//                        var days=datesplit[1];
-//                        console.log(year);
-//
-//
-//                    }
-//                });
-//
-//            };
-
             $.fn.myfunction=function () {
                 var myData=$('#year');
                 $.ajax({
@@ -328,7 +234,6 @@
                     contentType:'charset=UTF-8',
                     url: "ajax-daily2",
                     async: true
-
                 })
                         .success(function( data ) {
                             var selected;
@@ -348,24 +253,15 @@
 
                                 if (flag==1)
                                 {
-//                                    alert(days);
                                     if (value.day==days) {
                                         selected = "selected";
-//                                        return true;
                                     }
                                     else {
-//                                        alert("different days");
                                         selected = "";
-//                                        return false;
                                     }
                                     $("#day").append('<option value="' + value.day + '"' + selected + '>' + value.day + '</option>');
 
                                 }
-//                                else {
-//                                    $("#day").append('<option value="' + value.day + '">' + value.day + '</option>');
-//                                }
-
-
                             });
                         });
             };
@@ -386,9 +282,7 @@
                             .success(function( response) {
                                 $("#day").empty();
                                 $.each(response,function (index,value) {
-//                            if(value.card_holder!=='未登録カード'){
                                     $("#day").append('<option value="'+ value.day+'">'+value.day+'</option>');
-//                            }
                                 });
                             });
                 });

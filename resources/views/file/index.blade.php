@@ -2,7 +2,7 @@
 @section('title','Home')
 @section('content')
         <hr>
-        <div class="row" align="center" style="background-color:#d9edf7;width: 103%">
+        <div class="row" align="center" style="background-color:#d9edf7;width: 103%;-webkit-box-shadow: 5px 8px 15px #B8B;box-shadow: 0 0 0 4px #668cff;">
             @if(Session::has('delete_all'))
                 <p class="bg-danger pull-right" >{{session('delete_all')}}</p>
             @endif
@@ -47,7 +47,7 @@
         {{--Begining of Table used to display per day--}}
         @if($users)
     <div class="row" >
-        <div class="col-sm-12" style="background-color:#d9edf7">
+        <div class="col-sm-12" style="background-color:#d9edf7;-webkit-box-shadow: 5px 8px 15px #B8B;">
             <table class="table table-bordered" id="display_list" style="width: 100%">
                 <thead>
                  <tr>

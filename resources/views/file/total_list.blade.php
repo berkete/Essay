@@ -4,7 +4,7 @@
 
 @section('content')
 <h3>月間　合計時間</h3>
-    <div class="row">
+    <div class="row" style="box-shadow: 0 0 0 4px #668cff;">
         @if($years)
             <div class="col-sm-2" style="margin-top: -19px">
                 <label for="year"></label>
@@ -31,13 +31,14 @@
             </div>
             <div class="col-sm-4"></div>
             <div class="col-sm-2">
-                <button class="btn btn-circle btn-default ">エクスポート</button>
+                {{--<button class="btn btn-circle btn-default ">エクスポート</button>--}}
+                <input type="button" class=" export btn btn-circle btn-info pull-right" value="エクスポート" >
             </div>
-            <div class="col-sm-1 ">    <input type="button" class=" print btn btn-circle btn-default pull-left " value="プリント" style="margin-left: -73px;">
+            <div class="col-sm-1 ">    <input type="button" class=" print btn btn-circle btn-info pull-right " value="プリント" style="margin-left: -73px;">
             </div>
     </div>
     <div class="row" >
-        <div class="col-sm-12" style="background-color:#d9edf7">
+        <div class="col-sm-12" style="background-color:#d9edf7;-webkit-box-shadow: 5px 8px 15px #B8B;">
             <table class="table table-bordered" id="monthly_report">
                 <thead>
                     <tr >
@@ -89,23 +90,27 @@
             $('#month').select2();
         });
         //Export function
-        $("button").click(function(){
-            var row = $(this).closest("tr");       // Finds the closest row <tr>
-            var tds = row.find("td");
-            var dt = new Date();
-            var day = dt.getDate();
-            var month = dt.getMonth() + 1;
-            var year = dt.getFullYear();
-            var postfix = day + "/" + month+"/"+year;
-            $(".table").table2excel({
-                exclude: ".noExl",
-                name: "Excel Document Name",
-                filename: postfix+"Monthly_report",
-                fileext: ".xls",
-                exclude_img: true,
-                exclude_links: true,
-                exclude_inputs: true //do not include extension
-        });
+        $(document).ready(function () {
+            $(".export").click(function () {
+//                    var row = $(this).closest("tr");       // Finds the closest row <tr>
+//                    var tds = row.find("td");
+                var dt = new Date();
+                var day = dt.getDate();
+                var month = dt.getMonth() + 1;
+                var year = dt.getFullYear();
+                var ext=$("#year").val()+"_"+$("#month").val()+"_"+$("#day").val();
+                var postfix = day + "_" + month+"_"+year;
+                $(".table").tableExport({
+                    headings: true,
+                    footers: true,
+                    formats: ["xls","xlsx","csv"],
+                    fileName: postfix+"daily_report_"+ext,
+                    bootstrap: true,
+                    position: "top",
+                    ignoreRows: null,
+                    ignoreCols: null
+                });
+            });
         });
         //Print function
         $(".print").click(function() {

@@ -36,6 +36,23 @@ Route::get('/', function () {
 });
 
 //used to return data to the ajax for dropdown lists
+Route::get('/ajax-daily-val',function (){
+    $yearInput=Input::get('year');
+    $monthInput=Input::get('month');
+    $dayInput=Input::get('day');
+    $daily_validation=DB::table('customers')
+        ->select(DB::raw('day(created_at) as day,month(created_at) as month,year(created_at) as year'))
+        ->whereRaw('day(created_at)=:day and month(created_at) = :month and year(created_at) = :year', ['day'=>$dayInput,'month' => $monthInput,'year' => $yearInput])
+        ->groupBy('day')
+        ->get();
+    if(!empty($daily_validation)){
+        return $daily_validation;
+    }
+    else{
+        return response(0);
+    }
+
+});
 Route::get('/ajax-month',function (){
     $yearInput=Input::get('year');
 //    $monthInput=Input::get('month');

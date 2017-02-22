@@ -5,9 +5,9 @@
 @section('content')
     {{--Begining of Table used to display per day--}}
 <h3>年間　合計時間</h3>
-    <div class="row">
+    <div class="row" style=" box-shadow: 0 0 0 4px #668cff; ">
         @if($years)
-            <div class="col-sm-2" style="margin-top: -19px">
+            <div class="col-sm-2" style="margin-top: -19px;-webkit-box-shadow: 5px 8px 15px #BAF;">
                 <label for="year"></label>
                 <select name="year" id="year" class="form-control" placeholder="Select">
                     <option value="" selected disabled> 年を選択</option>
@@ -20,15 +20,15 @@
             <div class="col-sm-1">
                 <input type="button"  align="right" value="表示一覧" id="display" class="btn btn-circle btn-default">
             </div>
-            <div class="col-sm-4"></div>
-            <div class="col-sm-2">
-                <button class="btn btn-default ">エクスポート</button>
+            <div class="col-sm-6"></div>
+            <div class="col-sm-3">
+                <button class="export btn btn-info pull-right ">エクスポート</button>
+                <input type="button" class=" print btn btn-circle btn-info pull-right " value="プリント" style="margin-left: -73px;">
             </div>
-            <div class="col-sm-1 ">    <input type="button" class=" print btn btn-circle btn-default pull-left " value="プリント" style="margin-left: -73px;">
-            </div>
+
     </div>
     <div class="row" >
-        <div class="col-sm-12" style="background-color:#d9edf7">
+        <div class="col-sm-12" style="background-color:#d9edf7;-webkit-box-shadow: 5px 8px 15px #B8B;">
             <table class="table table-bordered" >
                 <thead>
                     <tr>
@@ -53,23 +53,26 @@
             $('#year').select2();
             $('#name').select2();
         });
-        $("button").click(function(){
-            var row = $(this).closest("tr");       // Finds the closest row <tr>
-            var tds = row.find("td");
-            var dt = new Date();
-            var day = dt.getDate();
-            var month = dt.getMonth() + 1;
-            var year = dt.getFullYear();
-            var postfix = day + "/" + month+"/"+year;
-            console.log("Closest"+tds[0]);
-            $(".table").table2excel({
-                exclude: ".noExl",
-                name: "Excel Document Name",
-                filename: postfix+"Yearly_report",
-                fileext: ".xls",
-                exclude_img: true,
-                exclude_links: true,
-                exclude_inputs: true //do not include extension
+        $(document).ready(function () {
+            $(".export").click(function () {
+//                    var row = $(this).closest("tr");       // Finds the closest row <tr>
+//                    var tds = row.find("td");
+                var dt = new Date();
+                var day = dt.getDate();
+                var month = dt.getMonth() + 1;
+                var year = dt.getFullYear();
+                var ext=$("#year").val()+"_"+$("#month").val()+"_"+$("#day").val();
+                var postfix = day + "_" + month+"_"+year;
+                $(".table").tableExport({
+                    headings: true,
+                    footers: true,
+                    formats: ["xls","xlsx","csv"],
+                    fileName: postfix+"daily_report_"+ext,
+                    bootstrap: true,
+                    position: "top",
+                    ignoreRows: null,
+                    ignoreCols: null
+                });
             });
         });
         $(".print").click(function() {

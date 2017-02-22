@@ -502,8 +502,13 @@ class AdminController extends Controller
         $average_second=0;
 
         foreach ($calculations as $key => $value) {
+//            $current=strtotime($value->time)/3600;
+//            if($current>413274 && $current<413274.5){
+//                var_dump($value->time);
+//                continue;
+//            }
             if ($key < ($count-1)) {
-            if($everyday_first_data_flg===1) {
+                if($everyday_first_data_flg===1) {
                 $enter_time=$value->time;
                 $a      = preg_split('/[: ]/', $enter_time);
                 $hour   = $a[0];
@@ -563,43 +568,132 @@ class AdminController extends Controller
                     $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
                     $minutein=0.0;
                     $minuteout=0.0;
+
 //                    $count2=1;
 //                    $avg_entrance_hour=0.0;
 //                    $avg_entrance_minute=0.0;
 //                    $avg_entrance_second=0.0;
 
                }
-            }
+                $current=strtotime($value->time)/3600.0;
+                $next=strtotime($calculations[$key]->time)/3600;
+
+
+//                if ($value->status == '入室' && $value->company == '入側' &&$next>413268 && $next<413269){
+//                    $value->time = '12:00:00';
+//                    continue;
+//                }
+                if ($value->status == '入室' && $value->company == '入側' && $current>413268 && $current<413269 ) {
+//                    var_dump($value->time);
+//                    var_dump($calculations[$key]->time);
+                    $value->time = '13:00:00';
+//                    continue;
+                }
+
+
+                if ($value->status == '退室' && $value->company == '出側' && $current>413268 && $current<413269 ) {
+//                    var_dump($value->time);
+                    $value->time = '12:00:00';
+//                    continue;
+
+                }
+                if ($current>413274 && $current<413274.5 ) {
+//                    $value->time = '18:30:00';
+                    continue;
+
+                }
+                if ($value->status == '退室' && $value->company == '出側' && $current>413274.0 && $current<413274.5 ) {
+//                    var_dump($value->time);
+//                    $value->time = '18:00:00';
+                    continue;
+
+                }
             if ($value->day == $calculations[$key]->day) {
                 if ($value->status == '入室' && $value->company == '入側') {
+//                    var_dump($value->time);
+                    $current=strtotime($value->time)/3600;
+//                    if($current>=413268 && $current<=413269) {
+//                        ////                var_dump($current);
+//                        $value->time = '13:00:00';
+////                    $calculations[$key]=$value->time;
+//
+////                    continue;
+//                    }
+
+//                    echo "<br>";
+
+
+                        //                var_dump($current);
+////                            $value->time='12:00:00';
+//                        continue;
+//                    }
 //                        var_dump("ok3");
                     if ($key < ($count - 1)) {
-                        $x = strtotime(($value->time));
-                        $y = strtotime($calculations[$key + 1]->time);
-                        if ($value->day == $calculations[$key + 1]->day) {
-                            $z = ($y - $x) / 3600;
+
+                            $x = strtotime(($value->time));
+                            $y = strtotime($calculations[$key + 1]->time);
+
+                        $current=$x/3600.0;
+                        $next=$y/3600;
+                        if($next>=413268 && $next<=413269) {
+                            $y=strtotime('12:00:00');
                         }
-                        $sumin += $z;
-                        $hoursin = floor($sumin);
-                        $minutein = round(60 * ($sumin - $hoursin));
+                            if ($value->day == $calculations[$key + 1]->day) {
+
+                                $z = ($y - $x) / 3600;
+                            }
+//                        in_array($current,range(413268,413269),true)
+
+                            $sumin += $z;
+                            $hoursin = floor($sumin);
+                            $minutein = round(60 * ($sumin - $hoursin));
+
                         if ($minutein>59){
                             $hoursin=$hoursin+1.0;
                             $minutein=$minutein-60.0;
                         }
+
+
                     }
 
+
                 }
+
             }
              if ($value->day == $calculations[$key]->day) {
 //                     var_dump("value".$value->status.":".$value->company);
                     if ($value->status == '退室' && $value->company == '出側') {
 //                            var_dump("count".$count.":".$key);
-                      if($key < ($count-1) ){
+//                        var_dump($value->time);
+
+//                    echo "<br>";
+//                        $current=strtotime($value->time)/3600;
+//                        if($current>413268 && $current<413269){
+//                            //                var_dump($current);
+////                            $value->time='12:00:00';
+//                            continue;
+//                        }
+                        if($key < ($count-1) ){
+//                            var_dump($value->time);
+//                            echo "calcu";
+//                            var_dump($calculations[$key + 1]->time);
                         $a = strtotime(($value->time));
                         $b = strtotime($calculations[$key + 1]->time);
+                            $current=$a/3600.0;
+                            $next=$b/3600;
+                            if($next>413268 && $next<413269) {
+                                $a=strtotime('13:00:00');
+                                continue;
+                            }
+//                          $current=array($a/3600.0);
+//                      if(in_array(range(413268,413269),$current,true)){
+//                          if($current>413268.0 && $current<413269.0){
+//                              continue;
+//                          }
                         if ($value->day == $calculations[$key + 1]->day) {
                                $f = ($b - $a) / 3600;
                            }
+
                         $sumout += $f;
                         $hoursout = floor($sumout);
                         $minuteout = round(60 * ($sumout - $hoursout));
@@ -610,6 +704,8 @@ class AdminController extends Controller
                       }
                     }
                 }
+            }
+
             //used to fetch the last time for the last data
             $last_month=$value->month;
             $last_day=$value->day;

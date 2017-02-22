@@ -2,39 +2,39 @@
 ;(function ( $, window, document, undefined ) {
     var pluginName = "table2excel",
 
-    defaults = {
-        exclude: ".noExl",
-                name: "Table2Excel"
-    };
+        defaults = {
+            exclude: ".noExl",
+            name: "Table2Excel"
+        };
 
     // The actual plugin constructor
     function Plugin ( element, options ) {
-            this.element = element;
-            // jQuery has an extend method which merges the contents of two or
-            // more objects, storing the result in the first object. The first object
-            // is generally empty as we don't want to alter the default options for
-            // future instances of the plugin
-            //
-            this.settings = $.extend( {}, defaults, options );
-            this._defaults = defaults;
-            this._name = pluginName;
-            this.init();
+        this.element = element;
+        // jQuery has an extend method which merges the contents of two or
+        // more objects, storing the result in the first object. The first object
+        // is generally empty as we don't want to alter the default options for
+        // future instances of the plugin
+        //
+        this.settings = $.extend( {}, defaults, options );
+        this._defaults = defaults;
+        this._name = pluginName;
+        this.init();
     }
 
     Plugin.prototype = {
         init: function () {
             var e = this;
 
-			var utf8Heading = "<meta http-equiv=\"content-type\" content=\"application/vnd.ms-excel; charset=UTF-8\">";
+            var utf8Heading = "<meta http-equiv=\"content-type\" content=\"application/vnd.ms-excel; charset=UTF-8\">";
             e.template = {
-				head: "<html xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:x=\"urn:schemas-microsoft-com:office:excel\" xmlns=\"http://www.w3.org/TR/REC-html40\">" + utf8Heading + "<head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets>",
+                head: "<html xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:x=\"urn:schemas-microsoft-com:office:excel\" xmlns=\"http://www.w3.org/TR/REC-html40\">" + utf8Heading + "<head><xml><x:ExcelWorkbook><x:ExcelWorksheets>",
                 sheet: {
                     head: "<x:ExcelWorksheet><x:Name>",
                     tail: "</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet>"
                 },
                 mid: "</x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body>",
                 table: {
-                    head: "<table border='0px solid black' style='font-size:16px; border-spacing: 10px 50px;width: 80%;'>",
+                    head:  "<table border='0px solid black' style='font-size:16px; border-spacing: 10px 50px;width: 100%;'>",
                     tail: "</table>"
                 },
                 foot: "</body></html>"
@@ -79,8 +79,8 @@
 
             if ( $.isArray(table) ) {
                 for (i in table) {
-                      //fullTemplate += e.template.sheet.head + "{worksheet" + i + "}" + e.template.sheet.tail;
-                      fullTemplate += e.template.sheet.head + sheetName + i + e.template.sheet.tail;
+                    fullTemplate += e.template.sheet.head + "{worksheet" + i + "}" + e.template.sheet.tail;
+                    fullTemplate += e.template.sheet.head + sheetName + i + e.template.sheet.tail;
                 }
             }
 
@@ -103,10 +103,12 @@
             {
                 if (typeof Blob !== "undefined") {
                     //use blobs if we can
+
+                    fullTemplate = e.format(fullTemplate, e.ctx); // <<< insert this line!!!
                     fullTemplate = [fullTemplate];
                     //convert to array
                     var blob1 = new Blob(fullTemplate, { type: "text/html" });
-                    window.navigator.msSaveBlob(blob1, getFileName(e.settings) );
+                    window.navigator.msSaveBlob(blob1, getFileName(e.settings));
                 } else {
                     //otherwise use the iframe and save
                     //requires a blank iframe on page called txtArea1
@@ -135,17 +137,17 @@
     };
 
     function getFileName(settings) {
-		return ( settings.filename ? settings.filename : "table2excel" ) +
-			   ( settings.fileext ? settings.fileext : ".xlsx" );
+        return ( settings.filename ? settings.filename : "table2excel" ) +
+            ( settings.fileext ? settings.fileext : ".xls" );
     }
 
     $.fn[ pluginName ] = function ( options ) {
         var e = this;
-            e.each(function() {
-                if ( !$.data( e, "plugin_" + pluginName ) ) {
-                    $.data( e, "plugin_" + pluginName, new Plugin( this, options ) );
-                }
-            });
+        e.each(function() {
+            if ( !$.data( e, "plugin_" + pluginName ) ) {
+                $.data( e, "plugin_" + pluginName, new Plugin( this, options ) );
+            }
+        });
 
         // chain jQuery functions
         return e;

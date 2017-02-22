@@ -17,9 +17,17 @@
     <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
     <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
     <script src="jQuery-Plugin-To-Export-Table/dist/tableExport.js"></script>
+    <script src="jQuery-Plugin-To-Export-Table/dist/tableExport.js"></script>
+    <script src="Export-Html-Table/src/xlsx.core.js"></script>
+    <script src="FileSaver/FileSaver.js"></script>
+    <script src="TableExport-master/src/stable/js/tableexport.js"></script>
+    <link rel="stylesheet" href="TableExport-master/src/stable/css/tableexport.css">
+
     <script src="Export-Html-Table/src/jquery.table2excel.js"></script>
     <script src="jquery-DATEPICKER-1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="jquery-DATEPICKER-1.12.1/jquery-ui.css">
+    <script src="ExcelExportJs/dist/jquery.techbytarun.excelexportjs.js"></script>
+
     {{--<link rel="stylesheet" href="jquery-DATEPICKER-1.12.1/jquery-ui.theme.css">--}}
 
     {{--//Print plugin--}}
@@ -60,12 +68,11 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{asset('images/ico/apple-touch-icon-114-precomposed.png')}}">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{asset('images/ico/apple-touch-icon-72-precomposed.png')}}">
     <link rel="apple-touch-icon-precomposed" href="{{asset('images/ico/apple-touch-icon-57-precomposed.png')}}">
-
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 </head><!--/head-->
 <header id="header"><!--header-->
-    <div class="header-middle" style="background-color:gainsboro;margin-left: -41px"><!--header-middle-->
-        <p class="alert alert-info" align="center" style="margin-left: -184px;">オフィスエントリレポート</p>
+    <div class="header-middle" style="background-color:gainsboro;margin-left: -41px;-webkit-box-shadow: 5px 8px 15px #BAF;"><!--header-middle-->
+        <p class="alert alert-info" align="center" style="margin-left: -184px;-webkit-box-shadow: 5px 8px 15px #11bb3d;">オフィスエントリレポート</p>
             <div class="row" style="margin-top: -31px;">
                 <div class="col-sm-4"></div>
                 <div class="col-sm-5 ">

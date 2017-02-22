@@ -11,7 +11,6 @@
         @if(Session::has('download_media'))
             <p class="bg-success pull-right" >{{session('download_media')}}</p>
         @endif
-        <a href="getDeleteall"  class="btn btn-danger pull-right" id="delete_all_dat"><i class="glyphicon glyphicon-trash"></i>すべて削除</a>
         <div id="pagination">Simple Pagination</div>
         <table class="table" id="content">
             <thead>
@@ -21,7 +20,8 @@
                     <th>ファイルサイズ</th>
                     <th>アップロード日時</th>
                     <th>ファイルタイプ</th>
-                    <th></th>
+                    <th><a href="getDeleteall"  class="btn btn-danger " id="delete_all_dat"><i class="glyphicon glyphicon-trash"></i>すべて削除</a>
+                    </th>
                 </tr>
             </thead>
             <?php
