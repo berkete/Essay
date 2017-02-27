@@ -212,6 +212,7 @@
                            var count=data.length;
                             console.log(count);
                            $.each(data, function (index, value) {
+
 //                                     console.log("value:"+value+"index:"+index);
                                      average_enterance=data[index].average_enterance;
                                      var arr_exit=data[index].exit.split(':');
@@ -227,7 +228,62 @@
                                   else {
                                        count=count-1;
                                    }
+                               if(data[index].time>'18:00:00'&&data[index].time<='18:30:00'){
+//                                       console.log("check"+data[index].time);
+                                   var datesplit =(data[index].time).split(':');
+                                   var minute=datesplit[1];
+                                   if(data[index].minutein>minute){
+                                       data[index].minutein=data[index].minutein-minute;
+                                   }
+                                   else {
+                                       data[index].sumin=data[index].sumin-Math.round(minute/60);
+                                   }
+                               }
+                               else if(data[index].time>'18:30:00') {
+//                                   console.log("checkedout"+data[index].minutein );
+//                                   if (data[index].minutein >30) {
+//                                       console.log("checked"+data[index].minutein );
+//                                       data[index].minutein = data[index].minutein - 30;
+////                                       console.log("checked"+data[index].minutein );
+//                                   }
+//                                   else {
 
+                                   console.log("correct" + data[index].sumin);
+                                       data[index].sumin = data[index].sumin - 0.5;
+                                   var split_sumin =(data[index].sumin).toString();
+                                   var split=split_sumin.split('.');
+                                   var integer_val=parseInt(split[0]);
+                                       var suminside = Math.floor(data[index].sumin);
+                                         console.log("inside" + suminside);
+                                       console.log("minutein" + data[index].minutein);
+                                       console.log("fractions" + (Math.round(60 * (data[index].sumin - suminside))));
+
+                                       data[index].minutein = data[index].minutein + Math.round(60 * (data[index].sumin - suminside));
+                                       data[index].sumin=integer_val;
+
+//                                       console.log("minutenside" + data[index].minutein);
+//                                       var int_dec = (data[index].sumin).split(':');
+//                                       var minute_t=
+                                       if (data[index].minutein >=59) {
+                                           data[index].sumin = data[index].sumin + 1;
+                                           data[index].minutein = data[index].minutein - 59;
+                                       }
+
+//                                   }
+
+//                                        console.log("minutenside" + data[index].sumin);
+//                                   console.log("minutenside" + data[index].minutein);
+
+//                                   data[index].sumin = suminside;
+//                                   console.log("minutensidee" + data[index].sumin);
+
+//                                       console.log("after" + data[index].minutein);
+
+
+
+
+
+                               }
 
 
 
@@ -236,6 +292,10 @@
                                    trHTML = '<tr><td>' + data[index].month+'/'+data[index].day + '</td><td>' + data[index].sumin+'時間'+　data[index].minutein+　'分'+  '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+  '</td><td>' + data[index].enter+ '</td><td>' + data[index].exit+ '</td></tr>';
                                    $("#displays").append(trHTML);
                                    $("#displays").css("background-color", "white");
+                               /*
+                               Break time subtraction
+                                */
+
                                      //Total time inside the office
                                      total_hour_in=total_hour_in+data[index].sumin;
                                      total_minute_in=total_minute_in+data[index].minutein;
