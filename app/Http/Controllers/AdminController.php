@@ -502,7 +502,7 @@ class AdminController extends Controller
         $average_minute=0;
         $average_second=0;
         foreach ($calculations as $key => $value) {
-//            var_dump($value->time);
+//            var_dump(strtotime('18:00:00')/3600);
 //            if ($value->time> '18:00:00' ){
 //                var_dump($value->time);
 //                if ( !($value->time> '18:00:00' && $value->time < '18:30:00')) {
@@ -570,24 +570,30 @@ class AdminController extends Controller
                     // exit 12:00 - 13:00
                     elseif ($value->status == '退室' && $value->company == '出側' && $value->time > '12:00:00' && $value->time < '13:00:00') {
 //                        var_dump($value->time);
-                        $value->time = '12:00:00';
-//                        $calculations[$key+1]->time='13:00:00';
+
+//                        $value->time = '12:00:00';
+                        $calculations[$key+1]->time='13:00:00';
 //                        var_dump();
                         continue;
                     }
                 // enter 18:00 - 18:30
 //                if ($value->status == '入室' && $value->company == '入側'&& $value->time>'18:00:00' && $value->time<'18:30:00' ) {
+////                    var_dump("enter");
+////                    var_dump($value->day);
 ////                    var_dump($value->time);
 //                    $value->time = '18:30:00';
 ////                    continue;
 //                }
 //                // exit 18:00 - 18:30
 //                elseif ( $value->status == '退室' && $value->company == '出側' && $value->time>'18:00:00' && $value->time<'18:30:00') {
-////                    var_dump($value->time);
+//
+////                    var_dump("exit");
+////                    var_dump($value->day);
+////                     var_dump($value->time);
 ////                    var_dump($calculations[$key+1]->time);
 ////                    $calculations[$key+1]->time='18:00:00';
 //                    $value->time = '18:00:00';
-//                    continue;
+////                    continue;
 //                }
 //                if ($value->time > '18:00:00' ){
 //                    $calculations[$key+1]->time=$value->time;
@@ -602,11 +608,39 @@ class AdminController extends Controller
                 if ($value->day == $calculations[$key+1]->day) {
                     if ($value->status == '入室' && $value->company == '入側') {
                         if ($key < ($count - 1)) {
+                            //uchida try ----------
+//                            echo("CALC: ".$calculations[$key + 1]->time ." - ".$value->time);
+//                            //echo(nl2br("\n"));
+//                            echo("\n");
+
+                            //reset 18:00:00
+                            if ( $calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time>'18:00:00' && $calculations[$key + 1]->time<'18:30:00') {
+//                                echo "uchida";
+                                $y = strtotime('18:00:00');
+                            }else{
+                                $y = strtotime($calculations[$key + 1]->time);
+                            }
+                            //uchida try ----------
+                            if ( $calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time>'18:30:00') {
+                                    $break_time= -0.5;
+//                                var_dump($calculations[$key + 1]->time);
+                            }else{
+                                $break_time=0;
+                            }
+
+
                             $x = strtotime(($value->time));
-                            $y = strtotime($calculations[$key + 1]->time);
+//                            $y = strtotime($calculations[$key + 1]->time);
+
+//                            echo("\n");
+//
+//                            echo("CALC2: ".date("Y-m-d H:i:s",$y) ." - ".date("Y-m-d H:i:s",$x));
+//
+//                            echo("\n");
+
                             $current=$x/3600.0;
                             $next=$y/3600.0;
-                            if($next>=413388 && $next<=413389) {
+                            if($next>=413436 && $next<=413437) {
                                 $y=strtotime('12:00:00');
                             }
 //                            if($calculations[$key + 1]->time>='12:00:00' && $calculations[$key + 1]->time<='13:00:00') {
@@ -628,7 +662,7 @@ class AdminController extends Controller
 //                                continue;
 //                            }
                             if ($value->day == $calculations[$key + 1]->day  ) {
-                                    $z = ($y - $x) / 3600;
+                                    $z = (($y - $x) / 3600)+$break_time;
                             }
 //var_dump("aaaa:");
 //var_dump($value->time);
@@ -680,20 +714,35 @@ class AdminController extends Controller
                         }
                     }
                 }
-                if ($value->day == $calculations[$key]->day) {
+                if ($value->day == $calculations[$key+1]->day) {
 //                     var_dump("value".$value->status.":".$value->company);
                     if ($value->status == '退室' && $value->company == '出側') {
 //                            var_dump("count".$count.":".$key);
 //                        var_dump($value->time);
 //                    echo "<br>";
+//                        if($value->time>'18:00:00'){
+//                            var_dump($value->time);
+//                        }
 //                        $current=strtotime($value->time)/3600;
 //                        if($current>413316 && $current<413317){
 //                            //                var_dump($current);
 ////                            $value->time='12:00:00';
 //                            continue;
-//                        }
-
                         if($key < ($count-1) ){
+                        if ( $calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側' && $calculations[$key + 1]->time>'18:00:00' && $calculations[$key + 1]->time<'18:30:00') {
+//                            echo "shume";
+                            $b = strtotime('18:30:00');
+                        }else{
+                            $b = strtotime($calculations[$key + 1]->time);
+                        }
+                            if ( $calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側'  && $calculations[$key + 1]->time>'18:30:00') {
+                                $break_times= -0.5;
+//                                var_dump($calculations[$key + 1]->time);
+                            }else{
+                                $break_times=0;
+                            }
+
+
 //                            var_dump($value->time);
 //                            echo "calcu";
 //                            var_dump($calculations[$key + 1]->time);
@@ -702,17 +751,17 @@ class AdminController extends Controller
                             $current=$a/3600.0;
                             $next=$b/3600.0;
 
-//                            if($next>=413322 && $next<=413322.5) {
+//                            if($next>=413442 && $next<=413442.5) {
 ////                                var_dump($value->time);
 //
 //                                $b=strtotime('18:00:00');
 //                            }
-////                            if($calculations[$key+1]->time>='18:00:00' && $calculations[$key+1]->time>='18:30:00')  {
-////                                $calculations[$key+1]->time='18:00:00';
-////                                continue;
-////                            }
+//                            if($value->time>='18:00:00' && $value->time>='18:30:00')  {
+//                                $value->time='18:30:00';
+//                                continue;
+//                            }
 //                            if($calculations[$key + 1]->time>='18:00:00'&& $calculations[$key + 1]->time<='18:30:00') {
-//                                $calculations[$key + 1]->time='18:00:00';
+////                                $calculations[$key + 1]->time='18:00:00';
 //                                continue;
 //                            }
 //                            if($value->time>'18:00:00' && $value->time<'18:30:00') {
@@ -720,12 +769,12 @@ class AdminController extends Controller
 //                                $value->time='18:00:00';
 //                                continue;
 //                            }
-                           if ($value->day == $calculations[$key + 1]->day) {
+//                           if ($value->day == $calculations[$key + 1]->day) {
 //                               var_dump($a);
-                                $f = ($b - $a) / 3600;
+                                $f = (($b - $a) / 3600)+$break_times;
 //                               var_dump($f);
 
-                           }
+//                           }
 
 //                            if(($current>413322) && ($current<413322.5 )){
 //                                var_dump($value->time);
@@ -752,6 +801,7 @@ class AdminController extends Controller
         }
         // only last data
         $list2[] = array('time'=>$value->time,'month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$enter_time,"exit"=>$last_time,"card_holder"=>$value->card_holder,"average_enterance"=>$average_entrance);
+
         return response((array)$list2);
     }
     public function daily_display()

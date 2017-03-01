@@ -212,6 +212,57 @@
                            var count=data.length;
                             console.log(count);
                            $.each(data, function (index, value) {
+//                               if(data[index].time>'18:00:00'&&data[index].time<'18:30:00'){
+////                                   console.log("18-18:30"+data[index].time);
+//                                   var datesplit =(data[index].time).split(':');
+//                                   var minute=datesplit[1];
+//                                   var second=datesplit[2];
+//                                   var total_ms=minute+(second/60);
+//                                   console.log(total_ms);
+//
+//                                   if(data[index].minutein>=minute){
+//                                           data[index].minutein=data[index].minutein-minute;
+//                                   }
+//                                   else {
+//                                       data[index].sumin=data[index].sumin-(minute/60);
+//
+//                                   }
+//                               }
+//                               else if(data[index].time>'18:30:00') {
+////                                   console.log("checkedout"+data[index].minutein );
+//                                   if (data[index].minutein > 30) {
+//                                       console.log("checked" + data[index].minutein);
+//                                       data[index].minutein = data[index].minutein - 30;
+////                                       console.log("checked"+data[index].minutein );
+//                                   }
+//                                   else {
+//
+//                                       console.log("correct" + data[index].sumin);
+//                                       data[index].sumin = data[index].sumin - 0.5;
+//                                       console.log("outside" + data[index].sumin);
+//
+//                                       var split_sumin = (data[index].sumin).toString();
+//                                       var split = split_sumin.split('.');
+//                                       var integer_val = parseInt(split[0]);
+//
+//                                       var suminside = Math.floor(data[index].sumin);
+//                                       console.log("inside" + integer_val);
+////                                       console.log("minutein" + data[index].minutein);
+////                                       console.log("fractions" + (Math.round(60 * (data[index].sumin - suminside))));
+//
+//                                       data[index].minutein = data[index].minutein + Math.round(60 * (data[index].sumin - suminside));
+//                                       data[index].sumin = integer_val;
+//
+////                                       console.log("minutenside" + data[index].minutein);
+////                                       var int_dec = (data[index].sumin).split(':');
+////                                       var minute_t=
+//                                       if (data[index].minutein >= 59) {
+//                                           data[index].sumin = data[index].sumin + 1;
+//                                           data[index].minutein = data[index].minutein - 59;
+//                                       }
+//
+//                                   }
+//                               }
 
 //                                     console.log("value:"+value+"index:"+index);
                                      average_enterance=data[index].average_enterance;
@@ -228,48 +279,6 @@
                                   else {
                                        count=count-1;
                                    }
-                               if(data[index].time>'18:00:00'&&data[index].time<='18:30:00'){
-//                                       console.log("check"+data[index].time);
-                                   var datesplit =(data[index].time).split(':');
-                                   var minute=datesplit[1];
-                                   if(data[index].minutein>minute){
-                                       data[index].minutein=data[index].minutein-minute;
-                                   }
-                                   else {
-                                       data[index].sumin=data[index].sumin-Math.round(minute/60);
-                                   }
-                               }
-                               else if(data[index].time>'18:30:00') {
-//                                   console.log("checkedout"+data[index].minutein );
-//                                   if (data[index].minutein >30) {
-//                                       console.log("checked"+data[index].minutein );
-//                                       data[index].minutein = data[index].minutein - 30;
-////                                       console.log("checked"+data[index].minutein );
-//                                   }
-//                                   else {
-
-                                   console.log("correct" + data[index].sumin);
-                                       data[index].sumin = data[index].sumin - 0.5;
-                                   var split_sumin =(data[index].sumin).toString();
-                                   var split=split_sumin.split('.');
-                                   var integer_val=parseInt(split[0]);
-                                       var suminside = Math.floor(data[index].sumin);
-                                         console.log("inside" + suminside);
-                                       console.log("minutein" + data[index].minutein);
-                                       console.log("fractions" + (Math.round(60 * (data[index].sumin - suminside))));
-
-                                       data[index].minutein = data[index].minutein + Math.round(60 * (data[index].sumin - suminside));
-                                       data[index].sumin=integer_val;
-
-//                                       console.log("minutenside" + data[index].minutein);
-//                                       var int_dec = (data[index].sumin).split(':');
-//                                       var minute_t=
-                                       if (data[index].minutein >=59) {
-                                           data[index].sumin = data[index].sumin + 1;
-                                           data[index].minutein = data[index].minutein - 59;
-                                       }
-
-//                                   }
 
 //                                        console.log("minutenside" + data[index].sumin);
 //                                   console.log("minutenside" + data[index].minutein);
@@ -283,7 +292,7 @@
 
 
 
-                               }
+
 
 
 
