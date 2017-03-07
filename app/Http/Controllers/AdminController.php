@@ -110,12 +110,25 @@ class AdminController extends Controller
                 }
                 if ($value->month == $calculations[$key+1]->month && $value->card_number == $calculations[$key+1]->card_number && $value->card_holder !== "未登録カード") {
                     if ($value->status == '入室' && $value->company == '入側') {
-//                        var_dump("ok3");
                         if ($key < ($count - 1)) {
+                            if ( $calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time>='12:00:00' && $calculations[$key + 1]->time<='13:00:00') {
+                                $calculations[$key+1]->time='12:00:00';
+                            }
+                            //reset 18:00:00
+                            if ( $calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time>'18:00:00' && $calculations[$key + 1]->time<'18:30:00') {
+                                $y = strtotime('18:00:00');
+                            }else{
+                                $y = strtotime($calculations[$key + 1]->time);
+                            }
+                            if ( $calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time>'18:30:00') {
+                                $break_time= -0.5;
+                            }else{
+                                $break_time=0;
+                            }
                             $x = strtotime(($value->time));
                             $y = strtotime($calculations[$key + 1]->time);
                             if ($value->day == $calculations[$key + 1]->day) {
-                                $z = ($y - $x) / 3600;
+                                $z = (($y - $x) / 3600)+$break_time;
                             }
                             $sumin += $z;
                             $hoursin = floor($sumin);
@@ -129,10 +142,22 @@ class AdminController extends Controller
                     }
                 }
                 if ($value->month == $calculations[$key+1]->month && $value->card_number == $calculations[$key+1]->card_number && $value->card_holder !== "未登録カード") {
-//                     var_dump("value".$value->status.":".$value->company);
                     if ($value->status == '退室' && $value->company == '出側') {
-//                            var_dump("count".$count.":".$key);
                         if ($key < ($count - 1)) {
+                            if ( $calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側' && $calculations[$key + 1]->time>'12:00:00' && $calculations[$key + 1]->time<'13:00:00') {
+                                $calculations[$key+1]->time='13:00:00';
+                                continue;
+                            }
+                            if ( $calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側' && $calculations[$key + 1]->time>'18:00:00' && $calculations[$key + 1]->time<'18:30:00') {
+                                $b = strtotime('18:30:00');
+                            }else{
+                                $b = strtotime($calculations[$key + 1]->time);
+                            }
+                            if ( $calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側'  && $calculations[$key + 1]->time>'18:30:00') {
+                                $break_times= 0.5;
+                            }else{
+                                $break_times=0;
+                            }
                             $a = strtotime(($value->time));
                             $b = strtotime($calculations[$key + 1]->time);
                             if ($value->day == $calculations[$key + 1]->day) {
@@ -329,13 +354,25 @@ class AdminController extends Controller
                 }
                 if ($value->month == $calculations[$key + 1]->month && $value->card_number == $calculations[$key + 1]->card_number && $value->card_holder !== "未登録カード") {
                     if ($value->status == '入室' && $value->company == '入側') {
-//                        var_dump("ok3");
                         if ($key < ($count - 1)) {
-//                            var_dump($value->card_holder);
+                            if ( $calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time>='12:00:00' && $calculations[$key + 1]->time<='13:00:00') {
+                                $calculations[$key+1]->time='12:00:00';
+                            }
+                            //reset 18:00:00
+                            if ( $calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time>'18:00:00' && $calculations[$key + 1]->time<'18:30:00') {
+                                $y = strtotime('18:00:00');
+                            }else{
+                                $y = strtotime($calculations[$key + 1]->time);
+                            }
+                            if ( $calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time>'18:30:00') {
+                                $break_time= -0.5;
+                            }else{
+                                $break_time=0;
+                            }
                             $x = strtotime(($value->time));
                             $y = strtotime($calculations[$key + 1]->time);
                             if ($value->day == $calculations[$key + 1]->day) {
-                                $z = ($y - $x) / 3600;
+                                $z = (($y - $x) / 3600)+$break_time;
                             }
                             $sumin += $z;
                             $hoursin = floor($sumin);
@@ -349,10 +386,22 @@ class AdminController extends Controller
                     }
                 }
                 if ($value->month == $calculations[$key + 1]->month && $value->card_number == $calculations[$key + 1]->card_number && $value->card_holder !== "未登録カード") {
-//                     var_dump("value".$value->status.":".$value->company);
                     if ($value->status == '退室' && $value->company == '出側') {
-//                            var_dump("count".$count.":".$key);
                         if ($key < ($count - 1)) {
+                            if ( $calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側' && $calculations[$key + 1]->time>'12:00:00' && $calculations[$key + 1]->time<'13:00:00') {
+                                $calculations[$key+1]->time='13:00:00';
+                                continue;
+                            }
+                            if ( $calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側' && $calculations[$key + 1]->time>'18:00:00' && $calculations[$key + 1]->time<'18:30:00') {
+                                $b = strtotime('18:30:00');
+                            }else{
+                                $b = strtotime($calculations[$key + 1]->time);
+                            }
+                            if ( $calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側'  && $calculations[$key + 1]->time>'18:30:00') {
+                                $break_times= 0.5;
+                            }else{
+                                $break_times=0;
+                            }
                             $a = strtotime(($value->time));
                             $b = strtotime($calculations[$key + 1]->time);
                             if ($value->day == $calculations[$key + 1]->day) {
@@ -374,10 +423,7 @@ class AdminController extends Controller
             $last_month = $value->month;
             $last_day = $value->day;
             $last_time = $value->time;
-
-//            echo("[everyday_first_data_flg:".$everyday_first_data_flg ."]===<br /><br />");
         }
-
         // only last data
         $list2[] = array('month' => $last_month, "day" => $last_day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter"=>$average_enterance,"exit"=>$average_h_m_s,"card_holder"=>$value->card_holder,'card_number' => $value->card_number);
         return response((array)$list2);
@@ -501,18 +547,16 @@ class AdminController extends Controller
         $average_hour=0;
         $average_minute=0;
         $average_second=0;
+        $break_case2=0;
+        $break_case_out=0;
+
+        $lunch_flag=0;
+        $lunch_time_hour = 1;
+        $evening_break=0;
+        $evening_time_minute=0.5;
         foreach ($calculations as $key => $value) {
-//            var_dump(strtotime('18:00:00')/3600);
-//            if ($value->time> '18:00:00' ){
-//                var_dump($value->time);
-//                if ( !($value->time> '18:00:00' && $value->time < '18:30:00')) {
-//                                    var_dump($z);
-////                    $sumin = ($sumin+$z)+0.5;
-////                continue;
-//                }
-//            }
-//            var_dump(strtotime('13:00:00')/3600);
             if ($key < ($count-1)) {
+
                 if($everyday_first_data_flg===1) {
                     $enter_time=$value->time;
                     $a      = preg_split('/[: ]/', $enter_time);
@@ -546,8 +590,21 @@ class AdminController extends Controller
                 } else {
                     $everyday_first_data_flg = 0;
                 }
+
                 // reset ( every day )
                 if ($value->day !== $calculations[$key + 1]->day) {
+                    if($lunch_flag==0){
+                        $hoursin=$hoursin-$lunch_time_hour;
+                    }
+                    if ($evening_break==0 && $value->time>"18:30:00"){
+                        $hours_difference=$hoursin-$evening_time_minute;
+                        $hoursin=floor($hours_difference);
+                        $minutein=$minutein+round(60*($hours_difference-$hoursin));
+                        if ($minutein>59){
+                            $hoursin = $hoursin + 1.0;
+                            $minutein = $minutein - 60.0;
+                        }
+                    }
                     $list2[] = array('time'=>$value->time,'month' => $value->month, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter" =>$average_entrance, "exit" =>$calculations[$key]->time);
                     $everyday_first_data_flg=1;
                     //        var_dump($valuelist);
@@ -555,240 +612,107 @@ class AdminController extends Controller
                     $sumout = 0.0;     // Intializing the time total that the employee stayed outside the office
                     $minutein=0.0;
                     $minuteout=0.0;
-
+                    $lunch_flag=0;
+                    $evening_break=0;
                 }
-                    $current = strtotime($value->time) / 3600.0;
-                    // enter 12:00 - 13:00
-                    if ($value->status == '入室' && $value->company == '入側' && $value->time > '12:00:00' && $value->time < '13:00:00') {
-//                        var_dump($value->time);
-//                        var_dump("value<br/>");
-//
-//                        var_dump($calculations[$key+1]->time);
-                        $value->time = '13:00:00';
-
-                    }
-                    // exit 12:00 - 13:00
-                    elseif ($value->status == '退室' && $value->company == '出側' && $value->time > '12:00:00' && $value->time < '13:00:00') {
-//                        var_dump($value->time);
-
-//                        $value->time = '12:00:00';
-                        $calculations[$key+1]->time='13:00:00';
-//                        var_dump();
-                        continue;
-                    }
-                // enter 18:00 - 18:30
-//                if ($value->status == '入室' && $value->company == '入側'&& $value->time>'18:00:00' && $value->time<'18:30:00' ) {
-////                    var_dump("enter");
-////                    var_dump($value->day);
-////                    var_dump($value->time);
-//                    $value->time = '18:30:00';
-////                    continue;
-//                }
-//                // exit 18:00 - 18:30
-//                elseif ( $value->status == '退室' && $value->company == '出側' && $value->time>'18:00:00' && $value->time<'18:30:00') {
-//
-////                    var_dump("exit");
-////                    var_dump($value->day);
-////                     var_dump($value->time);
-////                    var_dump($calculations[$key+1]->time);
-////                    $calculations[$key+1]->time='18:00:00';
-//                    $value->time = '18:00:00';
-////                    continue;
-//                }
-//                if ($value->time > '18:00:00' ){
-//                    $calculations[$key+1]->time=$value->time;
-//                    $value->time='18:30:00';
-//                    var_dump($value->time);
-//                    var_dump($calculations[$key+1]->time);
-//                                if ( !($value->time> '18:00:00' && $value->time < '18:30:00')) {
-////                                    var_dump($value->time);
-//                                    $sumin = ($sumin+$z);
-//                continue;
-//                                }
                 if ($value->day == $calculations[$key+1]->day) {
+
                     if ($value->status == '入室' && $value->company == '入側') {
                         if ($key < ($count - 1)) {
-                            //uchida try ----------
-//                            echo("CALC: ".$calculations[$key + 1]->time ." - ".$value->time);
-//                            //echo(nl2br("\n"));
-//                            echo("\n");
-
-                            //reset 18:00:00
-                            if ( $calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time>'18:00:00' && $calculations[$key + 1]->time<'18:30:00') {
-//                                echo "uchida";
-                                $y = strtotime('18:00:00');
-                            }else{
-                                $y = strtotime($calculations[$key + 1]->time);
+                            if ( $calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time>'11:59:00' && $calculations[$key + 1]->time<='13:00:00') {
+                                $calculations[$key+1]->time='12:00:00';
+                                $lunch_flag=1;
                             }
-                            //uchida try ----------
-                            if ( $calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time>'18:30:00') {
-                                    $break_time= -0.5;
-//                                var_dump($calculations[$key + 1]->time);
-                            }else{
-                                $break_time=0;
-                            }
-
-
-                            $x = strtotime(($value->time));
-//                            $y = strtotime($calculations[$key + 1]->time);
-
-//                            echo("\n");
-//
-//                            echo("CALC2: ".date("Y-m-d H:i:s",$y) ." - ".date("Y-m-d H:i:s",$x));
-//
-//                            echo("\n");
-
-                            $current=$x/3600.0;
-                            $next=$y/3600.0;
-                            if($next>=413436 && $next<=413437) {
-                                $y=strtotime('12:00:00');
-                            }
-//                            if($calculations[$key + 1]->time>='12:00:00' && $calculations[$key + 1]->time<='13:00:00') {
-//                                $y=strtotime('12:00:00');
-//                            }
-//                            if($calculations[$key + 1]->time>='12:00:00'&& $calculations[$key + 1]->time<='13:00:00') {
-//                                $calculations[$key + 1]->time='12:00:00';
-//                            }
-//                            if($value->time>='12:00:00'&& $value->time<='13:00:00') {
-//                                $value->time='13:00:00';
-//                            }
-//                            if($calculations[$key + 1]->time>='18:00:00' && $calculations[$key + 1]->time<='18:30:00') {
-////                                var_dump($value->time);
-//                                $calculations[$key + 1]->time='18:30:00';
-////                                $value->time='18:30:00';
-//                            }
-
-//                            if(($current>=413316 && $current<=413317) &&($current>413322 &&$current>413322.5 )  ){
-//                                continue;
-//                            }
-                            if ($value->day == $calculations[$key + 1]->day  ) {
-                                    $z = (($y - $x) / 3600)+$break_time;
-                            }
-//var_dump("aaaa:");
-//var_dump($value->time);
-
-//var_dump("bbbb:");
-//var_dump($calculations[$key + 1]->time);
-//var_dump("--------------");
-                            // enter ( status : 入室 )
-//                            if ($value->time > '18:00:00' ) {
-//
-//                            // exit ( status : 退室 )
-//                            }
-//                            elseif($calculations[$key + 1]->time > '18:00:00' ){
-//
-//                            }
-
-//                            if ($value->time> '18:00:00' ){
-//                                var_dump($value->time);
-//                                if ( !($value->time> '18:00:00' && $value->time < '18:30:00')) {
-////                                    var_dump($value->time);
-//                                    $sumin = ($sumin+$z);
-////                continue;
-//                                }
-//                            }
-//                            else{
-                                $sumin += $z;
-
-//                            }
-//                        in_array($current,range(413316,413317),true)
-
-
-
-                            $hoursin = floor($sumin);
-                            $minutein = round(60 * ($sumin - $hoursin));
-//                            if($value->time>'18:00:00'){
-//                                if($minutein>=30){
-//                                    $minutein=$minutein-30;
-//
-//                                }
-//                                else{
-//                                    $hoursin=$hoursin-0.5;
-//                                }
-////                                var_dump($value->time);
-//                            }
-                            if ($minutein>59){
-                                $hoursin=$hoursin+1.0;
-                                $minutein=$minutein-60.0;
-                            }
+                                if ($calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time > '18:00:00' && $calculations[$key + 1]->time < '18:30:00') {
+                                    $y = strtotime('18:00:00');
+                                    $evening_break=1;
+                                } else {
+                                    $y = strtotime($calculations[$key + 1]->time);
+                                }
+                                $x = strtotime(($value->time));
+                                    $z = (($y - $x) / 3600) ;
+                                $sumin = ($sumin + $z);
+                                $hoursin = floor($sumin);
+                                $minutein = round(60 * ($sumin - $hoursin));
+                                if ($minutein > 59) {
+                                    $hoursin = $hoursin + 1.0;
+                                    $minutein = $minutein - 60.0;
+                                }
                         }
                     }
                 }
                 if ($value->day == $calculations[$key+1]->day) {
-//                     var_dump("value".$value->status.":".$value->company);
                     if ($value->status == '退室' && $value->company == '出側') {
-//                            var_dump("count".$count.":".$key);
-//                        var_dump($value->time);
-//                    echo "<br>";
-//                        if($value->time>'18:00:00'){
-//                            var_dump($value->time);
-//                        }
-//                        $current=strtotime($value->time)/3600;
-//                        if($current>413316 && $current<413317){
-//                            //                var_dump($current);
-////                            $value->time='12:00:00';
-//                            continue;
                         if($key < ($count-1) ){
-                        if ( $calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側' && $calculations[$key + 1]->time>'18:00:00' && $calculations[$key + 1]->time<'18:30:00') {
-//                            echo "shume";
-                            $b = strtotime('18:30:00');
-                        }else{
-                            $b = strtotime($calculations[$key + 1]->time);
-                        }
-                            if ( $calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側'  && $calculations[$key + 1]->time>'18:30:00') {
-                                $break_times= -0.5;
-//                                var_dump($calculations[$key + 1]->time);
-                            }else{
-                                $break_times=0;
-                            }
+
+                                if ( ($calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側')&& ($calculations[$key + 1]->time>'11:59:00' && $calculations[$key + 1]->time<'13:00:00')) {
+                                    $calculations[$key+1]->time='13:00:00';
+//                                    continue;
+                                }
 
 
-//                            var_dump($value->time);
-//                            echo "calcu";
-//                            var_dump($calculations[$key + 1]->time);
+                            if($value->time <$calculations[$key+1]->time) {
+                                if ($calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側' && $calculations[$key + 1]->time > '18:00:00' && $calculations[$key + 1]->time < '18:30:00') {
+                                    $calculations[$key+1]->time='18:30:00';
+//                                    $b = strtotime('18:30:00');
+
+                                } else {
+                                       if ($calculations[$key+1]->time=='13:00:00' && $value->time=='12:00:00'){
+//                                           continue;
+                                           $lunch=-1;
+                                       }
+                                       else{
+                                           $lunch=0;
+                                       }
+                                }
+                                if($calculations[$key + 1]->time >='18:00:00' && $calculations[$key + 1]->time <='18:30:00'){
+                                    continue;
+
+                                }else{
+                                }
+//                                if ($calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側' && $calculations[$key + 1]->time > '18:30:00') {
+//                                    if ($value->time >'18:30:00'){
+//                                        $break_times = -0.5;
+//                                    }
+//                                } else {
+//                                    $break_times = 0;
+//                                }
+//                                if (($calculations[$key + 1]->time >= '12:00:00' && $calculations[$key + 1]->time <= '13:00:00') && ($value->time >= '12:00:00' && $value->time <= '13:00:00')) {
+//
+////                                var_dump($count_value);
+////                                if($count_value==1){
+//////                                   var_dump($value->time."Cal".$calculations[$key + 1]->time);
+//////                                continue;
+//                                    $lunch = -1;
+////                               }
+////                               else{
+//                                    continue;
+//                                } //                            }
+//                                else {
+//                                    $lunch = 0;
+//                                }
+
                             $a = strtotime(($value->time));
                             $b = strtotime($calculations[$key + 1]->time);
-                            $current=$a/3600.0;
-                            $next=$b/3600.0;
+//                            $current=$a/3600.0;
+//                            $next=$b/3600.0;
+//                            echo "<br/>";
 
-//                            if($next>=413442 && $next<=413442.5) {
-////                                var_dump($value->time);
-//
-//                                $b=strtotime('18:00:00');
-//                            }
-//                            if($value->time>='18:00:00' && $value->time>='18:30:00')  {
-//                                $value->time='18:30:00';
-//                                continue;
-//                            }
-//                            if($calculations[$key + 1]->time>='18:00:00'&& $calculations[$key + 1]->time<='18:30:00') {
-////                                $calculations[$key + 1]->time='18:00:00';
-//                                continue;
-//                            }
-//                            if($value->time>'18:00:00' && $value->time<'18:30:00') {
-////                                var_dump($value->time);
-//                                $value->time='18:00:00';
-//                                continue;
-//                            }
-//                           if ($value->day == $calculations[$key + 1]->day) {
-//                               var_dump($a);
-                                $f = (($b - $a) / 3600)+$break_times;
-//                               var_dump($f);
+                            $f = (($b - $a) / 3600)+$lunch;
+                            $sumout += $f;
+//                            var_dump($sumout);
 
-//                           }
-
-//                            if(($current>413322) && ($current<413322.5 )){
-//                                var_dump($value->time);
-////                                continue;
-//                            }
-
-                                $sumout += $f;
+//                            var_dump($sumout);
 
                             $hoursout = floor($sumout);
-                            $minuteout = round(60 * ($sumout - $hoursout));
 
-                            if ($minuteout>59){
-                                $hoursout=$hoursout+1.0;
-                                $minuteout=$minuteout-60.0;
+
+                            $minuteout = round(60 * ($sumout - $hoursout));
+//                            var_dump($minuteout);
+                            if ($minuteout>60){
+                                $hoursout=$hoursout+1;
+                                $minuteout=$minuteout-60;
+                            }
                             }
                         }
                     }
@@ -855,10 +779,31 @@ class AdminController extends Controller
                     if ($value->status == '入室' && $value->company == '入側') {
 //                        var_dump("ok3");
                         if ($key < ($count - 1)) {
+                            if ( $calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time>='12:00:00' && $calculations[$key + 1]->time<='13:00:00') {
+//                                var_dump($calculations[$key+1]->time);
+                                $calculations[$key+1]->time='12:00:00';
+//                                var_dump($calculations[$key+1]->time);
+                            }
+//                                echo "uchida";
+                            //reset 18:00:00
+                            if ( $calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time>'18:00:00' && $calculations[$key + 1]->time<'18:30:00') {
+//                                echo "uchida";
+                                $y = strtotime('18:00:00');
+                            }else{
+                                $y = strtotime($calculations[$key + 1]->time);
+                            }
+                            //uchida try ----------
+                            if ( $calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time>'18:30:00') {
+                                $break_time= -0.5;
+//                                var_dump($calculations[$key + 1]->time);
+                            }else{
+                                $break_time=0;
+                            }
+
                             $x = strtotime(($value->time));
                             $y = strtotime($calculations[$key + 1]->time);
                             if ($value->day == $calculations[$key + 1]->day) {
-                                $z = ($y - $x) / 3600;
+                                $z = (($y - $x) / 3600)+$break_time;
                             }
                             $sumin += $z;
                             $hoursin = floor($sumin);
@@ -876,6 +821,26 @@ class AdminController extends Controller
                     if ($value->status == '退室' && $value->company == '出側') {
 //                            var_dump("count".$count.":".$key);
                         if ($key < ($count - 1)) {
+                            if ( $calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側' && $calculations[$key + 1]->time>'12:00:00' && $calculations[$key + 1]->time<'13:00:00') {
+//                                var_dump($calculations[$key+1]->time);
+                                $calculations[$key+1]->time='13:00:00';
+                                continue;
+//                                var_dump($calculations[$key+1]->time);
+//                                var_dump($value->time);
+
+                            }
+
+                            if ( $calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側' && $calculations[$key + 1]->time>'18:00:00' && $calculations[$key + 1]->time<'18:30:00') {
+//                            echo "shume";
+                                $b = strtotime('18:30:00');
+                            }else{
+                                $b = strtotime($calculations[$key + 1]->time);
+                            }
+                            if ( $calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側'  && $calculations[$key + 1]->time>'18:30:00') {
+                                $break_times= 0.5;
+                            }else{
+                                $break_times=0;
+                            }
                             $a = strtotime(($value->time));
                             $b = strtotime($calculations[$key + 1]->time);
                             if ($value->day == $calculations[$key + 1]->day) {
