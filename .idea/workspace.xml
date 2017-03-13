@@ -4,7 +4,6 @@
     <list default="true" id="b7e0d93c-67bd-4160-9bb1-69523ae915a4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/file/searchs.blade.php" afterPath="$PROJECT_DIR$/resources/views/file/searchs.blade.php" />
     </list>
     <ignored path="doors.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,8 +35,8 @@
       <file leaf-file-name="AdminController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdminController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="433">
-              <caret line="468" column="34" selection-start-line="468" selection-start-column="34" selection-end-line="468" selection-end-column="34" />
+            <state relative-caret-position="288">
+              <caret line="400" column="64" selection-start-line="400" selection-start-column="64" selection-end-line="400" selection-end-column="64" />
               <folding>
                 <element signature="e#395#993#0#PHP" expanded="false" />
                 <element signature="e#998#1938#0#PHP" expanded="false" />
@@ -45,16 +44,17 @@
                 <element signature="e#2235#2916#0#PHP" expanded="false" />
                 <element signature="e#2921#9815#0#PHP" expanded="false" />
                 <element signature="e#9820#10415#0#PHP" expanded="false" />
-                <element signature="e#27171#27246#0#PHP" expanded="false" />
-                <element signature="e#29448#29865#0#PHP" expanded="false" />
-                <element signature="e#29870#30257#0#PHP" expanded="false" />
-                <element signature="e#30262#31377#0#PHP" expanded="false" />
-                <element signature="e#41007#48634#0#PHP" expanded="false" />
-                <element signature="e#48639#48849#0#PHP" expanded="false" />
-                <element signature="e#48854#49059#0#PHP" expanded="false" />
-                <element signature="e#49334#49626#0#PHP" expanded="false" />
-                <marker date="1489369456000" expanded="true" signature="28986:29075" ph="..." />
-                <marker date="1489369456000" expanded="true" signature="28986:29107" ph="..." />
+                <element signature="e#25038#25248#0#PHP" expanded="false" />
+                <element signature="e#30907#30982#0#PHP" expanded="false" />
+                <element signature="e#33184#33601#0#PHP" expanded="false" />
+                <element signature="e#33606#33993#0#PHP" expanded="false" />
+                <element signature="e#33998#35113#0#PHP" expanded="false" />
+                <element signature="e#44743#52370#0#PHP" expanded="false" />
+                <element signature="e#52375#52585#0#PHP" expanded="false" />
+                <element signature="e#52590#52795#0#PHP" expanded="false" />
+                <element signature="e#53070#53362#0#PHP" expanded="false" />
+                <marker date="1489391818000" expanded="true" signature="32722:32811" ph="..." />
+                <marker date="1489391818000" expanded="true" signature="32722:32843" ph="..." />
               </folding>
             </state>
           </provider>
@@ -616,15 +616,15 @@
       <workItem from="1488762181386" duration="12665000" />
       <workItem from="1488848207519" duration="16343000" />
       <workItem from="1488935246117" duration="14879000" />
-      <workItem from="1489368236472" duration="1182000" />
+      <workItem from="1489368236472" duration="16397000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="970240000" />
+    <option name="totallyTimeSpent" value="985455000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="873" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -635,7 +635,7 @@
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.055629138" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24964234" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15650406" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1562914" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.06795422" sideWeight="0.55099505" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -667,7 +667,7 @@
           <url>file://$PROJECT_DIR$/storage/framework/views/c90c67ac37b81f4a255dec29e656aa9528c8b802.php</url>
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="19" />
+      <option name="time" value="20" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -972,8 +972,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdminController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
-          <caret line="468" column="34" selection-start-line="468" selection-start-column="34" selection-end-line="468" selection-end-column="34" />
+        <state relative-caret-position="288">
+          <caret line="400" column="64" selection-start-line="400" selection-start-column="64" selection-end-line="400" selection-end-column="64" />
           <folding>
             <element signature="e#395#993#0#PHP" expanded="false" />
             <element signature="e#998#1938#0#PHP" expanded="false" />
@@ -981,16 +981,17 @@
             <element signature="e#2235#2916#0#PHP" expanded="false" />
             <element signature="e#2921#9815#0#PHP" expanded="false" />
             <element signature="e#9820#10415#0#PHP" expanded="false" />
-            <element signature="e#27171#27246#0#PHP" expanded="false" />
-            <element signature="e#29448#29865#0#PHP" expanded="false" />
-            <element signature="e#29870#30257#0#PHP" expanded="false" />
-            <element signature="e#30262#31377#0#PHP" expanded="false" />
-            <element signature="e#41007#48634#0#PHP" expanded="false" />
-            <element signature="e#48639#48849#0#PHP" expanded="false" />
-            <element signature="e#48854#49059#0#PHP" expanded="false" />
-            <element signature="e#49334#49626#0#PHP" expanded="false" />
-            <marker date="1489369456000" expanded="true" signature="28986:29075" ph="..." />
-            <marker date="1489369456000" expanded="true" signature="28986:29107" ph="..." />
+            <element signature="e#25038#25248#0#PHP" expanded="false" />
+            <element signature="e#30907#30982#0#PHP" expanded="false" />
+            <element signature="e#33184#33601#0#PHP" expanded="false" />
+            <element signature="e#33606#33993#0#PHP" expanded="false" />
+            <element signature="e#33998#35113#0#PHP" expanded="false" />
+            <element signature="e#44743#52370#0#PHP" expanded="false" />
+            <element signature="e#52375#52585#0#PHP" expanded="false" />
+            <element signature="e#52590#52795#0#PHP" expanded="false" />
+            <element signature="e#53070#53362#0#PHP" expanded="false" />
+            <marker date="1489391818000" expanded="true" signature="32722:32811" ph="..." />
+            <marker date="1489391818000" expanded="true" signature="32722:32843" ph="..." />
           </folding>
         </state>
       </provider>
