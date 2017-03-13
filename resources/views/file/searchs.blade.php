@@ -298,7 +298,7 @@
 
 
 //                                     console.log("hours"+hours_av_exit+"minutes"+minutes_av_exit+"seconds"+second_av_exit);
-                                   trHTML = '<tr><td>' + data[index].month+'/'+data[index].day + '</td><td>' + data[index].sumin+'時間'+　data[index].minutein+　'分'+  '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+  '</td><td>' + data[index].enter+ '</td><td>' + data[index].exit+ '</td></tr>';
+                                   trHTML = '<tr><td>' + data[index].month+'/'+data[index].day + '</td><td>' + Math.abs(data[index].sumin)+'時間'+　data[index].minutein+　'分'+  '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+  '</td><td>' + data[index].enter+ '</td><td>' + data[index].exit+ '</td></tr>';
                                    $("#displays").append(trHTML);
                                    $("#displays").css("background-color", "white");
                                /*
@@ -306,7 +306,7 @@
                                 */
 
                                      //Total time inside the office
-                                     total_hour_in=total_hour_in+data[index].sumin;
+                                     total_hour_in=total_hour_in+Math.abs(data[index].sumin);
                                      total_minute_in=total_minute_in+data[index].minutein;
                                      if(total_minute_in>59){
                                          total_hour_in=total_hour_in+1.0;
@@ -362,7 +362,6 @@
                            $("#showyear").click(function (e) {
                                e.preventDefault();
                                $("#total_time").show().empty();
-
                            });
                        });
            });
