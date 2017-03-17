@@ -406,10 +406,10 @@ class AdminController extends Controller
 //                    $sumin=$sumin;
 //                    $sumin=abs($sumin);
                     $hoursin = floor($sumin);
-                    $minutein = floor(60 * ($sumin - $hoursin));
+                    $minutein = round(60 * ($sumin - $hoursin));
                     if ($minutein>59) {
                         $hoursin = $hoursin + 1.0;
-                        $minutein = $minutein - 59.0;
+                        $minutein = $minutein - 60.0;
                     }
                     $list2[] = array('month' => $value->month, 'card_number' => $value->card_number, 'card_holder' => $value->card_holder, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout, "enter" => $average_enterance, "exit" => $average_h_m_s);
                     $everyday_first_data_flg = 1;
@@ -440,11 +440,14 @@ class AdminController extends Controller
                     if ($value->status == '入室' && $value->company == '入側') {
                         if ($key < ($count - 1)) {
 //                            var_dump("May".$calculations[$key+1]->time);
-
+                            if ($value->status==$calculations[$key+1]->status || $value->company==$calculations[$key+1]->company){
+                                $value->status=$calculations[$key+1]->status;
+                                $value->company=$calculations[$key+1]->company;
+//                                continue;
+                            }
                             //uchida
                             if (  $value->time > '11:59:00'
                                 && $value->time <= '13:00:00') {
-
                                 $value->time='13:00:00';
                                 $lunch_flag=1;
 
@@ -469,17 +472,17 @@ class AdminController extends Controller
 //                                }
 //                            }
 
-                            if($value->card_number=="0000000000201401") {
-                                var_dump("Before sumin    ".$sumin."(".$hoursin."....".$minutein.")......"."Z=".$z." Day".$value->day);
-                                echo "<br />";
+//                            if($value->card_number=="0000000000201401") {
+//                                var_dump("Before sumin    ".$sumin."(".$hoursin."....".$minutein.")......"."Z=".$z." Day".$value->day);
+//                                echo "<br />";
+//
+//                            }
 
-                            }
 
-
-                            if($value->card_number=="0000000000000003") {
-                                var_dump("T sumin".$sumin."..."."Z=".$z." Day".$value->day);
-                                echo "<br />";
-                            }
+//                            if($value->card_number=="0000000000000003") {
+//                                var_dump("T sumin".$sumin."..."."Z=".$z." Day".$value->day);
+//                                echo "<br />";
+//                            }
 
                             // Uchida Check1
                             if($value->card_number=="0000000000000003") {
@@ -498,19 +501,19 @@ class AdminController extends Controller
 
 
 
-                            if($value->card_number=="0000000000201401") {
-                                var_dump("B sumin".$sumin."..."."Z=".$z." Day".$value->day);
-                                echo "<br />";
-                            }
+//                            if($value->card_number=="0000000000201401") {
+//                                var_dump("B sumin".$sumin."..."."Z=".$z." Day".$value->day);
+//                                echo "<br />";
+//                            }
 
 
 //                            $second=round(60*((60 * ($sumin - $hoursin)-$minutein)));
 
-                            if($value->card_number=="0000000000201401") {
-                                var_dump("After sumin    ".$hoursin."....".$minutein."......."."Z=".$z." Day".$value->day);
-                                echo "<br />";
-
-                            }
+//                            if($value->card_number=="0000000000201401") {
+//                                var_dump("After sumin    ".$hoursin."....".$minutein."......."."Z=".$z." Day".$value->day);
+//                                echo "<br />";
+//
+//                            }
 
 //                            var_dump("let22    ".$hoursin."....".$minutein.".......".$value->day);
 //                            echo "<br />";
@@ -576,7 +579,8 @@ class AdminController extends Controller
                                     $calculations[$key+1]->time='12:00:00';
                                     $lunch_flag=1;
     //                                    continue;
-                                }elseif ( ($calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側')&& ($calculations[$key + 1]->time>'11:59:00' && $calculations[$key + 1]->time<'13:00:00')) {
+                                }
+                                elseif ( ($calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側')&& ($calculations[$key + 1]->time>'11:59:00' && $calculations[$key + 1]->time<'13:00:00')) {
                                     $calculations[$key+1]->time='13:00:00';
                                     $lunch_flag=1;
     //                                    continue;
@@ -831,6 +835,7 @@ class AdminController extends Controller
                     if ($value->status == '入室' && $value->company == '入側') {
                         if ($key < ($count - 1)) {
                             if ( $calculations[$key + 1]->status == '退室' && $calculations[$key + 1]->company == '出側' && $calculations[$key + 1]->time>'11:59:00' && $calculations[$key + 1]->time<='13:00:00') {
+
                                 $calculations[$key+1]->time='12:00:00';
                                 $lunch_flag=1;
                             }
@@ -843,7 +848,7 @@ class AdminController extends Controller
 
                             $x = strtotime(($value->time));
                             $z = (($y - $x) / 3600) ;
-                            $sumin = ($sumin + $z);
+                            $sumin = ($sumin + abs($z));
                             $hoursin = floor($sumin);
                             $minutein = round(60 * ($sumin - $hoursin));
 //                            $second=round(60*((60 * ($sumin - $hoursin)-$minutein)));
@@ -864,7 +869,7 @@ class AdminController extends Controller
                                     $calculations[$key+1]->time='13:00:00';
 //                                    continue;
                                 }
-                            if($value->time <$calculations[$key+1]->time) {
+                            if($value->time < $calculations[$key+1]->time) {
                                 if ($calculations[$key + 1]->status == '入室' && $calculations[$key + 1]->company == '入側' && $calculations[$key + 1]->time > '18:00:00' && $calculations[$key + 1]->time < '18:30:00') {
                                     $calculations[$key+1]->time='18:30:00';
 //                                    $b = strtotime('18:30:00');

@@ -35,8 +35,8 @@
       <file leaf-file-name="AdminController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdminController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="610" column="77" selection-start-line="610" selection-start-column="77" selection-end-line="610" selection-end-column="77" />
+            <state relative-caret-position="447">
+              <caret line="850" column="55" selection-start-line="850" selection-start-column="55" selection-end-line="850" selection-end-column="55" />
               <folding>
                 <element signature="e#395#993#0#PHP" expanded="false" />
                 <element signature="e#998#1938#0#PHP" expanded="false" />
@@ -44,17 +44,18 @@
                 <element signature="e#2235#2916#0#PHP" expanded="false" />
                 <element signature="e#2921#9815#0#PHP" expanded="false" />
                 <element signature="e#9820#10415#0#PHP" expanded="false" />
-                <element signature="e#26038#26248#0#PHP" expanded="false" />
-                <element signature="e#32941#33016#0#PHP" expanded="false" />
-                <element signature="e#35218#35635#0#PHP" expanded="false" />
-                <element signature="e#35640#36027#0#PHP" expanded="false" />
-                <element signature="e#36032#37147#0#PHP" expanded="false" />
-                <element signature="e#46777#54404#0#PHP" expanded="false" />
-                <element signature="e#54409#54619#0#PHP" expanded="false" />
-                <element signature="e#54624#54829#0#PHP" expanded="false" />
-                <element signature="e#55104#55396#0#PHP" expanded="false" />
-                <marker date="1489479264000" expanded="true" signature="34756:34845" ph="..." />
-                <marker date="1489479264000" expanded="true" signature="34756:34877" ph="..." />
+                <element signature="e#26435#26645#0#PHP" expanded="false" />
+                <element signature="e#33371#33446#0#PHP" expanded="false" />
+                <element signature="e#35648#36065#0#PHP" expanded="false" />
+                <element signature="e#36070#36457#0#PHP" expanded="false" />
+                <element signature="e#36462#37577#0#PHP" expanded="false" />
+                <element signature="e#47214#54841#0#PHP" expanded="false" />
+                <element signature="e#54846#55056#0#PHP" expanded="false" />
+                <element signature="e#55061#55266#0#PHP" expanded="false" />
+                <element signature="e#55271#55536#0#PHP" expanded="false" />
+                <element signature="e#55541#55833#0#PHP" expanded="false" />
+                <marker date="1489717818000" expanded="true" signature="35186:35275" ph="..." />
+                <marker date="1489717818000" expanded="true" signature="35186:35307" ph="..." />
               </folding>
             </state>
           </provider>
@@ -63,7 +64,7 @@
       <file leaf-file-name="TR170220.dat" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/Downloads/アーカイブ-2/201702/TR170220.dat">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="104">
+            <state relative-caret-position="1065">
               <caret line="71" column="86" selection-start-line="71" selection-start-column="86" selection-end-line="71" selection-end-column="86" />
               <folding />
             </state>
@@ -115,7 +116,7 @@
       <file leaf-file-name="total_list.blade.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/file/total_list.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="617">
+            <state relative-caret-position="2220">
               <caret line="148" column="36" selection-start-line="148" selection-start-column="26" selection-end-line="148" selection-end-column="36" />
               <folding />
             </state>
@@ -237,8 +238,8 @@
         <option value="$PROJECT_DIR$/resources/views/file/daily.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/file/test.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/file/searchs.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" />
         <option value="$USER_HOME$/Downloads/アーカイブ-2/201702/TR170220.dat" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" />
       </list>
     </option>
   </component>
@@ -289,7 +290,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -481,6 +481,7 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -628,26 +629,27 @@
       <workItem from="1488848207519" duration="16343000" />
       <workItem from="1488935246117" duration="14879000" />
       <workItem from="1489368236472" duration="17442000" />
-      <workItem from="1489453576070" duration="12987000" />
+      <workItem from="1489453576070" duration="13371000" />
+      <workItem from="1489712217857" duration="4201000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="999487000" />
+    <option name="totallyTimeSpent" value="1004072000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="0" />
+    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16380544" sideWeight="0.44900498" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16595136" sideWeight="0.44900498" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297568" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.055629138" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24964234" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.074172184" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.060927153" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.06795422" sideWeight="0.55099505" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -885,6 +887,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdminController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="447">
+          <caret line="850" column="55" selection-start-line="850" selection-start-column="55" selection-end-line="850" selection-end-column="55" />
+          <folding>
+            <element signature="e#395#993#0#PHP" expanded="false" />
+            <element signature="e#998#1938#0#PHP" expanded="false" />
+            <element signature="e#1943#2230#0#PHP" expanded="false" />
+            <element signature="e#2235#2916#0#PHP" expanded="false" />
+            <element signature="e#2921#9815#0#PHP" expanded="false" />
+            <element signature="e#9820#10415#0#PHP" expanded="false" />
+            <element signature="e#26435#26645#0#PHP" expanded="false" />
+            <element signature="e#33371#33446#0#PHP" expanded="false" />
+            <element signature="e#35648#36065#0#PHP" expanded="false" />
+            <element signature="e#36070#36457#0#PHP" expanded="false" />
+            <element signature="e#36462#37577#0#PHP" expanded="false" />
+            <element signature="e#47214#54841#0#PHP" expanded="false" />
+            <element signature="e#54846#55056#0#PHP" expanded="false" />
+            <element signature="e#55061#55266#0#PHP" expanded="false" />
+            <element signature="e#55271#55536#0#PHP" expanded="false" />
+            <element signature="e#55541#55833#0#PHP" expanded="false" />
+            <marker date="1489717818000" expanded="true" signature="35186:35275" ph="..." />
+            <marker date="1489717818000" expanded="true" signature="35186:35307" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/アーカイブ-2/201702/TR170220.dat">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1065">
+          <caret line="71" column="86" selection-start-line="71" selection-start-column="86" selection-end-line="71" selection-end-column="86" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/file/test.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="11400">
@@ -915,6 +952,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="9" column="99" selection-start-line="9" selection-start-column="99" selection-end-line="9" selection-end-column="99" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/file/total_list.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2220">
+          <caret line="148" column="36" selection-start-line="148" selection-start-column="26" selection-end-line="148" selection-end-column="36" />
           <folding />
         </state>
       </provider>
@@ -963,48 +1008,6 @@
             <marker date="1488942365000" expanded="true" signature="17704:17710" ph=" " />
             <marker date="1488942365000" expanded="true" signature="17710:17716" ph=" " />
             <marker date="1488942365000" expanded="true" signature="17716:17722" ph=" " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Downloads/アーカイブ-2/201702/TR170220.dat">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="71" column="86" selection-start-line="71" selection-start-column="86" selection-end-line="71" selection-end-column="86" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/file/total_list.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="617">
-          <caret line="148" column="36" selection-start-line="148" selection-start-column="26" selection-end-line="148" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdminController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="610" column="77" selection-start-line="610" selection-start-column="77" selection-end-line="610" selection-end-column="77" />
-          <folding>
-            <element signature="e#395#993#0#PHP" expanded="false" />
-            <element signature="e#998#1938#0#PHP" expanded="false" />
-            <element signature="e#1943#2230#0#PHP" expanded="false" />
-            <element signature="e#2235#2916#0#PHP" expanded="false" />
-            <element signature="e#2921#9815#0#PHP" expanded="false" />
-            <element signature="e#9820#10415#0#PHP" expanded="false" />
-            <element signature="e#26038#26248#0#PHP" expanded="false" />
-            <element signature="e#32941#33016#0#PHP" expanded="false" />
-            <element signature="e#35218#35635#0#PHP" expanded="false" />
-            <element signature="e#35640#36027#0#PHP" expanded="false" />
-            <element signature="e#36032#37147#0#PHP" expanded="false" />
-            <element signature="e#46777#54404#0#PHP" expanded="false" />
-            <element signature="e#54409#54619#0#PHP" expanded="false" />
-            <element signature="e#54624#54829#0#PHP" expanded="false" />
-            <element signature="e#55104#55396#0#PHP" expanded="false" />
-            <marker date="1489479264000" expanded="true" signature="34756:34845" ph="..." />
-            <marker date="1489479264000" expanded="true" signature="34756:34877" ph="..." />
           </folding>
         </state>
       </provider>
