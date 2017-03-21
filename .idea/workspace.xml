@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b7e0d93c-67bd-4160-9bb1-69523ae915a4" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/file/test.blade.php" afterPath="$PROJECT_DIR$/resources/views/file/test.blade.php" />
     </list>
     <ignored path="doors.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,8 +35,8 @@
       <file leaf-file-name="AdminController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdminController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="873" column="48" selection-start-line="873" selection-start-column="48" selection-end-line="873" selection-end-column="48" />
+            <state relative-caret-position="373">
+              <caret line="705" column="31" selection-start-line="705" selection-start-column="31" selection-end-line="705" selection-end-column="31" />
               <folding>
                 <element signature="e#395#993#0#PHP" expanded="false" />
                 <element signature="e#998#1938#0#PHP" expanded="false" />
@@ -44,18 +44,17 @@
                 <element signature="e#2235#2916#0#PHP" expanded="false" />
                 <element signature="e#2921#9815#0#PHP" expanded="false" />
                 <element signature="e#9820#10415#0#PHP" expanded="false" />
-                <element signature="e#26435#26645#0#PHP" expanded="false" />
-                <element signature="e#33371#33446#0#PHP" expanded="false" />
-                <element signature="e#35648#36065#0#PHP" expanded="false" />
-                <element signature="e#36070#36457#0#PHP" expanded="false" />
-                <element signature="e#36462#37577#0#PHP" expanded="false" />
-                <element signature="e#47723#55350#0#PHP" expanded="false" />
-                <element signature="e#55355#55565#0#PHP" expanded="false" />
-                <element signature="e#55570#55775#0#PHP" expanded="false" />
-                <element signature="e#55780#56045#0#PHP" expanded="false" />
-                <element signature="e#56050#56342#0#PHP" expanded="false" />
-                <marker date="1490060476000" expanded="true" signature="35186:35275" ph="..." />
-                <marker date="1490060476000" expanded="true" signature="35186:35307" ph="..." />
+                <element signature="e#27337#27412#0#PHP" expanded="false" />
+                <element signature="e#29614#30031#0#PHP" expanded="false" />
+                <element signature="e#30036#30423#0#PHP" expanded="false" />
+                <element signature="e#30428#31543#0#PHP" expanded="false" />
+                <element signature="e#40968#48595#0#PHP" expanded="false" />
+                <element signature="e#48600#48810#0#PHP" expanded="false" />
+                <element signature="e#48815#49020#0#PHP" expanded="false" />
+                <element signature="e#49025#49290#0#PHP" expanded="false" />
+                <element signature="e#49295#49587#0#PHP" expanded="false" />
+                <marker date="1490072393000" expanded="true" signature="29152:29241" ph="..." />
+                <marker date="1490072393000" expanded="true" signature="29152:29273" ph="..." />
               </folding>
             </state>
           </provider>
@@ -74,10 +73,10 @@
       <file leaf-file-name="test.blade.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/file/test.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="11400">
-              <caret line="769" column="23" selection-start-line="753" selection-start-column="22" selection-end-line="769" selection-end-column="23" />
+            <state relative-caret-position="127">
+              <caret line="1177" column="37" selection-start-line="1176" selection-start-column="29" selection-end-line="1180" selection-end-column="31" />
               <folding>
-                <marker date="1488520618000" expanded="true" signature="30521:30642" ph="..." />
+                <marker date="1490062370000" expanded="true" signature="30521:30642" ph="..." />
               </folding>
             </state>
           </provider>
@@ -236,9 +235,9 @@
         <option value="$PROJECT_DIR$/resources/views/file/total_list.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/file/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/file/daily.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/file/test.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/file/searchs.blade.php" />
         <option value="$USER_HOME$/Downloads/アーカイブ-2/201702/TR170220.dat" />
+        <option value="$PROJECT_DIR$/resources/views/file/test.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" />
       </list>
     </option>
@@ -305,6 +304,60 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="doors" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="doors" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="doors" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="doors" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="doors" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="file" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="doors" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="doors" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -461,15 +514,15 @@
       <workItem from="1489368236472" duration="17442000" />
       <workItem from="1489453576070" duration="13371000" />
       <workItem from="1489712217857" duration="4834000" />
-      <workItem from="1490058808660" duration="1562000" />
+      <workItem from="1490058808660" duration="6076000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1006267000" />
+    <option name="totallyTimeSpent" value="1010781000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="873" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -480,7 +533,7 @@
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.055629138" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24964234" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29271522" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12715232" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.06795422" sideWeight="0.55099505" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -723,16 +776,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/file/test.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11400">
-          <caret line="769" column="23" selection-start-line="753" selection-start-column="22" selection-end-line="769" selection-end-column="23" />
-          <folding>
-            <marker date="1488520618000" expanded="true" signature="30521:30642" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/file/daily.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1545">
@@ -821,10 +864,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/file/test.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="1177" column="37" selection-start-line="1176" selection-start-column="29" selection-end-line="1180" selection-end-column="31" />
+          <folding>
+            <marker date="1490062370000" expanded="true" signature="30521:30642" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdminController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="873" column="48" selection-start-line="873" selection-start-column="48" selection-end-line="873" selection-end-column="48" />
+        <state relative-caret-position="373">
+          <caret line="705" column="31" selection-start-line="705" selection-start-column="31" selection-end-line="705" selection-end-column="31" />
           <folding>
             <element signature="e#395#993#0#PHP" expanded="false" />
             <element signature="e#998#1938#0#PHP" expanded="false" />
@@ -832,18 +885,17 @@
             <element signature="e#2235#2916#0#PHP" expanded="false" />
             <element signature="e#2921#9815#0#PHP" expanded="false" />
             <element signature="e#9820#10415#0#PHP" expanded="false" />
-            <element signature="e#26435#26645#0#PHP" expanded="false" />
-            <element signature="e#33371#33446#0#PHP" expanded="false" />
-            <element signature="e#35648#36065#0#PHP" expanded="false" />
-            <element signature="e#36070#36457#0#PHP" expanded="false" />
-            <element signature="e#36462#37577#0#PHP" expanded="false" />
-            <element signature="e#47723#55350#0#PHP" expanded="false" />
-            <element signature="e#55355#55565#0#PHP" expanded="false" />
-            <element signature="e#55570#55775#0#PHP" expanded="false" />
-            <element signature="e#55780#56045#0#PHP" expanded="false" />
-            <element signature="e#56050#56342#0#PHP" expanded="false" />
-            <marker date="1490060476000" expanded="true" signature="35186:35275" ph="..." />
-            <marker date="1490060476000" expanded="true" signature="35186:35307" ph="..." />
+            <element signature="e#27337#27412#0#PHP" expanded="false" />
+            <element signature="e#29614#30031#0#PHP" expanded="false" />
+            <element signature="e#30036#30423#0#PHP" expanded="false" />
+            <element signature="e#30428#31543#0#PHP" expanded="false" />
+            <element signature="e#40968#48595#0#PHP" expanded="false" />
+            <element signature="e#48600#48810#0#PHP" expanded="false" />
+            <element signature="e#48815#49020#0#PHP" expanded="false" />
+            <element signature="e#49025#49290#0#PHP" expanded="false" />
+            <element signature="e#49295#49587#0#PHP" expanded="false" />
+            <marker date="1490072393000" expanded="true" signature="29152:29241" ph="..." />
+            <marker date="1490072393000" expanded="true" signature="29152:29273" ph="..." />
           </folding>
         </state>
       </provider>
