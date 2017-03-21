@@ -809,16 +809,26 @@ class AdminController extends Controller
                 if ($value->day !== $calculations[$key + 1]->day) {
 
                     if($lunch_flag==0){
-                        $hoursin=$hoursin-$lunch_time_hour;
+                        $sumin=$sumin-$lunch_time_hour;
                     }
                     if ($evening_break==0 && $value->time>"18:30:00"){
-                        $hours_difference=$hoursin-$evening_time_minute;
-                        $hoursin=floor($hours_difference);
-                        $minutein=$minutein+round(60*($hours_difference-$hoursin));
-                        if ($minutein>59){
-                            $hoursin = $hoursin + 1.0;
-                            $minutein = $minutein - 60.0;
-                        }
+                        $sumin=$sumin-$evening_time_minute;
+//                        $hoursin=floor($hours_difference);
+//                        $minutein=$minutein+round(60*($hours_difference-$hoursin));
+//                        if ($minutein>59){
+//                            $hoursin = $hoursin + 1.0;
+//                            $minutein = $minutein - 60.0;
+//                        }
+                    }
+
+                    $hoursin = floor($sumin);
+                    $minutein = round(60 * ($sumin - $hoursin));
+//                            $second=round(60*((60 * ($sumin - $hoursin)-$minutein)));
+
+//                        var_dump($minutein."....".$second.".......".$value->day);
+                    if ($minutein > 59) {
+                        $hoursin = $hoursin + 1.0;
+                        $minutein = $minutein - 60.0;
                     }
                     $list2[] = array('time'=>$value->time,'month' => $value->month, "day" => $value->day, "sumin" => $hoursin, "minutein" => $minutein, "sumout" => $hoursout, "minuteout" => $minuteout,"enter" =>$average_entrance, "exit" =>$calculations[$key]->time);
                     $everyday_first_data_flg=1;
@@ -848,16 +858,8 @@ class AdminController extends Controller
 
                             $x = strtotime(($value->time));
                             $z = (($y - $x) / 3600) ;
-                            $sumin = ($sumin + abs($z));
-                            $hoursin = floor($sumin);
-                            $minutein = round(60 * ($sumin - $hoursin));
-//                            $second=round(60*((60 * ($sumin - $hoursin)-$minutein)));
+                            $sumin = $sumin + $z;
 
-//                        var_dump($minutein."....".$second.".......".$value->day);
-                            if ($minutein > 59) {
-                                $hoursin = $hoursin + 1.0;
-                                $minutein = $minutein - 60.0;
-                            }
                         }
                     }
                 }
