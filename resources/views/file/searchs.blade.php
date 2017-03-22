@@ -212,59 +212,6 @@
                            var count=data.length;
                             console.log(count);
                            $.each(data, function (index, value) {
-//                               if(data[index].time>'18:00:00'&&data[index].time<'18:30:00'){
-////                                   console.log("18-18:30"+data[index].time);
-//                                   var datesplit =(data[index].time).split(':');
-//                                   var minute=datesplit[1];
-//                                   var second=datesplit[2];
-//                                   var total_ms=minute+(second/60);
-//                                   console.log(total_ms);
-//
-//                                   if(data[index].minutein>=minute){
-//                                           data[index].minutein=data[index].minutein-minute;
-//                                   }
-//                                   else {
-//                                       data[index].sumin=data[index].sumin-(minute/60);
-//
-//                                   }
-//                               }
-//                               else if(data[index].time>'18:30:00') {
-////                                   console.log("checkedout"+data[index].minutein );
-//                                   if (data[index].minutein > 30) {
-//                                       console.log("checked" + data[index].minutein);
-//                                       data[index].minutein = data[index].minutein - 30;
-////                                       console.log("checked"+data[index].minutein );
-//                                   }
-//                                   else {
-//
-//                                       console.log("correct" + data[index].sumin);
-//                                       data[index].sumin = data[index].sumin - 0.5;
-//                                       console.log("outside" + data[index].sumin);
-//
-//                                       var split_sumin = (data[index].sumin).toString();
-//                                       var split = split_sumin.split('.');
-//                                       var integer_val = parseInt(split[0]);
-//
-//                                       var suminside = Math.floor(data[index].sumin);
-//                                       console.log("inside" + integer_val);
-////                                       console.log("minutein" + data[index].minutein);
-////                                       console.log("fractions" + (Math.round(60 * (data[index].sumin - suminside))));
-//
-//                                       data[index].minutein = data[index].minutein + Math.round(60 * (data[index].sumin - suminside));
-//                                       data[index].sumin = integer_val;
-//
-////                                       console.log("minutenside" + data[index].minutein);
-////                                       var int_dec = (data[index].sumin).split(':');
-////                                       var minute_t=
-//                                       if (data[index].minutein >= 59) {
-//                                           data[index].sumin = data[index].sumin + 1;
-//                                           data[index].minutein = data[index].minutein - 59;
-//                                       }
-//
-//                                   }
-//                               }
-
-//                                     console.log("value:"+value+"index:"+index);
                                      average_enterance=data[index].average_enterance;
                                      var arr_exit=data[index].exit.split(':');
                                      var hours_exit=parseInt(arr_exit[0]);
@@ -279,32 +226,9 @@
                                   else {
                                        count=count-1;
                                    }
-
-//                                        console.log("minutenside" + data[index].sumin);
-//                                   console.log("minutenside" + data[index].minutein);
-
-//                                   data[index].sumin = suminside;
-//                                   console.log("minutensidee" + data[index].sumin);
-
-//                                       console.log("after" + data[index].minutein);
-
-
-
-
-
-
-
-
-
-
-//                                     console.log("hours"+hours_av_exit+"minutes"+minutes_av_exit+"seconds"+second_av_exit);
                                    trHTML = '<tr><td>' + data[index].month+'/'+data[index].day + '</td><td>' + Math.abs(data[index].sumin)+'時間'+　data[index].minutein+　'分'+  '</td><td>' + data[index].sumout+'時間'+ data[index].minuteout+　'分'+  '</td><td>' + data[index].enter+ '</td><td>' + data[index].exit+ '</td></tr>';
                                    $("#displays").append(trHTML);
                                    $("#displays").css("background-color", "white");
-                               /*
-                               Break time subtraction
-                                */
-
                                      //Total time inside the office
                                      total_hour_in=total_hour_in+Math.abs(data[index].sumin);
                                      total_minute_in=total_minute_in+data[index].minutein;
@@ -331,9 +255,6 @@
                                          $("#displays").show().empty();
                                      });
                                  });
-                           console.log(minutes_av_exit/count);
-                           console.log(second_av_exit/count);
-
                            var average_hour_exit=Math.round(hours_av_exit/count);
                            var average_minute_exit=Math.round(minutes_av_exit/count)+Math.round(60*((hours_av_exit/count)-average_hour_exit));
                            var average_second_exit=Math.round(second_av_exit/count);
@@ -354,9 +275,6 @@
                            if(average_second_exit<10){
                                average_second_exit="0"+average_second_exit;
                            }
-
-                           console.log(minutes_av_exit/count);
-                           console.log(second_av_exit/count);
                            var average_exit_time=average_hour_exit+":"+average_minute_exit+":"+average_second_exit;
                            $("#total_time").append("中にいる時間　合計 &emsp;&emsp;"+total_hour_in+"時間"+total_minute_in+"分<br/>"+"外にいる時間　合計 &emsp;"+total_hour_out+"時間"+total_minute_out+"分<br/>"+"合計時間 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;   "+total_hour+"時間"+total_minute+"分<br>"+"平均出社時間&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+average_enterance+"<br>平均退社時間&emsp;&emsp;&emsp;&emsp;&emsp;"+average_exit_time);
                            $("#showyear").click(function (e) {

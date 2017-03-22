@@ -12,27 +12,9 @@ use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\Request;
 
 Route::get('/', function () {
-    $customers=[];
-   foreach (Customer::all() as $customer) {
-//       $customer->groupBy('card_holder');
-       $customers[$customer->id] = $customer->card_holder;
-   }
- $customers2=[];
-      foreach (Customer::all() as $customer) {
-          $customers2[$customer->id] = \Carbon\Carbon::parse($customer->created_at)->format('Y');
-      }
-
-    $customers3=[];
-    foreach (Customer::all() as $customer) {
-        $customers3[$customer->id] = $customer->card_number;
-    }
-    $customers4=[];
-    foreach (Customer::all() as $customer) {
-        $customers4[$customer->id] = \Carbon\Carbon::parse($customer->created_at)->format('m/d');
-    }
-    return View::make('welcome',compact('customers','customers2','customers3','customers4'));
-//    return View::make('welcome',compact('customers','customers2','customers3','customers4'));
-
+    $files = public_path().('/uploaded_files/');
+    $path=scandir($files, 1);// used to list all files in the directory
+    return view('welcome',compact('path'));
 });
 
 //used to return data to the ajax for dropdown lists
@@ -137,5 +119,6 @@ Route::get('/lists','AdminController@lists');
 Route::get('/getDownload/{filename}','AdminController@getDownload');
 Route::get('/getDeletes/{filename}','AdminController@getDeletes');
 Route::get('/getDeleteall','AdminController@getDeleteall');
+
 
 
